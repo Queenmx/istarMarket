@@ -18,7 +18,7 @@
                                 <div class="list_body">
                                     <div class="list_price">
                                         <h4>{{itemSecond.moneyMin}}~{{itemSecond.moneyMax}}</h4>
-                                        <p>额度范围（元）</p>
+                                        <p>额度范围（{{itemSecond.moneyUnit}}）</p>
                                     </div>
                                     <ul class="list_ad">
                                         <li>{{itemSecond.loanTime}}</li>
@@ -45,7 +45,7 @@
                                 <div class="list_body">
                                     <div class="list_price">
                                         <h4>{{itemSecond.moneyMin}}~{{itemSecond.moneyMax}}元</h4>
-                                        <p>额度范围（元）</p>
+                                        <p>额度范围（{{itemSecond.moneyUnit}}）</p>
                                     </div>
                                     <ul class="list_ad">
                                         <li>{{itemSecond.loanTime}}</li>

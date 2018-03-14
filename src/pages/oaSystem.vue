@@ -32,8 +32,7 @@ export default {
             {
               class: "icon-report",
               text: "智能报表",
-              //   url: "/oasystem/report"
-              url: ""
+              url: "/oasystem/report"
             },
             {
               class: "icon-peoplenum",
@@ -76,16 +75,16 @@ export default {
             { class: "icon-daily", text: "日报", url: "/oaSystem/dayly" },
             { class: "icon-weekly", text: "周报", url: "/oaSystem/weekly" },
             { class: "icon-monthly", text: "月报", url: "/oaSystem/monthly" },
-            // {
-            //   class: "icon-performence",
-            //   text: "绩效自评",
-            //   url: "/oaSystem/performence"
-            // },
             {
               class: "icon-performence",
               text: "绩效自评",
-              url: ""
+              url: "/oaSystem/performence"
             }
+            // {
+            //   class: "icon-performence",
+            //   text: "绩效自评",
+            //   url: ""
+            // }
           ]
         }
       ]
