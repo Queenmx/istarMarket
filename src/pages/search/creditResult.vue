@@ -102,7 +102,7 @@ export default {
               console.log(res1);
               //查询
               console.log(res.data.state);
-              // if (res.code === "0000" && res.data.state ==="报告生成成功!"){
+              if (res.code === "0000" && res.data.state ==="报告生成成功!"){
               let data2 = {
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
@@ -129,7 +129,7 @@ export default {
 
               // console.log(this.search_id);
               // console.log(this.report_time);
-              // }
+              }
             }
           } else {
             count++;
