@@ -46,13 +46,26 @@
         <div><span>交易金额</span><span>{{trade_amt}}</span></div>
         <div><span>交易时间</span><span>{{trade_time}}</span></div>
       </div> -->
-      <div>信用卡</div>
+       <el-row class="gray_line" >信用卡</el-row>
+       <el-row class="gray_line">  
+        <!-- <div><span>评估得分</span><span>{{score}}</span></div>
+        <div><span>评估等级</span><span>{{rating}}</span></div> -->
+        <el-col :span="12">信用卡数</el-col>
+        <el-col :span="12">{{credit_card_cnt}}</el-col>
+        <el-col :span="12">信用卡还款总金额</el-col>
+        <el-col :span="12">{{credit_card_repay_amt}}</el-col>
+         <el-col :span="12">信用卡还款总笔数</el-col>
+        <el-col :span="12">{{credit_card_repay_cnt}}</el-col>
+        <el-col :span="12">信用卡还款最大金额</el-col>
+        <el-col :span="12">{{credit_card_max_per_amt}}</el-col>
+      </el-row>
+      <!-- <div>信用卡</div>
       <div>
         <div><span>信用卡数</span><span>{{credit_card_cnt}}</span></div>
         <div><span>信用卡还款总金额</span><span>{{credit_card_repay_amt}}</span></div>
         <div><span>信用卡还款总笔数</span><span>{{credit_card_repay_cnt}}</span></div>
         <div><span>信用卡还款最大金额</span><span>{{credit_card_max_per_amt}}</span></div>
-      </div>
+      </div> -->
       <ul>
         <div>近6个月支付宝收支情况</div>
 			<li v-for="item in items">
@@ -144,15 +157,12 @@ export default {
               self.credit_card_repay_cnt = res2.data.reportData.credit_card_repay.credit_card_repay_cnt;
               self.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
               self.items = res2.data.reportData.recent_revenue_expend_trend;
-
-              // console.log(this.search_id);
-              // console.log(this.report_time);
               }
             }
           } else {
             count++;
             console.log("+++++" + count);
-            // getReport();
+            getReport();
           }
         }, 2000);
       }
