@@ -6,22 +6,40 @@
 		</v-header>
       <split></split>
 		<div class="content">
-			<div>
-				<div><span>报表编号</span><span>{{search_id}}</span></div>
+			<el-row class="gray_line">
+				<!-- <div><span>报表编号</span><span>{{search_id}}</span></div>
         <div><span>申请报表</span><span>{{applyNum}}</span></div>
-        <div><span>报告时间</span><span>{{report_time}}</span></div>
-			</div>
-      <div>评估结果</div>
-      <div>
-        <div><span>评估得分</span><span>{{score}}</span></div>
-        <div><span>评估等级</span><span>{{rating}}</span></div>
-      </div>
-      <div>个人基本信息</div>
-      <div>
+        <div><span>报告时间</span><span>{{report_time}}</span></div> -->
+        <el-col :span="12">报表编号</el-col>
+        <el-col :span="12">{{search_id}}</el-col>
+        <el-col :span="12">申请报表</el-col>
+        <el-col :span="12">{{applyNum}}</el-col>
+        <el-col :span="12">报告时间</el-col>
+        <el-col :span="12">{{report_time}}</el-col>
+			</el-row>
+      <el-row class="gray_line">评估结果</el-row>
+      <el-row class="gray_line">  
+        <!-- <div><span>评估得分</span><span>{{score}}</span></div>
+        <div><span>评估等级</span><span>{{rating}}</span></div> -->
+        <el-col :span="12">评估得分</el-col>
+        <el-col :span="12">{{score}}</el-col>
+        <el-col :span="12">评估等级</el-col>
+        <el-col :span="12">{{rating}}</el-col>
+      </el-row>
+      <el-row class="gray_line">个人信息</el-row>
+      <!-- <div>
         <div><span>真实姓名</span><span>{{real_name}}</span></div>
         <div><span>身份证号</span><span>{{id_card}}</span></div>
         <div><span>手机号</span><span>{{phone}}</span></div>
-      </div>
+      </div> -->
+      <el-row class="gray_line">  
+        <!-- <div><span>评估得分</span><span>{{score}}</span></div>
+        <div><span>评估等级</span><span>{{rating}}</span></div> -->
+        <el-col :span="12">真实姓名</el-col>
+        <el-col :span="12">{{real_name}}</el-col>
+        <el-col :span="12">身份证号</el-col>
+        <el-col :span="12">{{id_card}}</el-col>
+      </el-row>
       <!-- <div>危险交易</div>
       <div>
         <div><span>交易详情</span><span>{{trade_type}}</span></div>
