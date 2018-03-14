@@ -43,7 +43,7 @@
                         <div class="list_body">
                             <div class="list_price">
                                 <h4>{{item.moneyMin}}~{{item.moneyMax}}</h4>
-                                <p>额度范围（元）</p>
+                                <p>额度范围（{{item.moneyUnit}}）</p>
                             </div>
                             <ul class="list_ad">
                                 <li>{{item.loanTime}}</li>

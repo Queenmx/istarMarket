@@ -11,7 +11,7 @@
 					<li class="wrap flex item" @click="goAudit(item)"  v-for="(item,index) in list" :key="index" >
 						<div class="rest">
 							<div class="avatar-wrap">
-								<img class="avatar" src="../../assets/images/avatar.jpg">
+								<img class="avatar" :src="item.headPic">
 							</div>
 							<div class="inblock">
 								<p class="title">{{item.title}}</p>
@@ -47,7 +47,7 @@
 					<li class="wrap flex item" @click="goAudit(item)" v-for="(item,i) in listData" :key="i">
 						<div class="rest">
 							<div class="avatar-wrap">
-								<img class="avatar" src="../../assets/images/avatar.jpg">
+								<img class="avatar" :src="item.headPic">
 							</div>
 							<div class="inblock">
 								<p class="title">{{item.title}}</p>
