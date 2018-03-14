@@ -1,0 +1,122 @@
+$blue:#53a6ff;
+$bdcolor:#eee;
+$grey:#888;
+$bgcolor:#f8f8f8;
+$black:#323232;
+$fontcolor:#646464;
+@function rem($px) {
+    $default-font-size: 75px;
+    @return ($px / $default-font-size)+rem;
+}
+@mixin icon($w:30px,$h:30px){
+	display: inline-block;
+	width: $w;
+	height: $h;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.rooterEle{
+    min-height: 100%;
+    background-color: $bgcolor;
+    box-sizing: border-box;
+}
+.rooterEle2{
+    padding-bottom: rem(100px);
+    min-height: 100%;
+    background-color: $bgcolor;
+    box-sizing: border-box;
+}
+.wrap{
+	padding-left:rem(30px);
+	padding-right: rem(30px);
+}
+.form-control{
+	width: 100%;
+}
+.link{
+	color:$blue;
+}
+.flex{
+	display: flex;
+	align-items:center;
+	.rest{
+		flex:1;
+	}
+}
+.avatar-wrap{
+	display: inline-block;
+	padding-right: rem(10px);
+}
+.avatar{
+	width: rem(60px);
+	height: rem(60px);
+	border-radius: 50%;
+	vertical-align: middle;
+}
+.inblock{
+	display: inline-block;
+}
+.btn-red{
+    display: inline-block;
+    padding: rem(16px) rem(28px);
+    color:#fff;
+    background-color: #f94b4b;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #f94b4b;
+}
+.footer-btn{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom:0;
+    height: rem(100px);
+    line-height: rem(100px);
+    text-align: center;
+    color:#fff;
+    font-size: rem(32px);
+    background-color: $blue;
+}
+.footer-btn2{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom:0;
+    z-index: 99;
+    height: rem(100px);
+    line-height: rem(100px);
+    text-align: center;
+    color:#fff;
+    font-size: rem(32px);
+    background-color: $blue;
+}
+.ellipsis{
+    overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
+}
+.leave{
+    .el-upload--picture-card {
+        width: rem(98px);
+        height: rem(98px);
+        line-height: rem(96px);
+        i {
+            font-size: rem(28px);
+        }
+    }
+    .el-upload-list--picture-card .el-upload-list__item {
+        width: rem(98px);
+        height: rem(98px);
+    }
+}
+.contain{
+    padding-left:rem(30px);
+    padding-right: rem(30px);
+}
+.textAlignLeft{
+    text-align: left;
+}
+.textAlignRight{
+    text-align: right;
+}
+
+
