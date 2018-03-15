@@ -112,23 +112,23 @@ export default {
     //     getReport();
     //   }
     // },
-    async getReportStatus() {
-      var res = await getReportState();
-      if (res.code === "0000") {
-        if (res.state != "认证成功/报告生成成功") {
-          return 1;
-        } else if (res.state != "生成报告失败！") {
-          return 2;
-        } else {
-          return 0;
-        }
-      }
-    },
+    // async getReportStatus() {
+    //   var res = await getReportState();
+    //   if (res.code === "0000") {
+    //     if (res.state != "认证成功/报告生成成功") {
+    //       return 1;
+    //     } else if (res.state != "生成报告失败！") {
+    //       return 2;
+    //     } else {
+    //       return 0;
+    //     }
+    //   }
+    // },
     async submit() {
       var data = {
         name: this.name,
         idNumber: this.ID,
-        phone: this.phone
+        phone: this.phone,
       };
       if (!this.name.trim()) {
         this.$message("请输入姓名");
@@ -143,12 +143,14 @@ export default {
       var res = await getReport(data);
       console.log(res)
       if (res.code === "0000") {
-        // setItem("reportUserInfo", data);
+        setItem("reportUserInfo", data);
         console.log(res.data.ppId);
         // setItem('ppId',res.data.ppId);
        setItem('ppId',res.data.ppId)
-        // console.log(localStorage)
+       
         window.location.href = res.data.url;
+        // localStorage.removeItem('reportUserInfo')
+        //  console.log(localStorage)
       }
       //   this.$router.push({ path: "/search/creditResult" });
     }

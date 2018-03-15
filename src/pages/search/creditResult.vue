@@ -113,6 +113,7 @@ export default {
   },
   methods: {
     async initData() {
+         console.log(localStorage)
       // getItem('ppId');
       // var count = 0;
       var self = this;
@@ -125,7 +126,7 @@ export default {
           //  ppId:JSON.parse(getItem('ppId'))
           ppId:JSON.parse(getItem('ppId'))
          }
-        console.log(localStorage)
+     
          console.log(data)
           let res = getReportState(data);
           console.log(res)
