@@ -62,7 +62,7 @@ export default {
         console.log(obj);
         return this.nativeInteractive(native, obj);
       } else {
-        this.$message("请切换支付方式");
+        this.$message("请选择充值方式");
       }
     },
     setupWebViewJavascriptBridge: function(callback) {
