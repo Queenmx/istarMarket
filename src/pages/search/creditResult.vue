@@ -17,7 +17,7 @@
         <el-col :span="12">报告时间:</el-col>
         <el-col :span="12">{{report_time}}</el-col>
 			</el-row>
-      <el-row class="gray_line">评估结果</el-row>
+      <!-- <el-row class="gray_line">评估结果</el-row> -->
       <el-row class="gray_line">  
         <!-- <div><span>评估得分</span><span>{{score}}</span></div>
         <div><span>评估等级</span><span>{{rating}}</span></div> -->
@@ -26,7 +26,7 @@
         <el-col :span="12">评估等级:</el-col>
         <el-col :span="12">{{rating}}</el-col>
       </el-row>
-      <el-row class="gray_line">个人信息</el-row>
+      <!-- <el-row class="gray_line">个人信息</el-row> -->
       <!-- <div>
         <div><span>真实姓名</span><span>{{real_name}}</span></div>
         <div><span>身份证号</span><span>{{id_card}}</span></div>
@@ -179,7 +179,7 @@ export default {
               };
               console.log(data2)
               // console.log(res2.data.state);
-              let res2 =await getTanjiReport(data2);
+              let res2 = await getTanjiReport(data2);
               this.head_info = res2.head_info;
               console.log(res2.data);
               this.search_id = res2.data.reportData.head_info.search_id;
