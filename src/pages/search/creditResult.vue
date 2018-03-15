@@ -113,16 +113,18 @@ export default {
   },
   methods: {
     async initData() {
-      getItem('ppId');
+      // getItem('ppId');
       // var count = 0;
       var self = this;
+      console.log(localStorage)
       // function getReport() {
         //console.log(self.search_id);
         // setTimeout(async function() {
           //  console.log(self.search_id);
          var data={
-           ppId:getItem('ppId')
+           ppId:JSON.parse(getItem('ppId'))
          }
+         console.log(data)
           let res = getReportState(data);
           console.log(res)
           // if (res.code === "0000" && res.data.state === "认证成功!") {
@@ -167,11 +169,7 @@ export default {
               self.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
               self.items = res2.data.reportData.recent_revenue_expend_trend;
               }
-            // },20000);
-      }
-    //   // getReport();
-    // }
-
+            } 
   }
 };
 </script>

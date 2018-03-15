@@ -141,9 +141,10 @@ export default {
         return;
       }
       var res = await getReport(data);
+      console.log(res)
       if (res.code === "0000") {
         // setItem("reportUserInfo", data);
-        console.log(res.data);
+        console.log(res.data.ppId);
         setItem('ppId',res.data.ppId)
         window.location.href = res.data.url;
       }
