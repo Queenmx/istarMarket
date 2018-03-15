@@ -117,7 +117,25 @@ export default {
       // getItem('ppId');
       // var count = 0;
       var self = this;
-      console.log(window.location.href)
+      console.log(window.location.href);
+      function UrlSearch() {
+		  var name, value;
+		  var str = location.href; //取得整个地址栏
+		  var num = str.indexOf("?") //获取?的索引值
+		  str = str.substr(num + 1); //取得所有参数 （例如id=2&name=wang）
+	        var arr = str.split("&"); //申请一个数组，把各个参数放到数组里
+	        for (var i = 0; i < arr.length; i++) {
+			num = arr[i].indexOf("="); //获取等于号在目标字符串中的索引值
+			if (num > 0) { //判断是否有参数
+			name = arr[i].substring(0, num); //获取参数的名称
+			value = arr[i].substr(num + 1); //获取参数的值
+			this[name] = value; //把参数与值对应
+					}
+				}
+			}
+      var requst = new UrlSearch();
+      var ppId = requst.ppId
+      console.log(ppId)
      
       // function getReport() {
         //console.log(self.search_id);
@@ -125,7 +143,7 @@ export default {
           //  console.log(self.search_id);
          var data={
           //  ppId:JSON.parse(getItem('ppId'))
-          ppId:JSON.parse(getItem('ppId'))
+         ppId:ppId
          }
      
          console.log(data)
@@ -155,7 +173,7 @@ export default {
           //     // console.log(res4)
               if (res.code === "0000" && res.data.state ==="报告生成成功!"){
               let data2 = {
-                ppId:getItem('ppId'),
+                ppId:ppId,
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
               };
