@@ -38,6 +38,10 @@
 				<span class="left">事由</span>
 				<span class="rest">{{list.reason}}</span>
 			</li>
+       <li class="wrap flex" id="spread">
+				<span class="left">审批意见</span>
+				<span class="rest">{{remarks}}</span>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -71,6 +75,7 @@ export default {
       let res = await oaFlowInfo(data);
       if (res.code === "0000") {
         this.list = res.data.info;
+        this.remarks = res.data.operateList[1].remarks
         console.log(res.data.info);
         console.log(this.list.status);
         this.listPlan = res.data.operateList;
