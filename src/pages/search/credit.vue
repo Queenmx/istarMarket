@@ -146,10 +146,11 @@ export default {
         setItem("reportUserInfo", data);
         console.log(res.data.ppId);
         // setItem('ppId',res.data.ppId);
-       setItem('ppId',res.data.ppId)
-       
+       setItem("ppId",res.data.ppId)
+      //  console.log(localStorage)
+       localStorage.removeItem('reportUserInfo')
         window.location.href = res.data.url;
-        // localStorage.removeItem('reportUserInfo')
+       
         //  console.log(localStorage)
       }
       //   this.$router.push({ path: "/search/creditResult" });
