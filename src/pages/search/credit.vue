@@ -143,12 +143,12 @@ export default {
       var res = await getReport(data);
       console.log(res)
       if (res.code === "0000") {
-        setItem("reportUserInfo", data);
-        console.log(res.data.ppId);
+        // setItem("reportUserInfo", data);
+        console.log(res.data.url);
         // setItem('ppId',res.data.ppId);
-       setItem("ppId",res.data.ppId)
+      //  setItem("ppId",res.data.ppId)
       //  console.log(localStorage)
-       localStorage.removeItem('reportUserInfo')
+      //  localStorage.removeItem('reportUserInfo')
         window.location.href = res.data.url;
        
         //  console.log(localStorage)

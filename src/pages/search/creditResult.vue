@@ -113,10 +113,11 @@ export default {
   },
   methods: {
     async initData() {
-      console.log(localStorage)
+      // console.log(localStorage)
       // getItem('ppId');
       // var count = 0;
       var self = this;
+      console.log(window.location.href)
      
       // function getReport() {
         //console.log(self.search_id);
