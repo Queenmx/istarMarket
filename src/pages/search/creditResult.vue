@@ -146,8 +146,9 @@ export default {
          ppId:ppId
          }
          console.log(data)
-          let res = getReportState(data);
-          console.log(res)
+          let res = await getReportState(data);
+          console.log(res.code);
+          console.log(res.data.state)
           // let data = getItem("ppId");
           // console.log(localStorage)
           // if(data){
