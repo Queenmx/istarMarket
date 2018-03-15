@@ -29,7 +29,7 @@ export default {
   methods: {
     async initData() {
       var data = {
-        salerId: JSON.parse(getItem("userInfo").userId)
+        salerId: JSON.parse(getItem("userInfo")).userId
       };
       console.log(localStorage)
       console.log(data)
