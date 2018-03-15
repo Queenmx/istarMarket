@@ -49,13 +49,13 @@
                 </ul>
                 <el-button type="text" @click="goApprover"  class="adduser"><i class="el-icon-plus"></i></el-button>
             </el-col>
-            <el-col :span="24" class="leave_label"><i class="red_must">*</i>抄送人</el-col>
+            <!-- <el-col :span="24" class="leave_label"><i class="red_must">*</i>抄送人</el-col>
             <el-col :span="24" class="textarea">
                <ul class="nameList">
                     <li class="userName"><span v-for="(item,i) in performenceSendtoinfo" :key="i">{{item}}</span></li>
                 </ul>
                 <el-button type="text"   class="adduser" @click="sendTo"><i class="el-icon-plus"></i></el-button>
-            </el-col>
+            </el-col> -->
           </el-row>
         <el-button class="submit_btn" type="primary" @click="submit">提交</el-button>
     </div>
@@ -247,8 +247,6 @@ export default {
            this.$message("本月工作计划不能为空");
       }else if(!localStorage.performenceApproverId){
            this.$message("审批人不能为空");
-      }else if(!this.performenceSendtoinfo){
-           this.$message("抄送人不能为空");
       }else{
         let res = await oaPerformence(data);
         if (res.code === "0000") {

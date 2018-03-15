@@ -121,8 +121,8 @@ export default {
           //  console.log(self.search_id);
           let res = await getReportState();
           if (res.code === "0000" && res.data.state === "认证成功!") {
-            console.log("0000" + count);
-            // console.log(res.data.state);
+            // console.log("0000" + count);
+            console.log(res);
             //抓取
             let data = getItem("reportUserInfo");
             if (data) {
@@ -131,13 +131,14 @@ export default {
               console.log(".....抓取完毕.....");
               console.log(res1);
               //查询
-              let res2 = await getReportState();
-              console.log(res2.data.state);
-              if (res2.code === "0000" && res2.data.state ==="报告生成成功!"){
+              let res3 = await getReportState();
+              console.log(res3);
+              if (res3.code === "0000" && res3.data.state ==="报告生成成功!"){
               let data2 = {
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
               };
+              // console.log(res2.data.state);
               let res2 = await getTanjiReport(data2);
               self.head_info = res2.head_info;
               console.log(res2);

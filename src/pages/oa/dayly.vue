@@ -31,7 +31,7 @@
           <el-row class="leave_name">
               <textarea class="edit_textarea" rows="5" placeholder="请填写备注信息…" v-model="remark "></textarea>
           </el-row>
-          <el-row class="leave_name gray_line">
+          <!-- <el-row class="leave_name gray_line">
             <el-col :span="24" class="leave_label">图片</el-col>
             <el-col :span="24" class="textarea">
                 <el-upload
@@ -46,7 +46,7 @@
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
             </el-col>
-          </el-row>
+          </el-row> -->
           <!-- <el-row class="leave_name gray_line">
             <el-col :span="24" class="leave_label">附件</el-col>
             <el-col :span="24" class="textarea">
@@ -193,16 +193,16 @@ export default {
     handleChange(file, fileList) {
       this.fileList3 = fileList.slice(-3);
     },
-    beforeAvatarUpload(file){
-      // const type = file.type === 'image/*';
-      // return type;
-      console.log(file.name);
-      var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function(e){ 
-           console.log(this.result) // 这个就是base64编码了
-        }
-    },
+    // beforeAvatarUpload(file){
+    //   // const type = file.type === 'image/*';
+    //   // return type;
+    //   console.log(file.name);
+    //   var reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onload = function(e){ 
+    //        console.log(this.result) // 这个就是base64编码了
+    //     }
+    // },
     
     //获取经纬度
     initMap() {
