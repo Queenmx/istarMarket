@@ -28,12 +28,13 @@
 export default {
   data() {
     const now = new Date();
+    let month = now.getMonth() + 1;
+    month = month >= 10 ? month : "0" + month;
+    let data = now.getDate() >= 10 ? now.getDate() : "0" + now.getDate();
+    data = data >= 10 ? data : "0" + data;
     return {
       day: "今日",
-      date: `${now.getFullYear()}-${(now.getMonth() + 1 + "").padStart(
-        2,
-        "0"
-      )}-${(now.getDate() + "").padStart(2, "0")}`,
+      date: `${now.getFullYear()}-${month}-${data}`,
       listDate: [["今日", "昨日", "本周"], ["上周", "本月", "上月"]],
       showFlag: false,
       dateRange: "今日"

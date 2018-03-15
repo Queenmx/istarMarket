@@ -163,6 +163,7 @@ export default {
     async getAttendance(data) {
       var res = await oaAttendanceInfo(data);
       if (res.code === "0000") {
+        this.flag = [];
         this.info = res.data;
         if (!Object.keys(this.info).length) {
           this.aPm = false;
@@ -183,6 +184,7 @@ export default {
           this.flag.push("正常");
         }
         this.aPm = true;
+        console.log(this.flag);
       }
     },
     getData(date) {
