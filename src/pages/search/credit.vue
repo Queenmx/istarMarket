@@ -129,9 +129,10 @@ export default {
         name: this.name,
         idNumber: this.ID,
         phone: this.phone,
-        salerId:JSON.parse(getItem('userInfo'))
+        salerId:JSON.parse(getItem('userInfo')).userId
       };
       console.log(localStorage)
+      console.log(data)
       if (!this.name.trim()) {
         this.$message("请输入姓名");
         return;

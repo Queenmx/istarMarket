@@ -171,11 +171,12 @@ export default {
           //     // console.log(res3);
           //     // let res4 = await getReportState();
           //     // console.log(res4)
+         var salerId = requst.salerId
               if (res.code === "0000" && res.data.state ==="报告生成成功!"){
               let data2 = {
                 ppId:ppId,
                 customerId: "111",
-                salerId: JSON.parse(getItem("userInfo")).userId
+                salerId: salerId
               };
               console.log(localStorage)
               console.log(data2)
