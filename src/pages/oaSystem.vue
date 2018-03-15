@@ -59,7 +59,7 @@ export default {
               text: "考勤打卡",
               url: "/oaSystem/attendanceCard"
             },
-            { class: "icon-signin", text: "签到", url: "/oaSystem/signIn" },
+            { class: "icon-signin", text: "签到", url: "/oaSystem/sign" },
             { class: "icon-workoff", text: "请假", url: "/oaSystem/leave" },
             { class: "icon-goOut", text: "外出", url: "/oaSystem/out" },
             {

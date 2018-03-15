@@ -30,7 +30,13 @@
 					<div class="news1">
               {{userName}}
           </div>
-				</li>
+		</li>
+        <li class="wrap flex item">
+					<div class="news">账号类型</div>
+					<div class="news1">
+              {{userName}}
+          </div>
+		</li>
         <li class="wrap flex item" @click="changeContact" >
 					<div class="news">联系人</div>
 					<div class="news1">{{realName}}

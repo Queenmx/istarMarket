@@ -24,7 +24,6 @@
             <p>签到<br><span class="time_num">{{time}}</span></p>
           </div>
       </div>
-      <sign-footer :info="signData"></sign-footer>
   </div>
 </template>
 <script>

@@ -2,7 +2,7 @@
 	<div class="carInfo" ref="carInfo">
 		<v-header @leftEvent="back" :isBack="isBack">
 			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">申请资料</p>
+			<p slot="title">{{title[curPage]}}</p>
 		</v-header>
         <!-- 贷款信息 -->
         <div id="loan">
@@ -47,6 +47,7 @@ export default {
       data: {},
       money: "",
       requiredObj: {},
+      title: [],
       isShowCouple: true //是否展示配偶页
     };
   },
@@ -79,10 +80,11 @@ export default {
       await this.queryMoney();
       let res = await getInfoTemple();
       if (res.code === "0000") {
-        let data = res.data,
+        let data = res.data[0]["data"],
           obj = {},
           requiredObj = {};
         this.temple = data;
+        this.title = res.data[0]["title"];
         for (let key in data) {
           if (data.hasOwnProperty(key)) {
             obj[key] = {};

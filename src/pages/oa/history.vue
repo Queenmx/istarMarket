@@ -37,7 +37,7 @@
               </el-tab-pane>
           </el-tabs>
       </div>
-      <sign-footer :activeIndex="1"></sign-footer>
+      <!-- <sign-footer :activeIndex="1"></sign-footer> -->
   </div>
 </template>
 <script>
