@@ -121,20 +121,21 @@ export default {
         //console.log(self.search_id);
         // setTimeout(async function() {
           //  console.log(self.search_id);
-        //  var data={
-        //   //  ppId:JSON.parse(getItem('ppId'))
-        //   ppId:JSON.parse(getItem('ppId'))
-        //  }
-        // console.log(localStorage)
-        //  console.log(data)
-        //   let res = getReportState(data);
-        //   console.log(res)
-          let data = getItem('ppId');
-          if(data){
-            data = JSON.parse(data);
-            let res = getReportState(data);
-            console.log(res)
-          }
+         var data={
+          //  ppId:JSON.parse(getItem('ppId'))
+          ppId:JSON.parse(getItem('ppId'))
+         }
+        console.log(localStorage)
+         console.log(data)
+          let res = getReportState(data);
+          console.log(res)
+          // let data = getItem("ppId");
+          // console.log(localStorage)
+          // if(data){
+          //   data = JSON.parse(data);
+          //   let res = getReportState(data);
+          //   console.log(res)
+          // }
           // if (res.code === "0000" && res.data.state === "认证成功!") {
           //   // console.log("0000" + count);
           //   console.log(res);
