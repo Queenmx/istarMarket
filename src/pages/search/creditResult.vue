@@ -145,7 +145,6 @@ export default {
           //  ppId:JSON.parse(getItem('ppId'))
          ppId:ppId
          }
-     
          console.log(data)
           let res = getReportState(data);
           console.log(res)
@@ -177,10 +176,11 @@ export default {
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
               };
+              console.log(data2)
               // console.log(res2.data.state);
               let res2 = getTanjiReport(data2);
               self.head_info = res2.head_info;
-              // console.log(res2);
+              console.log(res2);
               self.search_id = res2.data.reportData.head_info.search_id;
               self.report_time = res2.data.reportData.head_info.report_time;
               self.applyNum = res2.data.applyNum;
