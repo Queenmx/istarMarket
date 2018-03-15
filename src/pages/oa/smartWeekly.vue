@@ -55,7 +55,7 @@ export default {
     async initData() {
       let arrWeek = ["星期一", "星期二", "星期三", "星期四", "星期五"];
       let data = {
-        dateRange: "今日",
+        dateRange: "上周",
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
@@ -68,7 +68,8 @@ export default {
       this.info.forEach(val => {
         attendceNum -= val;
       });
-      this.rate = (attendceNum / res.shouldAttendancePNum * 100).toFixed(2);
+      this.rate = (res.weelyAttRate * 1).toFixed(2);
+      console.log("=======", this.rate, res.weelyAttRate);
       let weeklyAttendanceRate = res.weeklyAttendanceRate;
       arrWeek.forEach(item => {
         this.detailRate.push(weeklyAttendanceRate[item].split("%")[0]);

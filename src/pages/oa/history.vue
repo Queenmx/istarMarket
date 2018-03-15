@@ -23,6 +23,7 @@
                     <el-col :span="5"><img :src="item.headPic" /></el-col>
                     <el-col :span="19">
                         <h4>{{item.userName}}<time class="signTime">{{item.signDate}}</time></h4>
+                        <p>拜访对象：{{item.visitor}}</p>
                         <p><i class="el-icon-location-outline"></i>{{item.location}}</p>
                     </el-col>
                   </el-row>

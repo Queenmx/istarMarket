@@ -50,12 +50,12 @@ export default {
           }
         ],
         [
-          //   {
-          //     class: "icon-myService",
-          //     desc: "我的客服",
-          //     isIcon: true,
-          //     url: "/users/myService"
-          //   },
+          {
+            class: "icon-myService",
+            desc: "我的客服",
+            isIcon: true,
+            url: "/users/myService"
+          },
           {
             class: "icon-myService",
             desc: "我的客服",
@@ -73,7 +73,7 @@ export default {
   methods: {
     async initData() {
       getItem("userinfo");
-      console.log(localStorage)
+      console.log(localStorage);
       let userinfo = JSON.parse(localStorage.userInfo);
       console.log(userinfo);
       var data = {

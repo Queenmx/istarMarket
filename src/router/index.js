@@ -23,6 +23,8 @@ const outRecord = resolve => require(['@/pages/outRecord'], resolve)
 const overtimeRecord = resolve => require(['@/pages/overtimeRecord'], resolve)
 const attendanceDetail = resolve => require(['@/pages/attendanceDetail'], resolve)
 const clockDetail = resolve => require(['@/pages/clockDetail'], resolve)
+const success = resolve => require(['@/pages/success'], resolve)
+const fail = resolve => require(['@/pages/fail'], resolve)
 const sign = resolve => require(['@/pages/oa/sign'], resolve)
 const signIn = resolve => require(['@/pages/oa/signIn'], resolve)
 const history = resolve => require(['@/pages/oa/history'], resolve)
@@ -125,6 +127,14 @@ const router = new Router({
         {
             path: '/oasystem',
             component: oaSystem
+        },
+        {
+            path: '/success',
+            component: success
+        },
+        {
+            path: '/fail',
+            component: fail
         },
         {
             path: '/search/credit',

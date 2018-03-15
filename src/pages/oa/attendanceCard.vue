@@ -3,7 +3,7 @@
         <v-header class="wrap">
             <i slot="left" class="el-icon-arrow-left"></i>
             <p slot="title">{{companyName}}</p>
-            <p slot="right" class="link" @click="setting">设置考勤</p>
+            <!-- <p slot="right" class="link" @click="setting">设置考勤</p> -->
         </v-header>
         <attendance-card-list @getData="getData" :groupName="groupName"></attendance-card-list>
         <!-- <div class="blank">
@@ -48,7 +48,7 @@
             <div class="position" v-if="groupAddress">
                 <i class="el-icon-circle-check blue"></i>
                 <span class="ellipsis">已进入考勤范围：{{groupAddress}}</span>
-                <span class="link" @click="setAddress">去重新定位</span>
+                <!-- <span class="link" @click="setAddress">去重新定位</span> -->
             </div>
             <div class="position" v-else>{{errorMsg}}</div>
         </div>
@@ -345,9 +345,9 @@ export default {
   .ellipsis {
     display: inline-block;
     width: 13em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // white-space: nowrap;
     vertical-align: top;
   }
   .position {

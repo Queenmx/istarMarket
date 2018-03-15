@@ -27,6 +27,17 @@ export const mask = (string, startIndex, length) => {
     var maskStr = new Array(subString.length + 1).join("*")
     return string.replace(subString, maskStr)
 }
+export const isRealNum = (val) => {
+    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
+    if (val === "" || val == null) {
+        return false;
+    }
+    if (!isNaN(val)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 export function formateTime(date, fmt) {
     // (x) 匹配 'x' 并且记住匹配项，就像下面的例子展示的那样。括号被称为 捕获括号。
     if (/(y+)/.test(fmt)) {
