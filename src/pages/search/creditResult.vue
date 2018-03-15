@@ -104,7 +104,7 @@ export default {
       credit_card_repay_cnt:'',
       credit_card_max_per_amt:'',
       items:'',
-      reportData: "",
+      reportData:'',
       status: this.$route.query.status, //query从授权页过来，history从历史记录过来
     };
   },
@@ -116,7 +116,7 @@ export default {
       // console.log(localStorage)
       // getItem('ppId');
       // var count = 0;
-      var self = this;
+      // var self = this;
       console.log(window.location.href);
       function UrlSearch() {
 		  var name, value;
@@ -179,25 +179,25 @@ export default {
               };
               console.log(data2)
               // console.log(res2.data.state);
-              let res2 = getTanjiReport(data2);
-              self.head_info = res2.head_info;
-              console.log(res2);
-              self.search_id = res2.data.reportData.head_info.search_id;
-              self.report_time = res2.data.reportData.head_info.report_time;
-              self.applyNum = res2.data.applyNum;
-              self.real_name = res2.data.reportData.basic_info.real_name;
-              self.id_card = res2.data.reportData.basic_info.id_card;
-              self.phone = res2.data.reportData.basic_info.phone;
-              self.score = res2.data.reportData.rong_evaluation.score;
-              self.rating = res2.data.reportData.rong_evaluation.rating;
-              self.trade_type = res2.data.reportData.risk_trade.trade_type;
-              self.trade_amt = res2.data.reportData.risk_trade.trade_amt;
-              self.trade_time = res2.data.reportData.risk_trade.trade_time;
-              self.credit_card_cnt = res2.data.reportData.credit_card_repay.credit_card_cnt;
-              self.credit_card_repay_amt = res2.data.reportData.credit_card_repay.credit_card_repay_amt;
-              self.credit_card_repay_cnt = res2.data.reportData.credit_card_repay.credit_card_repay_cnt;
-              self.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
-              self.items = res2.data.reportData.recent_revenue_expend_trend;
+              let res2 =await getTanjiReport(data2);
+              this.head_info = res2.head_info;
+              console.log(res2.data);
+              this.search_id = res2.data.reportData.head_info.search_id;
+              this.report_time = res2.data.reportData.head_info.report_time;
+              this.applyNum = res2.data.applyNum;
+              this.real_name = res2.data.reportData.basic_info.real_name;
+              this.id_card = res2.data.reportData.basic_info.id_card;
+              this.phone = res2.data.reportData.basic_info.phone;
+              this.score = res2.data.reportData.rong_evaluation.score;
+              this.rating = res2.data.reportData.rong_evaluation.rating;
+              this.trade_type = res2.data.reportData.risk_trade.trade_type;
+              this.trade_amt = res2.data.reportData.risk_trade.trade_amt;
+              this.trade_time = res2.data.reportData.risk_trade.trade_time;
+              this.credit_card_cnt = res2.data.reportData.credit_card_repay.credit_card_cnt;
+              this.credit_card_repay_amt = res2.data.reportData.credit_card_repay.credit_card_repay_amt;
+              this.credit_card_repay_cnt = res2.data.reportData.credit_card_repay.credit_card_repay_cnt;
+              this.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
+              this.items = res2.data.reportData.recent_revenue_expend_trend;
               }
             } 
   }
