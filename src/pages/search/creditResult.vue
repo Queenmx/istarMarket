@@ -113,35 +113,40 @@ export default {
   },
   methods: {
     async initData() {
-      var count = 0;
+      getItem('ppId');
+      // var count = 0;
       var self = this;
-      function getReport() {
+      // function getReport() {
         //console.log(self.search_id);
-        setTimeout(async function() {
+        // setTimeout(async function() {
           //  console.log(self.search_id);
-          let res = await getReportState();
-          if (res.code === "0000" && res.data.state === "认证成功!") {
-            // console.log("0000" + count);
-            console.log(res);
-            //抓取
-            let data = getItem("reportUserInfo");
-            if (data) {
-              data = JSON.parse(data);
-              let res1 = await crawReport(data);
-              console.log(".....抓取完毕.....");
-              console.log(res1);
-              //查询
-              let res3 = await getReportState();
-              console.log(res3);
-              let res4 = await getReportState();
-              console.log(res4)
-              if (res4.code === "0000" && res4.data.state ==="报告生成成功!"){
+         var data={
+           ppid:getItem('ppId')
+         }
+          let res = getReportState(data);
+          // if (res.code === "0000" && res.data.state === "认证成功!") {
+          //   // console.log("0000" + count);
+          //   console.log(res);
+          //   //抓取
+          //   let data = getItem("reportUserInfo");
+          //   if (data) {
+          //     data = JSON.parse(data);
+          //     let res1 = await crawReport(data);
+          //     console.log(".....抓取完毕.....");
+          //     console.log(res1);
+          //     //查询
+          //     // let res3 = await getReportState();
+          //     // console.log(res3);
+          //     // let res4 = await getReportState();
+          //     // console.log(res4)
+              if (res.code === "0000" && res.data.state ==="报告生成成功!"){
               let data2 = {
+                ppId:getItem('ppId'),
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
               };
               // console.log(res2.data.state);
-              let res2 = await getTanjiReport(data2);
+              let res2 = getTanjiReport(data2);
               self.head_info = res2.head_info;
               // console.log(res2);
               self.search_id = res2.data.reportData.head_info.search_id;
@@ -161,16 +166,11 @@ export default {
               self.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
               self.items = res2.data.reportData.recent_revenue_expend_trend;
               }
-            }
-          } else {
-            count++;
-            console.log("+++++" + count);
-            getReport();
-          }
-        }, 2000);
+            // },20000);
       }
-      getReport();
-    }
+    //   // getReport();
+    // }
+
   }
 };
 </script>

@@ -142,8 +142,9 @@ export default {
       }
       var res = await getReport(data);
       if (res.code === "0000") {
-        setItem("reportUserInfo", data);
-        console.log(res.data.url);
+        // setItem("reportUserInfo", data);
+        console.log(res.data);
+        setItem('ppId',res.data.ppId)
         window.location.href = res.data.url;
       }
       //   this.$router.push({ path: "/search/creditResult" });
