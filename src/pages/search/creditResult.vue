@@ -121,9 +121,10 @@ export default {
         // setTimeout(async function() {
           //  console.log(self.search_id);
          var data={
-           ppid:getItem('ppId')
+           ppId:getItem('ppId')
          }
           let res = getReportState(data);
+          console.log(res)
           // if (res.code === "0000" && res.data.state === "认证成功!") {
           //   // console.log("0000" + count);
           //   console.log(res);
