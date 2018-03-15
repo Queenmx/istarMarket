@@ -2,7 +2,7 @@
   <div class="agency"> 
     <v-header class="header">
 			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">代理进件</p>
+			<p slot="title">我的订单</p>
 		</v-header>
     <ul>
 			<li v-for="item in items" :key="item.orderId">
@@ -28,44 +28,39 @@
 <script>
 import { getAgency } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
-import { setItem} from "@/util/util.js";
+import { setItem } from "@/util/util.js";
 export default {
   data() {
     return {
-      currentPage:1,
+      currentPage: 1,
       items: "",
-      totalNum:''
+      totalNum: 0
       //   status: ["", "客户登记", "业务受理", "合同签约", "放款处理", "数据审核"]
     };
   },
   mounted() {
-    this.initLocal()
+    this.initLocal();
     this.initData();
-    
   },
   methods: {
-    handleSizeChange(){
-
+    handleSizeChange() {},
+    handleCurrentChange(e) {
+      setItem("currentPage", e);
+      this.initData();
     },
-    handleCurrentChange(e){
-     
-      setItem('currentPage',e)
-       this.initData();
-   
-    },
-    async initLocal(){
-       setItem('currentPage',1)
+    async initLocal() {
+      setItem("currentPage", 1);
     },
     async initData() {
       getItem("userinfo");
-      getItem('currentPage')
-      
+      getItem("currentPage");
+
       let userinfo = JSON.parse(localStorage.userInfo);
       console.log(userinfo.userId);
       var data = {
-      userId: userinfo.userId,
-      pageNum:parseInt(localStorage.currentPage),
-      pageSize:10
+        userId: userinfo.userId,
+        pageNum: parseInt(localStorage.currentPage),
+        pageSize: 10
       };
       let res = await getAgency(data);
       if (res.code === "0000") {
@@ -118,25 +113,24 @@ export default {
     }
   }
 }
-
 </style>
 <style lang='scss'>
 @import "../../assets/style/common.scss";
-.agency{
+.agency {
   .el-pagination {
     // width:100%;
     // background-color: #f00;
     overflow: hidden;
   }
-  .el-pagination__total{
-    margin-right:0;
+  .el-pagination__total {
+    margin-right: 0;
   }
-  .btn-prev{
-    padding:0;
+  .btn-prev {
+    padding: 0;
   }
-  .number{
-    padding:0;
-    min-width:rem(60px)
+  .number {
+    padding: 0;
+    min-width: rem(60px);
   }
 }
 </style>
