@@ -73,6 +73,7 @@ require("echarts/lib/chart/pie");
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
 require("echarts/lib/component/legendScroll");
+var myChart;
 export default {
   data() {
     return {
@@ -105,8 +106,8 @@ export default {
   },
   methods: {
     async init() {
-      await this.initData();
       await this.drawChart();
+      await this.initData();
     },
     async initData() {
       await this.getReport("今日");
@@ -122,10 +123,19 @@ export default {
       this.reportInfo = res;
       this.reporterList = res.dailyReportCommitList;
       this.attendanceNum = res.actualAttendancePNum;
+      this.updateChart();
+    },
+    updateChart() {
+      let self = this;
+      myChart.setOption({
+        title: {
+          text: `${self.attendanceNum}\/${self.reportInfo.shouldAttendancePNum}`
+        }
+      });
     },
     drawChart() {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById("canvas"));
+      myChart = echarts.init(document.getElementById("canvas"));
       // 绘制图表
       var self = this;
       myChart.setOption({

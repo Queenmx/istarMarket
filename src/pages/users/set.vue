@@ -10,10 +10,10 @@
         <div class="wrap-img">
           <img :src="headPic" alt="">
         </div>
-        <div class="right" @click="change">
-          <!-- <span>更改头像</span> -->
-          <!-- <i class="el-icon-arrow-right"></i> -->
-        </div>
+        <!-- <div class="right" @click="change">
+          <span>更改头像</span>
+          <i class="el-icon-arrow-right"></i>
+        </div> -->
       </div>
       <split></split>
       <div >

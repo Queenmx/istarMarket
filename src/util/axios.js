@@ -123,6 +123,14 @@ export const getInfoTemple = (params) => {
     params = JSON.stringify(params)
     return fetch('/jrcs/application/data', { params })
 }
+/**
+ * 更新打卡
+ * @param {*} params 
+ */
+export const oaUpdateTime = (params) => {
+    params = JSON.stringify(params)
+    return fetch('oa/work/update', { params }, true)
+}
 export const oaQuery = (params) => {
     params = JSON.stringify(params)
     return fetch('oa/dept/query', { params }, true)

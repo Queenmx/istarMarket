@@ -4,8 +4,9 @@
 			<div class="users-wrap">
 				<img :src="headPic" class="users-photo">		
 			</div>
-			<div class="tel">{{phone}}</div>
-			<div class="company">{{companyName}}</div>
+			
+            <div class="tel">{{companyName}}</div>
+            <div class="company">{{userName}}</div>
 		</div>
 		<div v-for="(items,i) in data" :key="i">
 			<split></split>
@@ -31,6 +32,7 @@ export default {
       headPic: "",
       phone: "",
       companyName: "",
+      userName: "",
       data: [
         [
           {
@@ -81,6 +83,7 @@ export default {
         this.phone = res.data.phone;
         this.companyName = res.data.companyName;
         this.headPic = res.data.headPic;
+        this.userName = res.data.userName;
       }
     },
 

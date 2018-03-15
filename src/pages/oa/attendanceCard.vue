@@ -18,13 +18,13 @@
                             <i class="circle"></i>
                             <p>
                                 <span class="item-title">上班打卡时间{{info.beginTime|formatTime}}</span>
-                                <el-tag size="mini">{{flag}}</el-tag>
+                                <el-tag size="mini" v-for="(item,index) in flag" :key="index">{{item}}</el-tag>
                             </p>
                             <p class="address">
                                 <i class="el-icon-location"></i>
                                 <span>{{info.beginLocate}}</span>
                             </p>
-                            <p class="updateCard">
+                            <p class="updateCard" @click="updateCard">
                                 <span>更新打卡</span>
                                 <i class="el-icon-arrow-right"></i>
                             </p>
@@ -45,11 +45,12 @@
                     </p>
                 </div>
             </div>
-            <div class="position">
+            <div class="position" v-if="groupAddress">
                 <i class="el-icon-circle-check blue"></i>
-                <span class="ellipsis">已进入考勤范围：{{address}}</span>
+                <span class="ellipsis">已进入考勤范围：{{groupAddress}}</span>
                 <span class="link" @click="setAddress">去重新定位</span>
             </div>
+            <div class="position" v-else>{{errorMsg}}</div>
         </div>
         <card-alert ref="alert" :startDate="info.beginTime"></card-alert>
         <local-position @getAddress="getAddress" ref="localPosition"></local-position>
@@ -64,7 +65,8 @@ import {
   oaAttendanceInfo,
   oaAttendanceSign,
   oaGroupCheck,
-  oaGetCompany
+  oaGetCompany,
+  oaUpdateTime
 } from "@/util/axios";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
 var map, point, myGeo, geolocation;
@@ -80,7 +82,7 @@ export default {
       info: {},
       date: formateTime(date, "yyyy-MM-dd hh:mm:ss"),
       circleTime: hour + ":" + minutes + ":" + sec,
-      flag: "",
+      flag: [],
       timeStamp: date,
       userId: JSON.parse(getItem("userInfo")).userId,
       deptId: JSON.parse(getItem("userInfo")).deptId,
@@ -88,9 +90,11 @@ export default {
       center: { lng: 0, lat: 0 },
       zoom: 4,
       aPm: "", //判断上班还是下班 true//下班 false上班
-      address: "定位中",
+      address: "",
+      groupAddress: "",
       groupName: "",
-      companyName: ""
+      companyName: "",
+      errorMsg: "" //异常信息显示
     };
   },
   filters: {
@@ -138,6 +142,22 @@ export default {
       let res = await oaGroupCheck(data);
       if (res.code === "0000") {
         this.groupName = res.data.groupName;
+        this.groupAddress = res.data.location;
+      } else if (res.code === "9999") {
+        this.errorMsg = res.msg;
+      }
+    },
+    async updateCard() {
+      let data = {
+        userId: this.userId,
+        time: this.date,
+        location: this.address
+      };
+      let res = await oaUpdateTime(data);
+      if (res.code === "0000") {
+        this.$message("更新时间成功");
+      } else {
+        this.$message(res.code);
       }
     },
     async getAttendance(data) {
@@ -148,16 +168,19 @@ export default {
           this.aPm = false;
           return;
         }
-        if (!this.info.notEarly) {
-          this.flag = "早退";
-        } else if (!this.info.absenteeism) {
-          this.flag = "旷工";
-        } else if (!this.info.missingCard) {
-          this.flag = "缺卡";
-        } else if (!this.info.notlate) {
-          this.flag = "迟到";
-        } else {
-          this.flag = "正常";
+        let arr = {
+          notEarly: "早退",
+          absenteeism: "旷工",
+          missingCard: "缺卡",
+          notlate: "迟到"
+        };
+        for (let key in arr) {
+          if (!this.info[key]) {
+            this.flag.push(arr[key]);
+          }
+        }
+        if (!this.flag.length) {
+          this.flag.push("正常");
         }
         this.aPm = true;
       }
