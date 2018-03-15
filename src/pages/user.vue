@@ -41,7 +41,7 @@ export default {
             isIcon: true,
             url: "/users/money"
           },
-          { class: "icon-myProduct", desc: "我的产品", isIcon: true, url: "" },
+          // { class: "icon-myProduct", desc: "我的产品", isIcon: true, url: "" },
           {
             class: "icon-agency",
             desc: "我的订单",

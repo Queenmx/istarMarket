@@ -35,18 +35,19 @@
             <el-col :span="24" class="leave_label">图片</el-col>
             <el-col :span="24" class="textarea">
                 <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action=""
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove">
+                    :on-remove="handleRemove"
+                    :before-upload="beforeAvatarUpload">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="dialogVisible" size="tiny">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
             </el-col>
-          </el-row>
-          <el-row class="leave_name gray_line">
+          </el-row> -->
+          <!-- <el-row class="leave_name gray_line">
             <el-col :span="24" class="leave_label">附件</el-col>
             <el-col :span="24" class="textarea">
                 <el-upload
@@ -180,7 +181,9 @@ export default {
       //树形图
       console.log(data);
     },
+    
     handleRemove(file, fileList) {
+      
       console.log(file, fileList);
     },
     handlePictureCardPreview(file) {
@@ -190,8 +193,20 @@ export default {
     handleChange(file, fileList) {
       this.fileList3 = fileList.slice(-3);
     },
+    // beforeAvatarUpload(file){
+    //   // const type = file.type === 'image/*';
+    //   // return type;
+    //   console.log(file.name);
+    //   var reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onload = function(e){ 
+    //        console.log(this.result) // 这个就是base64编码了
+    //     }
+    // },
+    
     //获取经纬度
     initMap() {
+     
       //   map = new BMap.Map("container");
       //   point = new BMap.Point(116.331398, 39.897445);
       //   map.centerAndZoom(point, 11);

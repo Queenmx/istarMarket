@@ -6,35 +6,66 @@
 		</v-header>
       <split></split>
 		<div class="content">
-			<div>
-				<div><span>报表编号</span><span>{{search_id}}</span></div>
+			<el-row class="gray_line">
+				<!-- <div><span>报表编号</span><span>{{search_id}}</span></div>
         <div><span>申请报表</span><span>{{applyNum}}</span></div>
-        <div><span>报告时间</span><span>{{report_time}}</span></div>
-			</div>
-      <div>评估结果</div>
-      <div>
-        <div><span>评估得分</span><span>{{score}}</span></div>
-        <div><span>评估等级</span><span>{{rating}}</span></div>
-      </div>
-      <div>个人基本信息</div>
-      <div>
+        <div><span>报告时间</span><span>{{report_time}}</span></div> -->
+        <el-col :span="12">报表编号:</el-col>
+        <el-col :span="12">{{search_id}}</el-col>
+        <el-col :span="12">申请报表:</el-col>
+        <el-col :span="12">{{applyNum}}</el-col>
+        <el-col :span="12">报告时间:</el-col>
+        <el-col :span="12">{{report_time}}</el-col>
+			</el-row>
+      <el-row class="gray_line">评估结果</el-row>
+      <el-row class="gray_line">  
+        <!-- <div><span>评估得分</span><span>{{score}}</span></div>
+        <div><span>评估等级</span><span>{{rating}}</span></div> -->
+        <el-col :span="12">评估得分:</el-col>
+        <el-col :span="12">{{score}}</el-col>
+        <el-col :span="12">评估等级:</el-col>
+        <el-col :span="12">{{rating}}</el-col>
+      </el-row>
+      <el-row class="gray_line">个人信息</el-row>
+      <!-- <div>
         <div><span>真实姓名</span><span>{{real_name}}</span></div>
         <div><span>身份证号</span><span>{{id_card}}</span></div>
         <div><span>手机号</span><span>{{phone}}</span></div>
-      </div>
+      </div> -->
+      <el-row class="gray_line">  
+        <!-- <div><span>评估得分</span><span>{{score}}</span></div>
+        <div><span>评估等级</span><span>{{rating}}</span></div> -->
+        <el-col :span="12">真实姓名:</el-col>
+        <el-col :span="12">{{real_name}}</el-col>
+        <el-col :span="12">身份证号:</el-col>
+        <el-col :span="12">{{id_card}}</el-col>
+      </el-row>
       <!-- <div>危险交易</div>
       <div>
         <div><span>交易详情</span><span>{{trade_type}}</span></div>
         <div><span>交易金额</span><span>{{trade_amt}}</span></div>
         <div><span>交易时间</span><span>{{trade_time}}</span></div>
       </div> -->
-      <div>信用卡</div>
+       <el-row class="gray_line" >信用卡</el-row>
+       <el-row class="gray_line">  
+        <!-- <div><span>评估得分</span><span>{{score}}</span></div>
+        <div><span>评估等级</span><span>{{rating}}</span></div> -->
+        <el-col :span="12">信用卡数:</el-col>
+        <el-col :span="12">{{credit_card_cnt}}</el-col>
+        <el-col :span="12">信用卡还款总金额:</el-col>
+        <el-col :span="12">{{credit_card_repay_amt}}元</el-col>
+        <el-col :span="12">信用卡还款总笔数:</el-col>
+        <el-col :span="12">{{credit_card_repay_cnt}}</el-col>
+        <el-col :span="12">信用卡还款最大金额:</el-col>
+        <el-col :span="12">{{credit_card_max_per_amt}}元</el-col>
+      </el-row>
+      <!-- <div>信用卡</div>
       <div>
         <div><span>信用卡数</span><span>{{credit_card_cnt}}</span></div>
         <div><span>信用卡还款总金额</span><span>{{credit_card_repay_amt}}</span></div>
         <div><span>信用卡还款总笔数</span><span>{{credit_card_repay_cnt}}</span></div>
         <div><span>信用卡还款最大金额</span><span>{{credit_card_max_per_amt}}</span></div>
-      </div>
+      </div> -->
       <ul>
         <div>近6个月支付宝收支情况</div>
 			<li v-for="item in items">
@@ -42,8 +73,8 @@
 				<div class="flex wrap item">
 					 <div>
              <div><span>时间：</span><span>{{item.month}}</span></div>
-              <div> <span>支出：</span> <span>{{item.pay}}</span></div>
-              <div><span>收入：</span><span>{{item.income}}</span></div>
+              <div> <span>支出：</span> <span>{{item.pay}}元</span></div>
+              <div><span>收入：</span><span>{{item.income}}元</span></div>
           </div>
 				</div>
 			</li>
@@ -75,7 +106,6 @@ export default {
       items:'',
       reportData: "",
       status: this.$route.query.status, //query从授权页过来，history从历史记录过来
-    
     };
   },
   mounted() {
@@ -89,10 +119,10 @@ export default {
         //console.log(self.search_id);
         setTimeout(async function() {
           //  console.log(self.search_id);
-          var res = await getReportState();
+          let res = await getReportState();
           if (res.code === "0000" && res.data.state === "认证成功!") {
-            console.log("0000" + count);
-            // console.log(res.data.state);
+            // console.log("0000" + count);
+            console.log(res);
             //抓取
             let data = getItem("reportUserInfo");
             if (data) {
@@ -101,12 +131,14 @@ export default {
               console.log(".....抓取完毕.....");
               console.log(res1);
               //查询
-              console.log(res.data.state);
-              // if (res.code === "0000" && res.data.state ==="报告生成成功!"){
+              let res3 = await getReportState();
+              console.log(res3);
+              if (res3.code === "0000" && res3.data.state ==="报告生成成功!"){
               let data2 = {
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
               };
+              // console.log(res2.data.state);
               let res2 = await getTanjiReport(data2);
               self.head_info = res2.head_info;
               console.log(res2);
@@ -126,15 +158,12 @@ export default {
               self.credit_card_repay_cnt = res2.data.reportData.credit_card_repay.credit_card_repay_cnt;
               self.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
               self.items = res2.data.reportData.recent_revenue_expend_trend;
-
-              // console.log(this.search_id);
-              // console.log(this.report_time);
-              // }
+              }
             }
           } else {
             count++;
             console.log("+++++" + count);
-            // getReport();
+            getReport();
           }
         }, 2000);
       }
@@ -146,7 +175,12 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
 .creditResult {
-  font-size: rem(20px);
+  .gray_line{
+    border-bottom: 1px solid #eee;
+    height:rem(50px);
+    line-height: rem(50px)
+  }
+  font-size: rem(26px);
   .title {
     margin: rem(10px) 0;
     font-weight: bold;
