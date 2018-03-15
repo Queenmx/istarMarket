@@ -31,7 +31,10 @@ export default {
       var data = {
         salerId: JSON.parse(getItem("userInfo")).userId
       };
+      console.log(localStorage)
+      console.log(data)
       let res = await creditHistory(data);
+      console.log(res)
       if (res.code === "0000") {
         this.list = res.data.reportList;
         console.log(res.data);

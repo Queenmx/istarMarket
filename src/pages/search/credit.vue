@@ -59,7 +59,7 @@ export default {
       code: "",
       codeFlag: false,
       time: "验证码",
-      notFirst: getItem("aliReport") || false //是否第一次进入此页面，true第二次，false第一次
+      // notFirst: getItem("aliReport") || false //是否第一次进入此页面，true第二次，false第一次
     };
   },
   //   mounted() {

@@ -73,6 +73,7 @@ export default {
   methods: {
     async initData() {
       getItem("userinfo");
+      console.log(localStorage)
       let userinfo = JSON.parse(localStorage.userInfo);
       console.log(userinfo);
       var data = {

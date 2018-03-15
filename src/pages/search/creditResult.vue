@@ -177,6 +177,7 @@ export default {
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
               };
+              console.log(localStorage)
               console.log(data2)
               // console.log(res2.data.state);
               let res2 = await getTanjiReport(data2);
