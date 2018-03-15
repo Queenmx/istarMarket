@@ -133,7 +133,9 @@ export default {
               //查询
               let res3 = await getReportState();
               console.log(res3);
-              if (res3.code === "0000" && res3.data.state ==="报告生成成功!"){
+              let res4 = await getReportState();
+              console.log(res4)
+              if (res4.code === "0000" && res4.data.state ==="报告生成成功!"){
               let data2 = {
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
@@ -141,7 +143,7 @@ export default {
               // console.log(res2.data.state);
               let res2 = await getTanjiReport(data2);
               self.head_info = res2.head_info;
-              console.log(res2);
+              // console.log(res2);
               self.search_id = res2.data.reportData.head_info.search_id;
               self.report_time = res2.data.reportData.head_info.report_time;
               self.applyNum = res2.data.applyNum;

@@ -245,7 +245,7 @@ export default {
           this.$message("本月工作任务不能为空");
       }else if(!this.workPlan.trim()){
            this.$message("本月工作计划不能为空");
-      }else if(!localStorage.performenceApproverId){
+      }else if(!localStorage.performenceApprover){
            this.$message("审批人不能为空");
       }else{
         let res = await oaPerformence(data);
