@@ -34,7 +34,7 @@
         <li class="wrap flex item">
 					<div class="news">账号类型</div>
 					<div class="news1">
-              {{userName}}
+              {{accountType}}
           </div>
 		</li>
         <li class="wrap flex item" @click="changeContact" >
@@ -73,7 +73,8 @@ export default {
       companyName: "",
       realName: "",
       phone: "",
-      userName: ""
+      userName: "",
+      accountType: ""
     };
   },
   mounted() {
@@ -96,6 +97,7 @@ export default {
         this.phone = res.data.phone;
         this.userName = res.data.userName;
         this.headPic = res.data.headPic;
+        this.accountType = res.data.accountType;
       }
     },
     changepwd() {

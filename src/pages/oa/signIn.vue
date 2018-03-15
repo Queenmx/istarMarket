@@ -6,7 +6,7 @@
       </v-header>
       <el-row class="sign_base">
           <el-col :span="10" class="sign_msg"><img src="../../assets/images/icon-time.png" />{{date}}</el-col>
-          <el-col :span="14" class="sign_msg"><img src="../../assets/images/tree.png" />当前企业：上海星融金服投资顾问股份有限公司</el-col>
+          <el-col :span="14" class="sign_msg"><img src="../../assets/images/tree.png" />当前企业：{{companyName}}</el-col>
       </el-row>
       <el-row class="location_msg">
           <el-col :span="24" class="sign_msg"><input v-model="address" class="address-input" style="border:none;width:100%"></el-col>
@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { oaSignIn } from "@/util/axios.js";
+import { oaSignIn, oaGetCompany } from "@/util/axios.js";
 import { getItem, checkSys, formateTime } from "@/util/util.js";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
 var map, point, myGeo, geolocation;
@@ -50,7 +50,8 @@ export default {
         ${date.getDate()}
         日`,
       timeStamp: date,
-      visitor: ""
+      visitor: "",
+      companyName: ""
     };
   },
   computed: {
@@ -69,12 +70,20 @@ export default {
       this.$refs.addAddress.clientHeight + "px";
     this.initMap();
     this.getPosition();
+    this.initData();
   },
   components: {
     BaiduMap,
     BmGeolocation
   },
   methods: {
+    async initData() {
+      let data = {
+        companyId: JSON.parse(getItem("userInfo")).companyId
+      };
+      let res = await oaGetCompany(data);
+      this.companyName = res.data.name;
+    },
     //获取经纬度
     initMap() {
       map = new BMap.Map("container");
