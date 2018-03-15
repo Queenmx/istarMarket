@@ -11,20 +11,20 @@
 						<span class="lable">金额</span>
 						<div class="input-wrap">
 							<input class="input" type="number" :min="detailInfo.moneyMin" :max="detailInfo.moneyMax" step="1" v-model="money" @blur="getFee('money')"/>
-							<span class="unit">元</span>	
+							<span class="unit">{{detailInfo.moneyUnit}}</span>	
 						</div>
 					</div>
-					<p class="range">额度范围：{{detailInfo.moneyMin}}元～{{detailInfo.moneyMax}}元</p>
+					<p class="range">额度范围：{{detailInfo.moneyMin}}元～{{detailInfo.moneyMax}}{{detailInfo.moneyUnit}}</p>
 				</div>
 				<div class="item">
 					<div class="input-group">
 						<span class="lable">期限</span>
 						<div class="input-wrap">
 							<input class="input" type="number" :min="detailInfo.limitMin" :max="detailInfo.limitMax" step="1" v-model="periods"  @blur="getFee('periods')"/>
-							<span class="unit">月</span>	
+							<span class="unit">{{detailInfo.limitType}}</span>	
 						</div>
 					</div>
-					<p class="range">期限范围：{{detailInfo.limitMin}}～{{detailInfo.limitMax}}个月</p>
+					<p class="range">期限范围：{{detailInfo.limitMin}}～{{detailInfo.limitMax}}{{detailInfo.limitType}}</p>
 				</div>
 			</div>
 			<div class="chart-wrap">
@@ -79,8 +79,10 @@ export default {
   computed: {
     chartLabel() {
       return [
-        `贷款 ${this.money}元/${this.periods}个月`,
-        `利息 ${this.detailInfo.interest}元（0%/月）`
+        `贷款 ${this.money}${this.detailInfo.moneyUnit}/${this.periods}${
+          this.detailInfo.limitType
+        }`,
+        `利息 ${this.detailInfo.interest}元（0%/${this.detailInfo.rateType}）`
       ];
     }
   },
@@ -125,7 +127,9 @@ export default {
       let res = await getFee(data);
       if (res.code === "0000") {
         let label = [
-          `贷款 ${this.money}元/${this.periods}个月`,
+          `贷款 ${this.money}${this.detailInfo.moneyUnit}/${this.periods}${
+            this.detailInfo.limitType
+          }`,
           `利息 ${res.data.interest}元（${res.data.rate}%/${
             res.data.rateUnit
           }）`
