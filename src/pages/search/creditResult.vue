@@ -10,20 +10,20 @@
 				<!-- <div><span>报表编号</span><span>{{search_id}}</span></div>
         <div><span>申请报表</span><span>{{applyNum}}</span></div>
         <div><span>报告时间</span><span>{{report_time}}</span></div> -->
-        <el-col :span="12">报表编号</el-col>
+        <el-col :span="12">报表编号:</el-col>
         <el-col :span="12">{{search_id}}</el-col>
-        <el-col :span="12">申请报表</el-col>
+        <el-col :span="12">申请报表:</el-col>
         <el-col :span="12">{{applyNum}}</el-col>
-        <el-col :span="12">报告时间</el-col>
+        <el-col :span="12">报告时间:</el-col>
         <el-col :span="12">{{report_time}}</el-col>
 			</el-row>
       <el-row class="gray_line">评估结果</el-row>
       <el-row class="gray_line">  
         <!-- <div><span>评估得分</span><span>{{score}}</span></div>
         <div><span>评估等级</span><span>{{rating}}</span></div> -->
-        <el-col :span="12">评估得分</el-col>
+        <el-col :span="12">评估得分:</el-col>
         <el-col :span="12">{{score}}</el-col>
-        <el-col :span="12">评估等级</el-col>
+        <el-col :span="12">评估等级:</el-col>
         <el-col :span="12">{{rating}}</el-col>
       </el-row>
       <el-row class="gray_line">个人信息</el-row>
@@ -35,9 +35,9 @@
       <el-row class="gray_line">  
         <!-- <div><span>评估得分</span><span>{{score}}</span></div>
         <div><span>评估等级</span><span>{{rating}}</span></div> -->
-        <el-col :span="12">真实姓名</el-col>
+        <el-col :span="12">真实姓名:</el-col>
         <el-col :span="12">{{real_name}}</el-col>
-        <el-col :span="12">身份证号</el-col>
+        <el-col :span="12">身份证号:</el-col>
         <el-col :span="12">{{id_card}}</el-col>
       </el-row>
       <!-- <div>危险交易</div>
@@ -50,14 +50,14 @@
        <el-row class="gray_line">  
         <!-- <div><span>评估得分</span><span>{{score}}</span></div>
         <div><span>评估等级</span><span>{{rating}}</span></div> -->
-        <el-col :span="12">信用卡数</el-col>
+        <el-col :span="12">信用卡数:</el-col>
         <el-col :span="12">{{credit_card_cnt}}</el-col>
-        <el-col :span="12">信用卡还款总金额</el-col>
-        <el-col :span="12">{{credit_card_repay_amt}}</el-col>
-         <el-col :span="12">信用卡还款总笔数</el-col>
+        <el-col :span="12">信用卡还款总金额:</el-col>
+        <el-col :span="12">{{credit_card_repay_amt}}元</el-col>
+        <el-col :span="12">信用卡还款总笔数:</el-col>
         <el-col :span="12">{{credit_card_repay_cnt}}</el-col>
-        <el-col :span="12">信用卡还款最大金额</el-col>
-        <el-col :span="12">{{credit_card_max_per_amt}}</el-col>
+        <el-col :span="12">信用卡还款最大金额:</el-col>
+        <el-col :span="12">{{credit_card_max_per_amt}}元</el-col>
       </el-row>
       <!-- <div>信用卡</div>
       <div>
@@ -73,8 +73,8 @@
 				<div class="flex wrap item">
 					 <div>
              <div><span>时间：</span><span>{{item.month}}</span></div>
-              <div> <span>支出：</span> <span>{{item.pay}}</span></div>
-              <div><span>收入：</span><span>{{item.income}}</span></div>
+              <div> <span>支出：</span> <span>{{item.pay}}元</span></div>
+              <div><span>收入：</span><span>{{item.income}}元</span></div>
           </div>
 				</div>
 			</li>
@@ -106,7 +106,6 @@ export default {
       items:'',
       reportData: "",
       status: this.$route.query.status, //query从授权页过来，history从历史记录过来
-    
     };
   },
   mounted() {
@@ -120,7 +119,7 @@ export default {
         //console.log(self.search_id);
         setTimeout(async function() {
           //  console.log(self.search_id);
-          var res = await getReportState();
+          let res = await getReportState();
           if (res.code === "0000" && res.data.state === "认证成功!") {
             console.log("0000" + count);
             // console.log(res.data.state);
@@ -132,8 +131,9 @@ export default {
               console.log(".....抓取完毕.....");
               console.log(res1);
               //查询
-              console.log(res.data.state);
-              if (res.code === "0000" && res.data.state ==="报告生成成功!"){
+              let res2 = await getReportState();
+              console.log(res2.data.state);
+              if (res2.code === "0000" && res2.data.state ==="报告生成成功!"){
               let data2 = {
                 customerId: "111",
                 salerId: JSON.parse(getItem("userInfo")).userId
@@ -174,7 +174,12 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
 .creditResult {
-  font-size: rem(20px);
+  .gray_line{
+    border-bottom: 1px solid #eee;
+    height:rem(50px);
+    line-height: rem(50px)
+  }
+  font-size: rem(26px);
   .title {
     margin: rem(10px) 0;
     font-weight: bold;
