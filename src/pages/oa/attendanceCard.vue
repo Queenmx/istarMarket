@@ -156,6 +156,8 @@ export default {
       let res = await oaUpdateTime(data);
       if (res.code === "0000") {
         this.$message("更新时间成功");
+        let time = formateTime(this.timeStamp, "yyyy-MM-dd") + " 00:00:00";
+        this.getData(time);
       } else {
         this.$message(res.code);
       }
