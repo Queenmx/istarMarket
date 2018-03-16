@@ -18,7 +18,7 @@
 export default {
   methods: {
     goIndex() {
-      this.$router({ path: "/" });
+      this.$router.push({ path: "/" });
     },
     goOrder() {
       this.$message("升级中");
