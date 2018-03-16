@@ -23,11 +23,11 @@
 </template>
 <script>
 import { getItem } from "@/util/util.js";
-var accountType =
-  JSON.parse(getItem("userInfo")).accountType === "主账号" ? 1 : 0; //1是主账号0是子账号
 export default {
   data() {
     return {
+      //   accountType:
+      //     JSON.parse(getItem("userInfo")).accountType === "主账号" ? 1 : 0, //1是主账号0是子账号
       listArr: [
         {
           title: "经营统计",
@@ -60,9 +60,10 @@ export default {
             {
               class: "icon-clockin",
               text: "考勤打卡",
-              url: accountType
-                ? "/oaSystem/attendanceGroup"
-                : "/oaSystem/attendanceCard"
+              url:
+                JSON.parse(getItem("userInfo")).accountType === "主账号"
+                  ? "/oaSystem/attendanceGroup"
+                  : "/oaSystem/attendanceCard"
             },
             { class: "icon-signin", text: "签到", url: "/oaSystem/sign" },
             { class: "icon-workoff", text: "请假", url: "/oaSystem/leave" },
@@ -97,6 +98,11 @@ export default {
   },
   mounted() {
     this.initDate();
+    // let accountType =
+    //   JSON.parse(getItem("userInfo")).accountType == "主账号" ? 1 : 0;
+    // this.listArr[1].item[0].url = accountType
+    //   ? "/oaSystem/attendanceGroup"
+    //   : "/oaSystem/attendanceCard";
   },
   methods: {
     initDate() {

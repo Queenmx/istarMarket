@@ -361,16 +361,16 @@ export default {
 </style>
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.el-date-editor {
-}
-.el-input__icon.el-icon-date {
-  position: relative;
-  &:before {
-    position: absolute;
-    top: 0px;
-    left: 0;
-  }
-}
+// .el-date-editor {
+// }
+// .el-input__icon.el-icon-date {
+//   position: relative;
+//   &:before {
+//     position: absolute;
+//     top: 0px;
+//     left: 0;
+//   }
+// }
 </style>
 <style lang="scss">
 .attendanceCard {

@@ -50,12 +50,12 @@ export default {
           }
         ],
         [
-          {
-            class: "icon-myService",
-            desc: "我的客服",
-            isIcon: true,
-            url: "/users/myService"
-          },
+          //   {
+          //     class: "icon-myService",
+          //     desc: "我的客服",
+          //     isIcon: true,
+          //     url: "/users/myService"
+          //   },
           {
             class: "icon-myService",
             desc: "我的客服",
