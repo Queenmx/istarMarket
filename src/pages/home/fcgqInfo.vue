@@ -122,8 +122,14 @@ export default {
       if (res.res) {
         if (this.curPage === 1 && this.isShowCouple === false) {
           this.curPage += 2;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          console.log("111");
         } else {
           this.curPage++;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          console.log("111");
         }
       } else {
         this.$message(res.text + "不能为空");
