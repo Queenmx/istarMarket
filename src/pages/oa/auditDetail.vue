@@ -34,43 +34,43 @@
 				<span class="left">时长(小时)</span>
 				<span class="rest">{{list.lengthTime}}</span>
 			</li>
-      <li class="wrap flex list-item" id="spread" v-if="type!='日报'&&type!='周报'&&type!='月报'&&type!='绩效'">
+      <li class="wrap flex list-item" v-if="type!='日报'&&type!='周报'&&type!='月报'&&type!='绩效'">
 				<span class="left">事由</span>
 				<span class="rest">{{list.reason}}</span>
 			</li>
-       <li class="wrap flex list-item" id="spread" v-if="type!='日报'&&type!='周报'&&type!='月报'&&type!='绩效'">
+       <li class="wrap flex list-item"  v-if="type!='日报'&&type!='周报'&&type!='月报'&&type!='绩效'">
 				<span class="left">审批意见</span>
 				<span class="rest">{{remarks}}</span>
 			</li>
-      <li class="wrap flex list-item" id="spread" v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效' && type ==='日报'">
+      <li class="wrap flex list-item"  v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效' && type ==='日报'">
 				<span class="left">今日已完成</span>
 				<span class="rest">{{list.done}}</span>
 			</li>
-       <li class="wrap flex list-item" id="spread" v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效' && type ==='周报'">
+       <li class="wrap flex list-item"  v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效' && type ==='周报'">
 				<span class="left">本周已完成</span>
 				<span class="rest">{{list.done}}</span>
 			</li>
-       <li class="wrap flex list-item" id="spread" v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效' && type ==='月报'">
+       <li class="wrap flex list-item"  v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效' && type ==='月报'">
 				<span class="left">本月已完成</span>
 				<span class="rest">{{list.done}}</span>
 			</li>
-       <li class="wrap flex list-item" id="spread" v-if="list.notDone">
+       <li class="wrap flex list-item"  v-if="list.notDone">
 				<span class="left">未完成</span>
 				<span class="rest">{{list.notDone}}</span>
 			</li>
-       <li class="wrap flex list-item" id="spread" v-if="list.summary">
+       <li class="wrap flex list-item"  v-if="list.summary">
 				<span class="left">工作总结</span>
 				<span class="rest">{{list.summary}}</span>
 			</li>
-      <li class="wrap flex list-item" id="spread" v-if="list.workPlan && type!='绩效'">
+      <li class="wrap flex list-item"  v-if="list.workPlan && type!='绩效'">
 				<span class="left">工作计划</span>
 				<span class="rest">{{list.workPlan}}</span>
 			</li>
-      <li class="wrap flex list-item" id="spread" v-if="list.coordinate">
+      <li class="wrap flex list-item"  v-if="list.coordinate">
 				<span class="left">需协调工作</span>
 				<span class="rest">{{list.coordinate}}</span>
 			</li>
-      <li class="wrap flex list-item" id="spread" v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效'">
+      <li class="wrap flex list-item"  v-if="type!='请假'&&type!='外出'&&type!='加班'&&type!='绩效'">
 				<span class="left">备注</span>
 				<span class="rest">{{list.remark}}</span>
 			</li>
@@ -167,26 +167,7 @@ export default {
       color: $grey;
     }
   }
-  #spread {
-    // height: rem(98px);
-    line-height: rem(70px);
-    font-size: rem(30px);
-    color: $black;
-    border-bottom: 1px solid $bdcolor;
-    // background-color: #f00;
-    .left {
-      color: #888;
-      width: 2.56rem;
-    }
-    .rest {
-      //  overflow: hidden;
-      // text-overflow:ellipsis;
-      // display:-webkit-box;
-      // -webkit-box-orient:vertical;
-      // -webkit-line-clamp:2;
-    }
-  }
-  // .spread{
+  
   //   font-size:rem(30px)
   //   .left{
   //     font-size:rem(30px);

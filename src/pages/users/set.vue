@@ -106,7 +106,7 @@ export default {
     out() {
       // localStorage.removeItem("userInfo");
       // console.log(localStorage.userinfo)
-      window.localStorage.clear();
+      // window.localStorage.clear();
       this.$router.push({ path: "/login" });
     },
     change() {
