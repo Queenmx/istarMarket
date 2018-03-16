@@ -9,6 +9,7 @@ const credit = resolve => require(['@/pages/search/credit'], resolve)
 const creditAuthorize = resolve => require(['@/pages/search/creditAuthorize'], resolve)
 const oaSystem = resolve => require(['@/pages/oaSystem'], resolve)
 const creditResult = resolve => require(['@/pages/search/creditResult'], resolve)
+const creditDetails = resolve => require(['@/pages/search/creditDetails'], resolve)
 const creditHistory = resolve => require(['@/pages/creditHistory'], resolve)
 const report = resolve => require(['@/pages/report'], resolve)
 const smartWeekly = resolve => require(['@/pages/oa/smartWeekly'], resolve)
@@ -137,6 +138,10 @@ const router = new Router({
         {
             path: '/search/creditResult',
             component: creditResult
+        },
+        {
+            path: '/search/creditDetails',
+            component: creditDetails
         },
         {
             path: '/search/creditHistory',

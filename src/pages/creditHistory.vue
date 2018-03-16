@@ -5,7 +5,7 @@
 			<p slot="title">信用报表</p>
 		</v-header>
 		<ul>
-			<li class="item" v-for="(items,index) in list" :key="index">
+			<li class="item" v-for="(items,index) in list" :key="index" @click="goDetails(items)">
 				<p>报告编号  {{items.reportId}}</p>
                 <p>申请编号  {{items.applyNum}}</p>
                 <p>报告时间  {{items.reportTime}}</p>
@@ -16,6 +16,7 @@
 <script>
 import { getItem } from "@/util/util";
 import { creditHistory } from "@/util/axios";
+
 export default {
   data() {
     return {
@@ -25,6 +26,9 @@ export default {
   },
   mounted() {
     this.initData();
+  
+    
+  
   },
   methods: {
     async initData() {
@@ -41,7 +45,24 @@ export default {
       } else {
         this.$message(res.msg);
       }
-    }
+    },
+    goDetails(items){
+        // console.log(items);
+        // let data={
+        //   reportId:items.reportId
+        // };
+        // console.log(data)
+        // let res = getDetails(data);
+        // console.log(res)
+        // console.log(res)  
+        this.$router.push({
+        path: "/search/creditDetails",
+        query: {
+          reportId:items.reportId
+        }
+      });
+    },
+   
   }
 };
 </script>

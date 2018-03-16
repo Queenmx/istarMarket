@@ -115,6 +115,10 @@ export const getReportState = (params) => {
     params = JSON.stringify(params)
     return fetch('/jrcs/report/getState', { params })
 }
+export const getDetails = (params) => {
+    params = JSON.stringify(params)
+    return fetch('jrcs/report/details', { params })
+}
 /**
  * 获取用户填写模板
  * @param {*} params 
