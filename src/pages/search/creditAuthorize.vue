@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     async initData() {
+      console.log(localStorage)
       //   await checkMoney();
       var data = {
         userId: this.userId

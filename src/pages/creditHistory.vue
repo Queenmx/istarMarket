@@ -20,22 +20,20 @@ import { creditHistory } from "@/util/axios";
 export default {
   data() {
     return {
-      userInfo: JSON.parse(getItem("userInfo")),
+      // userInfo: JSON.parse(getItem("userInfo")),
       list: []
     };
   },
   mounted() {
     this.initData();
-  
-    
-  
+   
   },
   methods: {
     async initData() {
       var data = {
-        salerId: JSON.parse(getItem("userInfo")).userId
+        salerId:JSON.parse(getItem('userInfo')).userId
       };
-      console.log(localStorage)
+      
       console.log(data)
       let res = await creditHistory(data);
       console.log(res)
