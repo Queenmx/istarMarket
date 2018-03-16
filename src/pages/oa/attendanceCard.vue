@@ -372,5 +372,14 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.attendanceCard {
+  .el-input__icon.el-icon-date {
+    display: flex;
+    align-items: center;
+  }
+}
+</style>
+
 
 
