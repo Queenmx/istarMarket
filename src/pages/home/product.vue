@@ -9,19 +9,24 @@
 				<div class="item">
 					<div class="input-group">
 						<span class="lable">金额</span>
-						<div class="input-wrap">
+                        <div class="input-wrap">
+						<div class="flex input-item">
 							<input class="input" type="number" :min="detailInfo.moneyMin" :max="detailInfo.moneyMax" step="1" v-model="money" @blur="getFee('money')"/>
 							<span class="unit">{{detailInfo.moneyUnit}}</span>	
 						</div>
+                        </div>
 					</div>
-					<p class="range">额度范围：{{detailInfo.moneyMin}}元～{{detailInfo.moneyMax}}{{detailInfo.moneyUnit}}</p>
+					<p class="range">额度范围：{{detailInfo.moneyMin}}{{detailInfo.moneyUnit}}～{{detailInfo.moneyMax}}{{detailInfo.moneyUnit}}</p>
 				</div>
 				<div class="item">
 					<div class="input-group">
 						<span class="lable">期限</span>
 						<div class="input-wrap">
+                            <div class="flex input-item">
 							<input class="input" type="number" :min="detailInfo.limitMin" :max="detailInfo.limitMax" step="1" v-model="periods"  @blur="getFee('periods')"/>
-							<span class="unit">{{detailInfo.limitType}}</span>	
+                            <span class="unit">{{detailInfo.limitType}}</span>
+                            </div>
+								
 						</div>
 					</div>
 					<p class="range">期限范围：{{detailInfo.limitMin}}～{{detailInfo.limitMax}}{{detailInfo.limitType}}</p>
@@ -82,7 +87,9 @@ export default {
         `贷款 ${this.money}${this.detailInfo.moneyUnit}/${this.periods}${
           this.detailInfo.limitType
         }`,
-        `利息 ${this.detailInfo.interest}元（0%/${this.detailInfo.rateType}）`
+        `利息 ${this.detailInfo.interest}${this.detailInfo.moneyUnit}（${
+          this.detailInfo.rate
+        }%/${this.detailInfo.rateType}）`
       ];
     }
   },
@@ -130,9 +137,9 @@ export default {
           `贷款 ${this.money}${this.detailInfo.moneyUnit}/${this.periods}${
             this.detailInfo.limitType
           }`,
-          `利息 ${res.data.interest}元（${res.data.rate}%/${
-            res.data.rateUnit
-          }）`
+          `利息 ${res.data.interest}${this.detailInfo.moneyUnit}（${
+            res.data.rate
+          }%/${res.data.rateUnit}）`
         ];
         let chartData = [
           { value: this.money, name: label[0] },
@@ -145,7 +152,7 @@ export default {
       let self = this;
       myChart.setOption({
         title: {
-          text: total + "元"
+          text: total + self.detailInfo.moneyUnit
         },
         legend: {
           data: label
@@ -174,7 +181,7 @@ export default {
       // 绘制图表
       myChart.setOption({
         title: {
-          text: self.detailInfo.repayAmount + "元",
+          text: self.detailInfo.repayAmount + self.detailInfo.moneyUnit,
           subtext: "还款金额",
           textAlign: "center",
           x: "23%",
@@ -275,24 +282,34 @@ export default {
   }
   .input-wrap {
     display: inline-block;
-    position: relative;
+    flex: 1;
+
+    // position: relative;
     span {
-      display: inline-block;
-      position: absolute;
-      right: rem(20px);
-      top: rem(5px);
+      //   display: inline-block;
+      //   position: absolute;
+      //   right: rem(20px);
+      //   top: rem(5px);
       font-size: rem(20px);
     }
-    .input {
+    .input-item {
+      display: flex;
       padding: rem(10px) rem(30px);
-      padding-right: rem(50px);
-      width: rem(155px);
-      font-size: rem(20px);
-      box-sizing: border-box;
-      color: #53a6ff;
-      text-align: right;
       border: 1px solid #c5c5c5;
       border-radius: 20px;
+    }
+    .input {
+      //   padding: rem(10px) rem(30px);
+      //   width: rem(155px);
+      //   font-size: rem(20px);
+      //   box-sizing: border-box;
+      padding-right: rem(10px);
+      flex: 1;
+      color: #53a6ff;
+      text-align: right;
+      border: none;
+      //   border: 1px solid #c5c5c5;
+      //   border-radius: 20px;
     }
   }
   .go-detail {

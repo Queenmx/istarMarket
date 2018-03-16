@@ -90,7 +90,8 @@ export default {
       attendanceNum: 0,
       reporterFlag: false,
       reporterList: [],
-      userInfo: JSON.parse(getItem("userInfo"))
+      userInfo: JSON.parse(getItem("userInfo")),
+      shouldAttendancePNum: 0
     };
   },
   beforeRouteLeave(to, from, next) {
@@ -119,17 +120,24 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
+
       let res = await oaIReport(data);
       this.reportInfo = res;
       this.reporterList = res.dailyReportCommitList;
       this.attendanceNum = res.actualAttendancePNum;
+      this.shouldAttendancePNum = res.shouldAttendancePNum;
+      this.stauts[0][0].value = res.isLatePNum;
+      this.stauts[0][1].value = res.leaveEarlyPNum;
+      this.stauts[0][2].value = res.absenteeismPNum;
+      this.stauts[1][0].value = res.outPNum;
+      this.stauts[1][1].value = res.missingCardPNum;
       this.updateChart();
     },
     updateChart() {
       let self = this;
       myChart.setOption({
         title: {
-          text: `${self.attendanceNum}\/${self.reportInfo.shouldAttendancePNum}`
+          text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`
         }
       });
     },
@@ -140,9 +148,7 @@ export default {
       var self = this;
       myChart.setOption({
         title: {
-          text: `${self.attendanceNum}\/${
-            self.reportInfo.shouldAttendancePNum
-          }`,
+          text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`,
           subtext: "出勤人数",
           textAlign: "center",
           x: "47%",

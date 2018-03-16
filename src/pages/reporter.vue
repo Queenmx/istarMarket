@@ -21,13 +21,14 @@
 </template>
 <script>
 import { oaIReport } from "@/util/axios.js";
-import { setItem } from "@/util/util.js";
+import { setItem, getItem } from "@/util/util.js";
 export default {
   data() {
     return {
       arr: { name: "王昭君", date: "2018-1-12" },
       list: [],
-      dateRange: this.$route.query.dateRange
+      dateRange: this.$route.query.dateRange,
+      userInfo: JSON.parse(getItem("userInfo"))
     };
   },
   mounted() {
@@ -36,7 +37,9 @@ export default {
   methods: {
     async initData() {
       let data = {
-        dateRange: this.dateRange
+        dateRange: this.dateRange,
+        userId: this.userInfo.userId,
+        companyId: this.userInfo.companyId
       };
       let res = await oaIReport(data);
       this.list = res.dailyReportCommitList;

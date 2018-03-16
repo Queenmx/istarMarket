@@ -64,7 +64,7 @@
 <script>
 import { oaPerformence } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
-import { setItem } from "@/util/util.js";
+import { setItem, isRealNum } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
 var map, point, myGeo, geolocation;
@@ -73,15 +73,15 @@ export default {
     return {
       performenceSendtoinfo: JSON.parse(getItem("performenceSendTo")),
       performenceApprover: getItem("performenceApprover"),
-      preTask:'',
-      preFinishTask:'',
-      rate:'',
-      selfEvaluate:'',
-      workTask:'',
-      workPlan:'',
-       address: self.address,
+      preTask: "",
+      preFinishTask: "",
+      rate: "",
+      selfEvaluate: "",
+      workTask: "",
+      workPlan: "",
+      address: self.address,
       //树形图
-     
+
       defaultProps: {
         children: "children",
         label: "label"
@@ -122,15 +122,15 @@ export default {
   },
   mounted() {
     this.initData();
-     this.initMap();
+    this.initMap();
     this.getPosition();
   },
-   components: {
+  components: {
     BaiduMap,
     BmGeolocation
   },
   methods: {
-      initData() {
+    initData() {
       // localStorage.removeItem('record')
       let performenceInfo = getItem("performence");
       if (performenceInfo) {
@@ -160,7 +160,7 @@ export default {
     },
     sendTo() {
       setItem("performence", {
-       preTask: this.preTask,
+        preTask: this.preTask,
         preFinishTask: this.preFinishTask,
         rate: this.rate,
         selfEvaluate: this.selfEvaluate,
@@ -168,8 +168,8 @@ export default {
         workPlan: this.workPlan
       });
       this.$router.push("/oaSystem/departmentperformence");
-    },  
-       //获取经纬度
+    },
+    //获取经纬度
     initMap() {
       //   map = new BMap.Map("container");
       //   point = new BMap.Point(116.331398, 39.897445);
@@ -203,7 +203,7 @@ export default {
         }
       });
     },
-   
+
     handleNodeClick(data) {
       //树形图
       console.log(data);
@@ -215,52 +215,52 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-     async submit(){
+    async submit() {
       getItem("userinfo");
-      getItem('performenceApprover');
-      getItem('performenceApproverId');
+      getItem("performenceApprover");
+      getItem("performenceApproverId");
       getItem("performenceSendto");
-      let userinfo=JSON.parse(localStorage.userInfo)
+      let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
         preTask: this.preTask,
-        preFinishTask :this.preFinishTask,
-        rate:this.rate,
-        selfEvaluate:this.selfEvaluate,
-        workTask:this.workTask,
-        workPlan:this.workPlan,
+        preFinishTask: this.preFinishTask,
+        rate: this.rate,
+        selfEvaluate: this.selfEvaluate,
+        workTask: this.workTask,
+        workPlan: this.workPlan,
         location: this.address,
-        userId:userinfo.userId,
-        approver:localStorage.performenceApproverId,
-        sendTo:this.performenceSendtoinfo
+        userId: userinfo.userId,
+        approver: localStorage.performenceApproverId,
+        sendTo: this.performenceSendtoinfo
       };
-          if(!this.preTask.trim()){
-          this.$message("上月工作任务不能为空");
-      }else if(!this.preFinishTask.trim()){
-          this.$message("上月完成不能为空");
-      }else if(!this.rate.trim()){
-          this.$message("达成率不能为空");
-      }else if(!this.selfEvaluate.trim()){
-          this.$message("自评不能为空");
-      }else if(!this.workTask.trim()){
-          this.$message("本月工作任务不能为空");
-      }else if(!this.workPlan.trim()){
-           this.$message("本月工作计划不能为空");
-      }else if(!localStorage.performenceApprover){
-           this.$message("审批人不能为空");
-      }else{
+      if (!this.preTask.trim()) {
+        this.$message("上月工作任务不能为空");
+      } else if (!this.preFinishTask.trim()) {
+        this.$message("上月完成不能为空");
+      } else if (!this.rate.trim()) {
+        this.$message("达成率不能为空");
+      } else if (!isRealNum(this.rate.trim())) {
+        this.$message("达成率必须为数字");
+      } else if (!this.selfEvaluate.trim()) {
+        this.$message("自评不能为空");
+      } else if (!this.workTask.trim()) {
+        this.$message("本月工作任务不能为空");
+      } else if (!this.workPlan.trim()) {
+        this.$message("本月工作计划不能为空");
+      } else if (!localStorage.performenceApprover) {
+        this.$message("审批人不能为空");
+      } else {
         let res = await oaPerformence(data);
         if (res.code === "0000") {
-        this.$message("提交成功")
-        // console.log(res.code)
+          this.$message("提交成功");
+          // console.log(res.code)
           this.$router.push("/oaSystem");
         } else {
           this.$message(res.msg);
         }
-     }
-     
+      }
+    }
   }
-  }
-  
 };
 </script>
 <style lang="scss">
@@ -277,8 +277,8 @@ export default {
     color: $fontcolor;
     padding: rem(30px);
     border-bottom: 1px solid $bdcolor;
-    .userName{
-      span{
+    .userName {
+      span {
         display: inline-block;
         background-color: #409eff;
         color: #fff;
@@ -286,8 +286,6 @@ export default {
         border-radius: rem(5px);
         margin: rem(5px);
       }
-     
-      
     }
     .red_must {
       color: red;
@@ -320,10 +318,9 @@ export default {
       position: relative;
       i {
         color: #c0ccda;
-       position: absolute;
-      top:rem(35px);
-      left:rem(36px)
-    
+        position: absolute;
+        top: rem(35px);
+        left: rem(36px);
       }
     }
   }
@@ -343,7 +340,7 @@ export default {
     width: 100%;
     // margin-left:10%;
     // height:rem(60px);
-    font-size:rem(24px)
+    font-size: rem(24px);
   }
 }
 .el-message-box {
@@ -356,23 +353,23 @@ export default {
 
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.el-dialog{
-  .el-dialog__title{
-    font-size:rem(30px);
-    line-height:rem(30px)
+.el-dialog {
+  .el-dialog__title {
+    font-size: rem(30px);
+    line-height: rem(30px);
   }
-  .el-tree-node__content{
-    line-height:rem(50px);
-    height:rem(50px)
+  .el-tree-node__content {
+    line-height: rem(50px);
+    height: rem(50px);
   }
-  .el-tree-node__label{
-    font-size:rem(20px);
-    line-height:rem(30px)
+  .el-tree-node__label {
+    font-size: rem(20px);
+    line-height: rem(30px);
   }
   .el-button {
-    width:rem(100px);
-    height:rem(50px);
-    font-size:rem(20px)
+    width: rem(100px);
+    height: rem(50px);
+    font-size: rem(20px);
   }
 }
 </style>

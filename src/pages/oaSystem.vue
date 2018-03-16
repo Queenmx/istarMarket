@@ -22,6 +22,9 @@
   </div>
 </template>
 <script>
+import { getItem } from "@/util/util.js";
+var accountType =
+  JSON.parse(getItem("userInfo")).accountType === "主账号" ? 1 : 0; //1是主账号0是子账号
 export default {
   data() {
     return {
@@ -57,7 +60,9 @@ export default {
             {
               class: "icon-clockin",
               text: "考勤打卡",
-              url: "/oaSystem/attendanceCard"
+              url: accountType
+                ? "/oaSystem/attendanceGroup"
+                : "/oaSystem/attendanceCard"
             },
             { class: "icon-signin", text: "签到", url: "/oaSystem/sign" },
             { class: "icon-workoff", text: "请假", url: "/oaSystem/leave" },
