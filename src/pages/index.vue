@@ -119,7 +119,7 @@ export default {
     async initData() {
       var data = {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 500,
         userId: this.userInfo.userId
       };
       let res = await product(data);

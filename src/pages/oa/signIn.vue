@@ -9,7 +9,10 @@
           <el-col :span="14" class="sign_msg"><img src="../../assets/images/tree.png" />当前企业：{{companyName}}</el-col>
       </el-row>
       <el-row class="location_msg">
-          <el-col :span="24" class="sign_msg"><input v-model="address" class="address-input" style="border:none;width:100%"></el-col>
+          <el-col :span="24" class="sign_msg">
+              <!-- <input v-model="address" class="address-input" style="border:none;width:100%"> -->
+              <span class="address-input" style="border:none;width:100%">{{address}}</span>
+        </el-col>
           <!-- <el-col :span="8" class="fr sign_msg"><span>地址微调</span></el-col> -->
       </el-row>
       <div class="wrap">
