@@ -171,7 +171,7 @@ export default {
           //     // console.log(res3);
           //     // let res4 = await getReportState();
           //     // console.log(res4)
-         var salerId = requst.salerId
+              var salerId = requst.salerId
               if (res.code === "0000" && res.data.state ==="报告生成成功!"){
               let data2 = {
                 ppId:ppId,
@@ -201,6 +201,9 @@ export default {
               this.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
               this.items = res2.data.reportData.recent_revenue_expend_trend;
               }
+             else if(res.code === "0000" && res.data.state !=="报告生成成功!"){
+               this.$message("异地登录，为确保账户安全，请重新登录");
+             }
             } 
   }
 };
