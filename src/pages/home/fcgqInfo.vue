@@ -44,6 +44,7 @@ export default {
       temple: [],
       userId: JSON.parse(getItem("userInfo")).userId,
       categoryId: this.$route.query.loanId,
+      loanName: this.$route.query.loanName,
       data: {},
       money: "",
       requiredObj: {},
@@ -77,8 +78,11 @@ export default {
   },
   methods: {
     async initDate() {
+      let temdata = {
+        loanId: this.categoryId
+      };
       await this.queryMoney();
-      let res = await getInfoTemple();
+      let res = await getInfoTemple(temdata);
       if (res.code === "0000") {
         let data = res.data[0]["data"],
           obj = {},
@@ -122,8 +126,14 @@ export default {
       if (res.res) {
         if (this.curPage === 1 && this.isShowCouple === false) {
           this.curPage += 2;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          console.log("111");
         } else {
           this.curPage++;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          console.log("111");
         }
       } else {
         this.$message(res.text + "不能为空");
@@ -145,6 +155,7 @@ export default {
         userId: this.userId,
         categoryId: this.categoryId,
         data: mainData
+        // loanName: this.loanName
       };
       var res = await oaFcgqInfo(data);
       if (res.code === "0000") {
@@ -159,8 +170,8 @@ export default {
           this.$router.push({ path: "/fail" });
         }
       } else {
-        // this.$message(res.msg);
-        this.$router.push({ path: "/fail" });
+        this.$message(res.msg);
+        // this.$router.push({ path: "/fail" });
       }
     },
     check(curPage) {

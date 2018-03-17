@@ -86,6 +86,7 @@ export default {
         this.$router.push({ path: "/oaSystem/dayly" });
         // this.$router.push({path: '/oaSystem/leave',query:{approverId:this.radioType}})
       }
+      console.log(localStorage)
     },
     change(e) {
       console.log(e);

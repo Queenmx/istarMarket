@@ -31,7 +31,7 @@
               <el-tab-pane :label="'未签到('+unSignList.length+')'" name="second">
                   <el-row class="no_sign">
                       <el-col :span="6" v-for="(item,index) in unSignList" :key="index" class="noSign_list">
-                          <img :src="item.imgSrc" />
+                          <img :src="item.headPic" />
                           <p>{{item.userName}}</p>
                       </el-col>
                   </el-row>

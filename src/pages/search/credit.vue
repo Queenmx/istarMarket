@@ -56,9 +56,9 @@ export default {
       ID: "",
       card: "",
       phone: "",
-      code: "",
-      codeFlag: false,
-      time: "验证码",
+      // code: "",
+      // codeFlag: false,
+      // time: "验证码",
       // notFirst: getItem("aliReport") || false //是否第一次进入此页面，true第二次，false第一次
     };
   },
@@ -73,25 +73,25 @@ export default {
   //     }
   //   },
   methods: {
-    getCode() {
-      var self = this;
-      if (this.codeFlag) return;
-      this.codeFlag = true;
-      this.time = 5;
-      timeout(this.time);
-      function timeout(count) {
-        setTimeout(() => {
-          count--;
-          if (count <= 0) {
-            self.time = "验证码";
-            self.codeFlag = false;
-          } else {
-            self.time = count;
-            timeout(count);
-          }
-        }, 1000);
-      }
-    },
+    // getCode() {
+    //   var self = this;
+    //   if (this.codeFlag) return;
+    //   this.codeFlag = true;
+    //   this.time = 5;
+    //   timeout(this.time);
+    //   function timeout(count) {
+    //     setTimeout(() => {
+    //       count--;
+    //       if (count <= 0) {
+    //         self.time = "验证码";
+    //         self.codeFlag = false;
+    //       } else {
+    //         self.time = count;
+    //         timeout(count);
+    //       }
+    //     }, 1000);
+    //   }
+    // },
     // async initData() {
     //   var self = this;
     //   if (this.notFirst) {

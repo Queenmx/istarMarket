@@ -3,7 +3,7 @@
       <div v-show="curIndex===0">
           <sign-in></sign-in>
       </div>
-      <div v-show="curIndex===1">
+      <div v-if="curIndex===1">
           <history></history>
       </div>
       <div>

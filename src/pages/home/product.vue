@@ -247,7 +247,7 @@ export default {
     goLoan() {
       this.$router.push({
         path: "/home/fcgqInfo",
-        query: { loanId: this.loanId }
+        query: { loanId: this.loanId, loanName: this.loanName }
       });
       //   this.$router.push({ path: "/home/fcgqInfo" });
     }

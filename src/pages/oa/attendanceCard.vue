@@ -156,6 +156,8 @@ export default {
       let res = await oaUpdateTime(data);
       if (res.code === "0000") {
         this.$message("更新时间成功");
+        let time = formateTime(this.timeStamp, "yyyy-MM-dd") + " 00:00:00";
+        this.getData(time);
       } else {
         this.$message(res.code);
       }
@@ -361,16 +363,25 @@ export default {
 </style>
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.el-date-editor {
-}
-.el-input__icon.el-icon-date {
-  position: relative;
-  &:before {
-    position: absolute;
-    top: 0px;
-    left: 0;
+// .el-date-editor {
+// }
+// .el-input__icon.el-icon-date {
+//   position: relative;
+//   &:before {
+//     position: absolute;
+//     top: 0px;
+//     left: 0;
+//   }
+// }
+</style>
+<style lang="scss">
+.attendanceCard {
+  .el-input__icon.el-icon-date {
+    display: flex;
+    align-items: center;
   }
 }
 </style>
+
 
 

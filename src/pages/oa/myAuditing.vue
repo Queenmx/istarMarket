@@ -22,11 +22,11 @@
 				<span class="left">类型</span>
 				<span class="rest">{{this.type}}</span>
 			</li>
-            <li class="wrap flex list-item">
+      <li class="wrap flex list-item" v-if="type!='日报'&&type!='周报'&&type!='月报'&&type!='绩效'">
 				<span class="left">开始时间</span>
 				<span class="rest">{{list.beginTime}}</span>
 			</li>
-            <li class="wrap flex list-item">
+            <li class="wrap flex list-item" v-if="type!='日报'&&type!='周报'&&type!='月报'&&type!='绩效'">
 				<span class="left">结束时间</span>
 				<span class="rest">{{list.endTime}}</span>
 			</li>
@@ -157,6 +157,7 @@ export default {
       });
     },
     async initData() {
+      console.log(this.$route.query.type)
       var data = {
         type: this.type,
         mainId: this.mainId,
