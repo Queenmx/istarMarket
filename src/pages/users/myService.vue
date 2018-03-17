@@ -51,7 +51,7 @@ export default {
       message: "",
       openService: false,
       messageList: [],
-      selected: "admin",
+      selected: "zhangxiansheng",
       Emoji: WebIM.Emoji
     };
   },

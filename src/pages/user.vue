@@ -56,12 +56,12 @@ export default {
             isIcon: true,
             url: "/users/myService"
           },
-          {
-            class: "icon-myService",
-            desc: "我的客服",
-            isIcon: true,
-            url: ""
-          },
+          //   {
+          //     class: "icon-myService",
+          //     desc: "我的客服",
+          //     isIcon: true,
+          //     url: ""
+          //   },
           { class: "icon-set", desc: "设置", isIcon: true, url: "/users/set" }
         ]
       ]
