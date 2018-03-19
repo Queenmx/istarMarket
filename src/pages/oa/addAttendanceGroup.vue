@@ -36,22 +36,22 @@
                 <p class="rest lable"><span>其他参与人员</span></p>
                <p> <i class="el-icon-arrow-right"></i></p>
             </div>
-            <split></split>
-            <div class="wrap flex item" @click="goSelect('leader')">
+            <!-- <split></split> -->
+            <!-- <div class="wrap flex item" @click="goSelect('leader')">
                 <p class="rest lable"><span>考勤组负责人</span></p>
                <p> <i class="el-icon-arrow-right"></i></p>
             </div>
             <div class="wrap info" @click="goSelect('caption')">
                 <span>协助管理员分管本考勤组的排班及统计</span>
                 <i class="el-icon-question"></i>
-            </div>
-            <div class="wrap flex item" @click="goSelect('address')" v-if="status==='add'">
+            </div> -->
+            <!-- <div class="wrap flex item" @click="goSelect('address')" v-if="status==='add'">
                 <p class="rest lable">
                     <i class="map"></i>
                     <span>考勤位置</span>
                 </p>
                <p><i class="el-icon-arrow-right"></i></p>
-            </div>
+            </div> -->
         </div>
         <div class="footer-btn" @click="submit">
             <span>提交</span>
@@ -185,12 +185,12 @@ export default {
         case "caption":
           this.$router.push({ path: "/oaSystem/caption" });
           break;
-        case "address":
-          this.$router.push({
-            path: "/oaSystem/addAddress",
-            query: { btnText: "确定" }
-          });
-          break;
+        // case "address":
+        //   this.$router.push({
+        //     path: "/oaSystem/addAddress",
+        //     query: { btnText: "确定" }
+        //   });
+        //   break;
       }
     },
     async submit() {

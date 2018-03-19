@@ -45,12 +45,12 @@
                     </p>
                 </div>
             </div>
-            <div class="position" v-if="groupAddress">
+            <!-- <div class="position" v-if="groupAddress">
                 <i class="el-icon-circle-check blue"></i>
-                <span class="ellipsis">已进入考勤范围：{{groupAddress}}</span>
+                <span class="ellipsis">已进入考勤范围：{{groupAddress}}</span> -->
                 <!-- <span class="link" @click="setAddress">去重新定位</span> -->
-            </div>
-            <div class="position" v-else>{{errorMsg}}</div>
+            <!-- </div> -->
+            <!-- <div class="position" v-else>{{errorMsg}}</div> -->
         </div>
         <card-alert ref="alert" :startDate="info.beginTime"></card-alert>
         <local-position @getAddress="getAddress" ref="localPosition"></local-position>

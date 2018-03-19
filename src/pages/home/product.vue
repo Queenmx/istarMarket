@@ -5,7 +5,7 @@
 			<p slot="title">{{loanName}}</p>
 		</v-header>
 		<div class="main">
-			<div class="input-container">
+			<!-- <div class="input-container">
 				<div class="item">
 					<div class="input-group">
 						<span class="lable">金额</span>
@@ -31,14 +31,14 @@
 					</div>
 					<p class="range">期限范围：{{detailInfo.limitMin}}～{{detailInfo.limitMax}}{{detailInfo.limitType}}</p>
 				</div>
-			</div>
-			<div class="chart-wrap">
+			</div> -->
+			<!-- <div class="chart-wrap">
 	            <div id="main" class="chart"></div>
-	        </div>
-	        <div>
+	        </div> -->
+	        <!-- <div>
 	        	<p class="go-detail">查看详情<i class="el-icon-arrow-down"></i></p>
-	        </div>
-	        <split></split>
+	        </div> -->
+	        <!-- <split></split> -->
 	        <div class="flow">
 	        	<p class="title">办理流程（门店办理）</p>
 	        	<div class="wrap" v-html="detailInfo.loanFlow"></div>

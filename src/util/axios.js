@@ -24,15 +24,15 @@ function fetch(url, params, isOa) {
 }
 export const getAd = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/home/ad', { params })
+    return fetch('jrcs/home/ad', { params })
 }
 export const getUser = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/user/login', { params })
+    return fetch('jrcs/user/login', { params })
 }
 export const getUserinfo = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/user/userCenter', { params })
+    return fetch('jrcs/user/userCenter', { params })
 }
 export const getMoney = (params) => {
     params = JSON.stringify(params)
@@ -40,48 +40,48 @@ export const getMoney = (params) => {
 }
 export const getAgency = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/user/dljj', { params })
+    return fetch('jrcs/user/dljj', { params })
 }
 export const getSet = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/user/sz', { params })
+    return fetch('jrcs/user/sz', { params })
 }
 
 export const product = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/loan/product', { params })
+    return fetch('jrcs/loan/product', { params })
 }
 export const checkMoney = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/xb/validate', { params })
+    return fetch('jrcs/xb/validate', { params })
 }
 export const queryMoney = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/xb/left', { params })
+    return fetch('jrcs/xb/left', { params })
 }
 export const productDetail = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/loan/productList', { params })
+    return fetch('jrcs/loan/productList', { params })
 }
 export const cateAndPro = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/loan/cateAndPro', { params })
+    return fetch('jrcs/loan/cateAndPro', { params })
 }
 export const typeProduct = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/loan/Products', { params })
+    return fetch('jrcs/loan/Products', { params })
 }
 export const changePwd = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/user/changePwd', { params })
+    return fetch('jrcs/user/changePwd', { params })
 }
 export const customerList = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/customer/list', { params })
+    return fetch('jrcs/customer/list', { params })
 }
 export const customerInfo = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/customer/detail', { params })
+    return fetch('jrcs/customer/detail', { params })
 }
 /**
  * 获取总费用
@@ -89,31 +89,31 @@ export const customerInfo = (params) => {
  */
 export const getFee = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/order/calculate', { params })
+    return fetch('jrcs/order/calculate', { params })
 }
 export const grabCustomer = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/customer/grabCustomer', { params })
+    return fetch('jrcs/customer/grabCustomer', { params })
 }
 export const getTanjiReport = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/tianJi/reportData', { params })
+    return fetch('jrcs/tianJi/reportData', { params })
 }
 export const crawReport = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/report/you', { params })
+    return fetch('jrcs/report/you', { params })
 }
 export const getReport = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/report/query', { params })
+    return fetch('jrcs/report/query', { params })
 }
 export const grabRecord = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/customer/qdList', { params })
+    return fetch('jrcs/customer/qdList', { params })
 }
 export const getReportState = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/report/getState', { params })
+    return fetch('jrcs/report/getState', { params })
 }
 export const getDetails = (params) => {
     params = JSON.stringify(params)
@@ -125,7 +125,7 @@ export const getDetails = (params) => {
  */
 export const getInfoTemple = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/application/data', { params })
+    return fetch('jrcs/application/data', { params })
 }
 /**
  * 更新打卡
@@ -201,7 +201,7 @@ export const oaSignIn = (params) => {
  */
 export const oaGetCompany = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/dept/company', { params }, true)
+    return fetch('oa/dept/company', { params }, true)
 }
 export const oaTrack = (params) => {
     params = JSON.stringify(params)
@@ -221,7 +221,7 @@ export const oaAuditHistory = (params) => {
 }
 export const oaAttendanceSign = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/work/save', { params }, true)
+    return fetch('oa/work/save', { params }, true)
 }
 export const oaAuditSuggestion = (params) => {
     params = JSON.stringify(params)
@@ -236,7 +236,7 @@ export const oaAttendance = (params) => {
  */
 export const oaIReport = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/report/iReport', { params }, true)
+    return fetch('oa/report/iReport', { params }, true)
 }
 /**
  * 考勤组设置和修改
@@ -244,7 +244,7 @@ export const oaIReport = (params) => {
  */
 export const oaAttendSetting = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/group/save', { params }, true)
+    return fetch('oa/group/save', { params }, true)
 }
 /**
  * 查询公司所有考勤组
@@ -252,7 +252,7 @@ export const oaAttendSetting = (params) => {
  */
 export const oaAttendanceGroupQuery = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/group/query', { params }, true)
+    return fetch('oa/group/query', { params }, true)
 }
 /**
  * 删除考勤组
@@ -260,7 +260,7 @@ export const oaAttendanceGroupQuery = (params) => {
  */
 export const oaAttendanceGroupDel = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/group/del', { params }, true)
+    return fetch('oa/group/del', { params }, true)
 }
 /**
  * 考勤组详细信息
@@ -268,7 +268,7 @@ export const oaAttendanceGroupDel = (params) => {
  */
 export const oaAttendanceGroupInfo = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/group/info', { params }, true)
+    return fetch('oa/group/info', { params }, true)
 }
 /**
  * 根据公司Id查询所有用户
@@ -276,7 +276,7 @@ export const oaAttendanceGroupInfo = (params) => {
  */
 export const getMembers = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/user/byc2', { params }, true)
+    return fetch('oa/user/byc2', { params }, true)
 }
 /**
  * 根据输入名模糊查询
@@ -284,7 +284,7 @@ export const getMembers = (params) => {
  */
 export const oaSearchUser = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/user/search', { params }, true)
+    return fetch('oa/user/search', { params }, true)
 }
 /**
  * 用户所在考勤组
@@ -292,7 +292,7 @@ export const oaSearchUser = (params) => {
  */
 export const oaGroupCheck = (params) => {
     params = JSON.stringify(params)
-    return fetch('/oa/group/check', { params }, true)
+    return fetch('oa/group/check', { params }, true)
 }
 export const oaFcgqInfo = (params) => {
     params = JSON.stringify(params)
@@ -300,5 +300,5 @@ export const oaFcgqInfo = (params) => {
 }
 export const creditHistory = (params) => {
     params = JSON.stringify(params)
-    return fetch('/jrcs/report/queryHistory', { params })
+    return fetch('jrcs/report/queryHistory', { params })
 }

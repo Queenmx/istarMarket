@@ -4,7 +4,7 @@
             <li class="wrap flex item">
                 <div class="rest">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="../assets/images/avatar.jpg">
+                        <img class="avatar" src="http://xrjf.oss-cn-shanghai.aliyuncs.com/xgf/platform/f4328fd041ca46859e37.png">
                     </div>
                     <div class="inblock mes-wrap">
                         <p class="title">{{userName}}</p>
@@ -12,8 +12,8 @@
                     </div>
                 </div>
                 <div class="date-wrap">
-                     <el-date-picker ref="picker" v-model="value1" type="date" @change="getData" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
-                     <i class="date-arrow el-icon-arrow-down" @click="showPicker"></i>
+                     <el-date-picker readonly ref="picker" v-model="value1" type="date" @change="getData" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                     <!-- <i class="date-arrow el-icon-arrow-down" @click="showPicker"></i> -->
                 </div>
             </li>
         </ul>

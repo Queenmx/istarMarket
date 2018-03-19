@@ -83,7 +83,8 @@ export default {
       value2: "",
       // list: [{ des: "全部" }, { des: "18年1月" }],
       items: "",
-      money: ""
+      money: "",
+      userInfo: JSON.parse(getItem("userInfo"))
     };
   },
   mounted() {
@@ -95,10 +96,10 @@ export default {
       await this.queryMoney();
     },
     async bill() {
-      getItem("userinfo");
-      let userinfo = JSON.parse(localStorage.userInfo);
+      //   getItem("userinfo");
+      //   let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
-        userId: userinfo.userId,
+        userId: this.userInfo.userId,
         time: this.value2,
         pageNum: 1,
         pageSize: 100
@@ -114,10 +115,10 @@ export default {
       }
     },
     async queryMoney() {
-      getItem("userinfo");
-      let userinfo = JSON.parse(localStorage.userInfo);
+      //   getItem("userInfo");
+      //   let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
-        userId: userinfo.userId
+        userId: this.userInfo.userId
       };
       let res = await queryMoney(data);
       if (res.code === "0000") {
@@ -132,13 +133,11 @@ export default {
     changeType() {
       this.bill();
     },
-    disable(){
-    console.log('aaa')
+    disable() {
+      console.log("aaa");
     }
   }
 };
-
-
 </script>
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
@@ -146,7 +145,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #f8f8f8;
- 
+
   .header {
     border-bottom: 0;
     color: #fff;
@@ -184,7 +183,6 @@ export default {
     width: 100%;
     .el-select {
       width: 100%;
-   
     }
     //   ul{display: flex;
     //   .item{
@@ -240,9 +238,7 @@ export default {
       }
     }
   }
-
 }
-
 </style>
 <style lang="scss">
 @import "../../assets/style/common.scss";

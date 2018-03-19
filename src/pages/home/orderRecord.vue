@@ -10,7 +10,7 @@
 				<div class="flex wrap item" @click="goDetail(item.customerId)">
 					<div class="rest">
 						<div class="avatar-wrap">
-							<img class="avatar" :src="item.headPic" >
+							<img class="avatar" src="http://xrjf.oss-cn-shanghai.aliyuncs.com/xgf/platform/f4328fd041ca46859e37.png" >
 						</div>
 						<div class="inblock">
 							<p>{{item.name}}</p>
