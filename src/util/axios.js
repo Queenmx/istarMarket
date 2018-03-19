@@ -296,7 +296,7 @@ export const oaGroupCheck = (params) => {
 }
 export const oaFcgqInfo = (params) => {
     params = JSON.stringify(params)
-    return fetch('jrcs/third/addOrder', { params })
+    return fetch('jrcs/third/products', { params })
 }
 export const creditHistory = (params) => {
     params = JSON.stringify(params)
