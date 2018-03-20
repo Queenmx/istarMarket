@@ -1,5 +1,8 @@
 <template>
   <div class="fail">
+      <v-header>
+			<i slot="left" class="el-icon-arrow-left"></i>
+		</v-header>
       <div class="wrap icon-wrap">
       <i class="el-icon-error"></i>
       </div>

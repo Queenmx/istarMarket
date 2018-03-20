@@ -5,7 +5,7 @@
 			<p slot="title">{{loanName}}</p>
 		</v-header>
 		<div class="main">
-			<div class="input-container">
+			<!-- <div class="input-container">
 				<div class="item">
 					<div class="input-group">
 						<span class="lable">金额</span>
@@ -38,7 +38,7 @@
 	        <div>
 	        	<p class="go-detail">查看详情<i class="el-icon-arrow-down"></i></p>
 	        </div>
-	        <split></split>
+	        <split></split> -->
 	        <div class="flow">
 	        	<p class="title">办理流程（门店办理）</p>
 	        	<div class="wrap" v-html="detailInfo.loanFlow"></div>
@@ -105,7 +105,7 @@ export default {
         this.detailInfo = res.data;
         this.money = this.detailInfo.loanAmount;
         this.periods = this.detailInfo.loanPeriod;
-        this.drawChart();
+        // this.drawChart();
       } else {
       }
     },
