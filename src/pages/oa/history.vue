@@ -208,6 +208,9 @@ export default {
     padding: rem(15px) 0;
   }
 }
+.history_tab {
+  padding-bottom: rem(100px);
+}
 </style>
 <style lang="scss">
 @import "../../assets/style/common.scss";

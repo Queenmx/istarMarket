@@ -5,7 +5,7 @@
         <p slot="title">考勤组管理</p>
     </v-header>
     <div>
-        <p class="wrap info">全公司{{gpNum}}人，参与考勤{{coNum}}人</p>
+        <p class="wrap info">全公司{{coNum}}人，参与考勤{{gpNum}}人</p>
         <p class="wrap link" @click="modifyGroup('add','')">添加考勤组</p>
         <p class="wrap info">考勤规则相同的人设置到同一考勤组，方便统计</p>
         <ul class="list" v-if="list&&list.length">
@@ -16,10 +16,10 @@
                         <i class="user"></i>
                         <span>成员：{{item.userNum}}人</span>
                     </p>
-                    <p class="sub-item">
+                    <!-- <p class="sub-item">
                         <i class="map"></i>
                         <span>{{item.location}}</span>
-                    </p>
+                    </p> -->
                 </div>
                 <div class="wrap btn-wrap">
                     <span class="btn-red"  @click="modifyGroup('modify',item)">修改成员及负责人</span>

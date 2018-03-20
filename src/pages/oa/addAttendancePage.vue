@@ -36,7 +36,7 @@
                 <p class="rest lable"><span>其他参与人员</span></p>
                <p> <i class="el-icon-arrow-right"></i></p>
             </div>
-            <split></split>
+            <!-- <split></split>
             <div class="wrap flex item" @click="showMemberlist('leader')">
                 <p class="rest lable"><span>考勤组负责人</span></p>
                <p> <i class="el-icon-arrow-right"></i></p>
@@ -44,14 +44,14 @@
             <div class="wrap info" @click="goSelect('caption')">
                 <span>协助管理员分管本考勤组的排班及统计</span>
                 <i class="el-icon-question"></i>
-            </div>
-            <div class="wrap flex item" @click="setAddress()" v-if="status==='add'">
+            </div> -->
+            <!-- <div class="wrap flex item" @click="setAddress()" v-if="status==='add'">
                 <p class="rest lable">
                     <i class="map"></i>
                     <span>考勤位置</span>
                 </p>
                <p><i class="el-icon-arrow-right"></i></p>
-            </div>
+            </div> -->
         </div>
         <div class="footer-btn" @click="submit">
             <span>提交</span>
@@ -68,9 +68,9 @@
     </div>
 </template>
 <script>
-import attendanceApartment from "./attendanceApartment"
-import attendanceMember from "./attendanceMember"
-import addAddress from "./addAddress"
+import attendanceApartment from "./attendanceApartment";
+import attendanceMember from "./attendanceMember";
+import addAddress from "./addAddress";
 import { oaAttendanceGroupInfo, oaAttendSetting } from "@/util/axios";
 import { setItem, getItem } from "@/util/util";
 export default {
@@ -82,20 +82,20 @@ export default {
       title: "",
       info: {},
       seletedDepartment: {},
-      inUsers:{},
-      leader:{},
-      location:'',
-      memberFlag:'',
-      groupName:this.$route.query.groupName || "",
-      isShowAparment:false,
-      isShowMember:false,
-      isShowAddress:false
+      inUsers: {},
+      leader: {},
+      location: "",
+      memberFlag: "",
+      groupName: this.$route.query.groupName || "",
+      isShowAparment: false,
+      isShowMember: false,
+      isShowAddress: false
     };
   },
-  components:{
-      attendanceApartment,
-      attendanceMember,
-      addAddress
+  components: {
+    attendanceApartment,
+    attendanceMember,
+    addAddress
   },
   mounted() {
     this.initTemplate();
@@ -103,8 +103,9 @@ export default {
   },
   computed: {
     departmentLength() {
-        let length = Object.getOwnPropertyNames(this.seletedDepartment).length-1
-        console.log(JSON.stringify(this.inUsers),JSON.stringify(this.leader))
+      let length =
+        Object.getOwnPropertyNames(this.seletedDepartment).length - 1;
+      console.log(JSON.stringify(this.inUsers), JSON.stringify(this.leader));
       return length;
     }
   },
@@ -133,27 +134,26 @@ export default {
         let res = await oaAttendanceGroupInfo(data);
         if (res.code === "0000") {
           this.info = res.data;
-          this.location=this.info.location
+          this.location = this.info.location;
           this.info.inDepts.forEach(item => {
-              this.$set(this.seletedDepartment,item.deptId,1)
-            });
-            this.info.inUsers.forEach(item => {
-              this.$set(this.inUsers,item.userId,1)
-            });
-            this.info.leader.forEach(item => {
-              this.$set(this.leader,item.userId,1)
-            });
-            
+            this.$set(this.seletedDepartment, item.deptId, 1);
+          });
+          this.info.inUsers.forEach(item => {
+            this.$set(this.inUsers, item.userId, 1);
+          });
+          this.info.leader.forEach(item => {
+            this.$set(this.leader, item.userId, 1);
+          });
         }
       }
     },
     handleCommand() {
-    //   this.$router.push({ path: "/oaSystem/attendanceApartment" });
-      this.isShowAparment=true
+      //   this.$router.push({ path: "/oaSystem/attendanceApartment" });
+      this.isShowAparment = true;
     },
-    showMemberlist(str){
-        this.memberFlag=str
-        this.isShowMember=true
+    showMemberlist(str) {
+      this.memberFlag = str;
+      this.isShowMember = true;
     },
     goSelect(str) {
       switch (str) {
@@ -180,19 +180,19 @@ export default {
           break;
       }
     },
-    setAddress(){
-      this.isShowAddress=true
+    setAddress() {
+      this.isShowAddress = true;
     },
-    getAddress(str){
-      this.location=str
-      this.isShowAddress=false
+    getAddress(str) {
+      this.location = str;
+      this.isShowAddress = false;
     },
-    getObjKey(obj){
-        let arr=[]
-        for(let [key,val] of Object.entries(obj)){
-            arr.push(key)
-        }
-        return arr.join()
+    getObjKey(obj) {
+      let arr = [];
+      for (let [key, val] of Object.entries(obj)) {
+        arr.push(key);
+      }
+      return arr.join();
     },
     async submit() {
       if (!this.groupName.trim()) {
@@ -208,7 +208,7 @@ export default {
         leader: this.getObjKey(this.leader),
         location: this.location
       };
-      console.log(data)
+      console.log(data);
       let res = await oaAttendSetting(data);
       if (res.code === "0000") {
         this.$router.push({ path: "/oaSystem/attendanceGroup" });
@@ -223,15 +223,15 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
 .addAttendanceGroup {
-    position: relative;
-    .subpage-wrap{
-        position: absolute;
-        left: 0;
-        right:0;
-        top:0;
-        height: 100%;
-        z-index: 10;
-    }
+  position: relative;
+  .subpage-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: 10;
+  }
   .item {
     height: rem(98px);
     line-height: rem(98px);
