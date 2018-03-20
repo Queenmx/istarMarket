@@ -31,14 +31,14 @@
 					</div>
 					<p class="range">期限范围：{{detailInfo.limitMin}}～{{detailInfo.limitMax}}{{detailInfo.limitType}}</p>
 				</div>
-			</div> -->
-			<!-- <div class="chart-wrap">
+			</div>
+			<div class="chart-wrap">
 	            <div id="main" class="chart"></div>
-	        </div> -->
-	        <!-- <div>
+	        </div>
+	        <div>
 	        	<p class="go-detail">查看详情<i class="el-icon-arrow-down"></i></p>
 	        </div> -->
-	        <!-- <split></split> -->
+	        <split></split>
 	        <div class="flow">
 	        	<p class="title">办理流程（门店办理）</p>
 	        	<div class="wrap" v-html="detailInfo.loanFlow"></div>
@@ -81,18 +81,18 @@ export default {
   mounted() {
     this.initData();
   },
-  computed: {
-    chartLabel() {
-      return [
-        `贷款 ${this.money}${this.detailInfo.moneyUnit}/${this.periods}${
-          this.detailInfo.limitType
-        }`,
-        `利息 ${this.detailInfo.interest}${this.detailInfo.moneyUnit}（${
-          this.detailInfo.rate
-        }%/${this.detailInfo.rateType}）`
-      ];
-    }
-  },
+  //   computed: {
+  //     chartLabel() {
+  //       return [
+  //         `贷款 ${this.money}${this.detailInfo.moneyUnit}/${this.periods}${
+  //           this.detailInfo.limitType
+  //         }`,
+  //         `利息 ${this.detailInfo.interest}${this.detailInfo.moneyUnit}（${
+  //           this.detailInfo.rate
+  //         }%/${this.detailInfo.rateType}）`
+  //       ];
+  //     }
+  //   },
   methods: {
     async initData() {
       //   getItem("loanName");
@@ -105,7 +105,7 @@ export default {
         this.detailInfo = res.data;
         this.money = this.detailInfo.loanAmount;
         this.periods = this.detailInfo.loanPeriod;
-        this.drawChart();
+        // this.drawChart();
       } else {
       }
     },
