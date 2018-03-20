@@ -176,8 +176,11 @@
             document.body.appendChild(div);
             setTimeout(function () { document.body.removeChild(toast[0]); }, time);
         }
-        function confirmPay(status) {
-            if (status === "true") {
+        function confirmPay(e) {
+            console.log(e);
+            var userId = JSON.parse(localStorage.getItem('userInfo'));
+            console.log(userId)
+            if (e.type === "true" && e.userId == this.userId) {
                 toast("支付成功");
                 // alert("支付成功");
                 window.location.href = "http://h5.xinyzx.com:81/financialMarket/index.html#/users/money"
