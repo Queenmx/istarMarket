@@ -177,10 +177,11 @@
             setTimeout(function () { document.body.removeChild(toast[0]); }, time);
         }
         function confirmPay(status) {
-            if (status === "true") {
+            // console.log(userId)
+            if ( status === "true" ) {
                 toast("支付成功");
                 // alert("支付成功");
-                window.location.href = "http://h5.xinyzx.com:81/financialMarket/index.html#/users/money"
+                window.location.href = "http://istarmarket.istarcredit.com/#/users/money"
             } else {
                 toast("支付失败");
                 // alert("支付失败");
