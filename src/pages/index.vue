@@ -1,7 +1,7 @@
 <template>
   <div class="contain_index">
       <v-header>
-        <p slot="title">金融超市</p>
+        <p slot="title">星融金服</p>
       </v-header>
       <div class="index_banner">
           <dl @click="jumpRouter('product')">

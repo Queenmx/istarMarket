@@ -26,17 +26,16 @@ export default {
   },
   mounted() {
     this.initData();
-   
   },
   methods: {
     async initData() {
       var data = {
-        salerId:JSON.parse(getItem('userInfo')).userId
+        salerId: JSON.parse(getItem("userInfo")).userId
       };
-      
-      console.log(data)
+
+      console.log(data);
       let res = await creditHistory(data);
-      console.log(res)
+      console.log(res);
       if (res.code === "0000") {
         this.list = res.data.reportList;
         console.log(res.data);
@@ -44,23 +43,22 @@ export default {
         this.$message(res.msg);
       }
     },
-    goDetails(items){
-        // console.log(items);
-        // let data={
-        //   reportId:items.reportId
-        // };
-        // console.log(data)
-        // let res = getDetails(data);
-        // console.log(res)
-        // console.log(res)  
-        this.$router.push({
+    goDetails(items) {
+      // console.log(items);
+      // let data={
+      //   reportId:items.reportId
+      // };
+      // console.log(data)
+      // let res = getDetails(data);
+      // console.log(res)
+      // console.log(res)
+      this.$router.push({
         path: "/search/creditDetails",
         query: {
-          reportId:items.reportId
+          reportId: items.reportId
         }
       });
-    },
-   
+    }
   }
 };
 </script>

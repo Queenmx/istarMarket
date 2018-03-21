@@ -16,10 +16,10 @@
                         <i class="user"></i>
                         <span>成员：{{item.userNum}}人</span>
                     </p>
-                    <p class="sub-item">
+                    <!-- <p class="sub-item">
                         <i class="map"></i>
                         <span>{{item.location}}</span>
-                    </p>
+                    </p> -->
                 </div>
                 <div class="wrap btn-wrap">
                     <span class="btn-red"  @click="modifyGroup('modify',item)">修改成员及负责人</span>
