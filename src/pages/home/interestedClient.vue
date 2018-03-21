@@ -19,7 +19,8 @@
 							<p class="grey">贷款期限：{{item.limitDay}}</p>
 						</div>
 					</div>
-					<div class="btn" @click="grabOrder(item.customerId)"><span>抢单</span></div>
+          <div v-show="item.userId" class="done">已抢单</div>
+					<div class="btn" @click="grabOrder(item.customerId,item.userId)"><span>抢单</span></div>
 				</div>
 			</li>
 		</ul>
@@ -51,11 +52,16 @@ export default {
         console.log(res.data.customerList);
       }
     },
-    grabOrder(customerId) {
-      this.$router.push({
-        name: "clientInfo",
-        params: { customerId }
-      });
+    grabOrder(customerId,userId) {
+      if(userId){
+        this.$message('已抢单，请勿重复抢单')
+      }else{
+        this.$router.push({
+                name: "clientInfo",
+                params: { customerId }
+              });
+      }
+     
     },
     goRecord() {
       this.$router.push({ path: "/home/orderRecord" });
@@ -68,7 +74,15 @@ export default {
 .interestedClient {
   min-height: 100%;
   background-color: $bgcolor;
+  .done{
+    position: absolute;
+    top:rem(30px);
+    left: rem(60px);
+    background-color: grey;
+    color: #fff;
+  }
   .item {
+    position: relative;
     align-items: center;
     height: rem(200px);
     font-size: rem(30px);

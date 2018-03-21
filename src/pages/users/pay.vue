@@ -73,7 +73,6 @@ export default {
         return window.WVJBCallbacks.push(callback);
       }
       window.WVJBCallbacks = [callback];
-      
       var WVJBIframe = document.createElement("iframe");
       WVJBIframe.style.display = "none";
       WVJBIframe.src = "wvjbscheme://__BRIDGE_LOADED__";
@@ -97,7 +96,6 @@ export default {
         var str = JSON.stringify(obj);
         window.xingrongjinfu.webview_call_native(str);
       }
-
       window.native_call_webview = function(data) {
         var obj = eval("(" + data + ")");
         fn(obj);
