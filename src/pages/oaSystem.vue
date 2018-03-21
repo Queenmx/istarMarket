@@ -141,7 +141,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/style/common.scss";
 .system_list {
-  padding-bottom: 100px;
+  padding-bottom: rem(100px);
   h2 {
     font-size: rem(32px);
     color: #323232;

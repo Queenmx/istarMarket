@@ -258,6 +258,7 @@ export default {
 @import "../../assets/style/common.scss";
 .product {
   padding-bottom: rem(91px);
+  box-sizing: border-box;
   .input-container {
     display: flex;
     padding: rem(47px) rem(50px) 0 rem(50px);

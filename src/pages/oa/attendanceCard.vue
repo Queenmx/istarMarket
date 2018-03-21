@@ -60,7 +60,7 @@
 import attendanceCardList from "../../components/attendanceCardList";
 import localPosition from "@/components/localPosition";
 import cardAlert from "../../components/cardAlert";
-import { getItem, formateTime } from "@/util/util";
+import { getItem, formateTime, callAddress, checkSys } from "@/util/util";
 import {
   oaAttendanceInfo,
   oaAttendanceSign,
@@ -110,9 +110,28 @@ export default {
     localPosition
   },
   mounted() {
+    var res = checkSys();
+    var self = this;
     this.initData();
-    this.initMap();
-    this.getPosition();
+    this.$message({
+      message: "定位中",
+      duration: 3
+    });
+    if (res === "ios") {
+      setTimeout(function() {
+        self.initMap();
+        self.getPosition();
+      }, 1000);
+    } else {
+      //   this.initData();
+      callAddress();
+      setTimeout(function() {
+        self.address = getItem("location");
+        // initMap(self.address);
+      }, 1000);
+    }
+    // this.initMap();
+    // this.getPosition();
   },
   methods: {
     async initData() {

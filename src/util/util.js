@@ -73,3 +73,74 @@ export function checkSys() {
         return "unknown"
     }
 }
+export function callAddress() {
+    var native = function (data) {
+    }
+    return nativeInteractive(native, 1);
+}
+// callPhone(str) {
+//     console.log(str);
+//     var native = function (data) {
+//         console.log(data);
+//     };
+//     return this.nativeInteractive(native, str);
+// }
+function setupWebViewJavascriptBridge(callback) {
+    if (window.WebViewJavascriptBridge) {
+        return callback(WebViewJavascriptBridge);
+    }
+    if (window.WVJBCallbacks) {
+        return window.WVJBCallbacks.push(callback);
+    }
+    window.WVJBCallbacks = [callback];
+
+    var WVJBIframe = document.createElement("iframe");
+    WVJBIframe.style.display = "none";
+    WVJBIframe.src = "wvjbscheme://__BRIDGE_LOADED__";
+    document.documentElement.appendChild(WVJBIframe);
+    setTimeout(function () {
+        document.documentElement.removeChild(WVJBIframe);
+    }, 0);
+}
+function nativeInteractive(fn, obj) {
+    // console.log(123);
+    setupWebViewJavascriptBridge(function (bridge) {
+        if (obj) {
+            bridge.callHandler("webview_call_native_address", obj, function (
+                response
+            ) { });
+        }
+        bridge.registerHandler("native_call_webview_phone", function (
+            data,
+            response
+        ) {
+            fn(data);
+        });
+    });
+    if (window.xingrongjinfu && obj) {
+        var str = JSON.stringify(obj);
+        window.xingrongjinfu.webview_call_native_address();
+    }
+
+    window.native_call_webview_phone = function (data) {
+        var obj = eval("(" + data + ")");
+        fn(obj);
+    };
+}
+export function initMap(address) {
+    // 百度地图API功能
+    var map = new BMap.Map("container");
+    var point = new BMap.Point(116.331398, 39.897445);
+    map.centerAndZoom(point, 12);
+    // 创建地址解析器实例
+    var myGeo = new BMap.Geocoder();
+    // 将地址解析结果显示在地图上,并调整地图视野
+    myGeo.getPoint(address, function (point) {
+        if (point) {
+            map.centerAndZoom(point, 16);
+            map.addOverlay(new BMap.Marker(point));
+        } else {
+            // alert("您选择地址没有解析到结果!");
+        }
+    });
+}

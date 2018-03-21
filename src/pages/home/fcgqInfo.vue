@@ -96,7 +96,7 @@ export default {
             for (let subkey in data[key]) {
               if (data[key].hasOwnProperty(subkey)) {
                 obj[key][subkey] = "";
-                if (data[key][subkey].required) {
+                if (data[key][subkey].required === "yes") {
                   requiredObj[key][subkey] = data[key][subkey].name;
                 }
               }
@@ -177,10 +177,16 @@ export default {
     check(curPage) {
       let data = this.data[curPage];
       let required = this.requiredObj[curPage];
-      if ((curPage === 1 && data["estate_status"]) !== "租赁") {
+      if (
+        (curPage === 1 && data["estate_status"]) !== "租赁" &&
+        this.temple[1].estate_desc &&
+        this.temple[1].estate_desc.name == "租金" //租金判断是因为后台有字段冲突，租金key与所属部门key相同
+      ) {
         delete required["estate_desc"];
       } else {
-        required["estate_desc"] = "租金";
+        if (this.temple[1].estate_desc) {
+          required["estate_desc"] = this.temple[1].estate_desc.name;
+        }
       }
       for (let key in data) {
         if (required[key]) {
@@ -235,6 +241,7 @@ export default {
   padding-bottom: rem(91px);
   min-height: 100%;
   background-color: $bgcolor;
+  box-sizing: border-box;
   //   position: relative;
   //   box-sizing: border-box;
   //   overflow: auto;
