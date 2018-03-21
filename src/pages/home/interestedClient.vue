@@ -76,8 +76,9 @@ export default {
   background-color: $bgcolor;
   .done{
     position: absolute;
-    top:rem(30px);
-    left: rem(60px);
+    top:rem(45px);
+    font-size: rem(12px);
+    left: rem(90px);
     background-color: grey;
     color: #fff;
   }
