@@ -263,6 +263,7 @@ export default {
     background-color: #fff;
     input {
       border: none;
+      width: 100%;
     }
     .left {
       width: rem(190px);
