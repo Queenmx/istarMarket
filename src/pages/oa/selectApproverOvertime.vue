@@ -80,7 +80,7 @@ export default {
     go() {
       if (this.user && this.user !== "") {
         setItem("approverOvertimeWork", this.user);
-        setItem('approverOvertimeWorkId',this.radioType)
+        setItem("approverOvertimeWorkId", this.radioType);
         this.$router.push({ path: "/oaSystem/overtimeWork" });
       }
     },
@@ -97,7 +97,9 @@ export default {
 ul {
   width: 100%;
   height: 100%;
-  margin-bottom: rem(100px);
+  padding-bottom: rem(100px);
+  box-sizing: border-box;
+  //   margin-bottom: rem(100px);
 }
 .selectApartment {
   .el-icon-circle-check {
