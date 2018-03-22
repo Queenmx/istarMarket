@@ -18,7 +18,7 @@
 				<p class="title">人员出勤</p>
 				<div class="content flex">
 					<div class="chart-wrap">
-			            <div id="canvas" class="chart" @click="goAttendance"></div>
+			            <div id="canvas" class="chart"></div>
 			        </div>
 					<div class="chart-msg">
 						<el-row :gutter="20" v-for="(items,index) in stauts" :key="index" class="gap">
