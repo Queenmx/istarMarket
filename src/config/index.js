@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
     // baseUrl = 'http://tdx.free.ngrok.cc/zndai/'
     // baseUrl = '/zndai/'
 } else if (process.env.NODE_ENV === 'production') {
-    baseUrl = 'http://wuhanxingrong.vicp.io:18887/'
+    baseUrl = 'http://fsapi.starjrcs.com:8887/'
     baseUrl2 = 'http://wuhanxingrong.vicp.io:8185/'
 }
 export {
