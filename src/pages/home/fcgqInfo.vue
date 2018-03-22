@@ -14,7 +14,7 @@
 					<label :class="[val.required==='yes'?'required':'','left']">{{val.name}}</label>
 					<div class="rest">
 						<input type="text" :placeholder="'请输入'+val.name" v-if="val.type=='text'" v-model="data[curPage][key]">
-                        <el-select v-model="data[curPage][key]" placeholder="请选择" v-else >
+                        <el-select v-model="data[curPage][key]" placeholder="请选择" v-else @focus="preventBorad">
                           
                             <el-option v-for="ops in val.list" :key="ops" :label="ops" :value="ops">
                             </el-option>
@@ -122,6 +122,9 @@ export default {
       } else {
         // this.$message(res.msg);
       }
+    },
+    preventBorad(e) {
+      document.activeElement.blur();
     },
     updateData() {
       let res = this.check(this.curPage);
@@ -247,9 +250,9 @@ export default {
   //   position: relative;
   //   box-sizing: border-box;
   //   overflow: auto;
-  .over{
+  .over {
     width: rem(10px);
-    height:rem(10px);
+    height: rem(10px);
     background-color: #000;
     position: absolute;
   }
