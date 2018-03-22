@@ -50,7 +50,7 @@
                                 <li>{{item.rateType}}{{(item.rate*1).toFixed(2) + '%'}}</li>
                                 <li>贷款期限{{item.limitMin}}~{{item.limitMax}}{{item.limitType}}</li>
                             </ul>
-                            <button @click="applyLoan(item.loanId)" class="apply_btn">申请贷款</button>
+                            <button @click="applyLoan(item.loanId,item.loanName)" class="apply_btn">申请贷款</button>
                         </div>
                     </li>
                   </el-col>

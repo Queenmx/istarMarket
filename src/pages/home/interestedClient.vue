@@ -12,14 +12,16 @@
 					<div class="rest">
 						<div class="avatar-wrap">
 							<img class="avatar" :src="item.headPic" >
+              <div v-show="item.userId" class="done">已抢单</div>
 						</div>
+            
 						<div class="inblock">
 							<p>{{item.name}}</p>
 							<p class="orange">{{item.applyMoney}}</p>
 							<p class="grey">贷款期限：{{item.limitDay}}</p>
 						</div>
 					</div>
-          <div v-show="item.userId" class="done">已抢单</div>
+          
 					<div class="btn" @click="grabOrder(item.customerId,item.userId)"><span>抢单</span></div>
 				</div>
 			</li>
@@ -76,9 +78,10 @@ export default {
   background-color: $bgcolor;
   .done{
     position: absolute;
-    top:rem(45px);
+    top:rem(5px);
     font-size: rem(12px);
-    left: rem(90px);
+    right: rem(15px);
+   
     background-color: grey;
     color: #fff;
   }
@@ -105,7 +108,11 @@ export default {
     border-radius: 5px;
     box-shadow: 2px 2px 5px #fdbbbb;
   }
+  .avatar-wrap{
+ position: relative;
+  }
   .avatar {
+   
     width: rem(120px);
     height: rem(120px);
     vertical-align: middle;

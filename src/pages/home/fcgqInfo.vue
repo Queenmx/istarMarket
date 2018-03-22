@@ -9,11 +9,13 @@
 			<split></split>
             <!-- <h4 class="wrap item-title">贷款信息</h4> -->
             <ul>
-                <li class="wrap flex item" v-for="(val,key) in temple[curPage]" :key="curPage+''+key">
+              
+          <li class="wrap flex item" v-for="(val,key) in temple[curPage]" :key="curPage+''+key">
 					<label :class="[val.required==='yes'?'required':'','left']">{{val.name}}</label>
 					<div class="rest">
 						<input type="text" :placeholder="'请输入'+val.name" v-if="val.type=='text'" v-model="data[curPage][key]">
-                        <el-select v-model="data[curPage][key]" placeholder="请选择" v-else>
+                        <el-select v-model="data[curPage][key]" placeholder="请选择" v-else >
+                          
                             <el-option v-for="ops in val.list" :key="ops" :label="ops" :value="ops">
                             </el-option>
                         </el-select>
@@ -245,6 +247,12 @@ export default {
   //   position: relative;
   //   box-sizing: border-box;
   //   overflow: auto;
+  .over{
+    width: rem(10px);
+    height:rem(10px);
+    background-color: #000;
+    position: absolute;
+  }
   .required {
     &:after {
       content: "*";
