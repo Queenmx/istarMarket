@@ -19,8 +19,8 @@
     </div>
     </div>
     <ul class="list chat">
-      <li v-for="item in messageList" :key="item.id" :class="[item.from==='admin'?'service':'users']">
-          <div v-if="item.from==='admin'">
+      <li v-for="item in messageList" :key="item.id" :class="[item.from==='xiaoxiao'?'service':'users']">
+          <div v-if="item.from==='xiaoxiao'|| item.from==='admin'">
             <span class="faceImg"><img src="../../assets/images/serPic.png" alt="" ></span>
             <span class="dialog">{{item.data}}</span>
           </div>
@@ -43,6 +43,8 @@
   </div>
 </template>
 <script>
+import { getToken } from "@/util/axios.js";
+import { getItem } from "@/util/util.js";
 export default {
   data() {
     return {
@@ -51,18 +53,21 @@ export default {
       message: "",
       openService: false,
       messageList: [],
-      selected: "zhangxiansheng",
-      Emoji: WebIM.Emoji
+      selected: "xiaoxiao",
+      Emoji: WebIM.Emoji,
+      userInfo: JSON.parse(getItem("userInfo"))
     };
   },
   mounted() {
+    this.initData();
     var self = this;
     this.conn = new WebIM.connection({
       isMultiLoginSessions: WebIM.config.isMultiLoginSessions,
-      https:
-        typeof WebIM.config.https === "boolean"
-          ? WebIM.config.https
-          : location.protocol === "https:",
+      //   https:
+      //     typeof WebIM.config.https === "boolean"
+      //       ? WebIM.config.https
+      //       : location.protocol === "https:",
+      https: WebIM.config.https,
       url: WebIM.config.xmppURL,
       heartBeatWait: WebIM.config.heartBeatWait,
       autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
@@ -70,7 +75,7 @@ export default {
       apiUrl: WebIM.config.apiURL,
       isAutoLogin: true
     });
-    this.register();
+    // this.register();
     this.login();
     this.conn.listen({
       onOpened: function() {
@@ -92,6 +97,22 @@ export default {
         // self.returnMessage.push(message);
         self.messageList.push(message);
         console.log(message);
+        if (WebIM.config.isWindowSDK) {
+          message = eval("(" + message + ")");
+        }
+
+        Demo.api.addToChatRecord(message, "txt");
+        Demo.api.appendMsg(message, "txt");
+
+        if (Demo.selected == message.from) {
+          var id = message.id,
+            sentByMe = message.from === Demo.user;
+          var targetId =
+            sentByMe || message.type !== "chat" ? message.to : message.from;
+          Demo.chatRecord[targetId].messages[id].read = true;
+          // 发送已读回执
+          Demo.api.sendRead(message);
+        }
       },
       onEmojiMessage: function(message) {
         console.log("Emoji");
@@ -114,6 +135,12 @@ export default {
     }
   },
   methods: {
+    async initData() {
+      var data = {
+        userId: this.userInfo.userId
+      };
+      let res = await getToken(data);
+    },
     pop() {
       this.openService = true;
     },
@@ -144,24 +171,36 @@ export default {
         },
         apiUrl: WebIM.config.apiURL
       };
-      //   this.conn.registerUser(options);
-      WebIM.utils.registerUser(options);
+      this.conn.registerUser(options);
+      //   WebIM.utils.registerUser(options);
     },
     login() {
       var userInfo = window.localStorage.getItem("userInfo");
       var user = JSON.parse(userInfo);
-      var username = user.userId;
-      var password = user.userId;
+      var username = user.userName;
+      var password = user.userName;
+      //   var options = {
+      //     apiUrl: WebIM.config.apiURL,
+      //     user: username,
+      //     pwd: password,
+      //     appKey: WebIM.config.appkey,
+      //     success: function(token) {
+      //       var token = token.access_token;
+      //       WebIM.utils.setCookie("webim_" + encryptUsername, token, 1);
+      //     },
+      //     error: function() {}
+      //   };
       var options = {
         apiUrl: WebIM.config.apiURL,
         user: username,
-        pwd: password,
-        appKey: WebIM.config.appkey,
-        success: function(token) {
-          var token = token.access_token;
-          WebIM.utils.setCookie("webim_" + encryptUsername, token, 1);
-        },
-        error: function() {}
+        accessToken:
+          "YWMtoThfSjGTEeiGZMOzgKD_2cioNyAKVxHokWCftwEolXIGPkswMYQR6IH_Ky-kkXwqAwMAAAFiZnCU3QBPGgC2ybtnetUIdTWrvDPz4fmR8Hfn8bz9bSJhJbe1-tVMyg",
+        appKey: WebIM.config.appkey
+        // success: function(token) {
+        //   var token = token.access_token;
+        //   WebIM.utils.setCookie("webim_" + encryptUsername, token, 1);
+        // },
+        // error: function() {}
       };
       this.conn.open(options);
     },
