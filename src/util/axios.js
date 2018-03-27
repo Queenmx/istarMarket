@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Qs from 'qs'
 import { baseUrl, baseUrl2, KEY } from '../config'
-import { strEnc, strDec } from './aes.js'
+// import { strEnc, strDec } from './aes.js'
 function fetch(url, params, isOa) {
     var baseurl = baseUrl
     if (isOa) {
@@ -9,6 +9,7 @@ function fetch(url, params, isOa) {
     }
     return new Promise((resolve, reject) => {
         //这里做加密
+        // var encData = strEnc(JSON.stringify(params), KEY)
         // params
         axios.post(baseurl + url, Qs.stringify(params), {
             headers: {
@@ -16,13 +17,13 @@ function fetch(url, params, isOa) {
             }
         }).then(function (response) {
             //这里做解密
-            console.log(response.data)
-            var deData = strDec(response.data, KEY);
-            console.log(deData)
+            // console.log(response.data)
+            // var deData = strDec(response.data, KEY);
+            // console.log(deData)
             // console.log(response.data);
-            resolve(deData);
-           
-         
+            resolve(response.data);
+
+
         }).catch(function (error) {
             reject(error)
             // console.log("失败")

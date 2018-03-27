@@ -80,11 +80,11 @@ export default {
       var data = {
         userId: userinfo.userId
       };
-        // var endata = strEnc(data);
-        // var endata = strEnc("你好","ZND171030APIMM");
-        // console.log(endata);
-        // var dedata = strDec(endata,"ZND171030APIMM");
-        // console.log(dedata);
+      // var endata = strEnc(data);
+      var endata = strEnc("你好", "ZND20171030APIMM");
+      console.log(endata);
+      var dedata = strDec(endata, "ZND20171030APIMM");
+      console.log(dedata);
       let res = await getUserinfo(data);
       if (res.code === "0000") {
         this.phone = res.data.phone;

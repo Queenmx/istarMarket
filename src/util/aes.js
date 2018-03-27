@@ -1,7 +1,5 @@
 // import { aesjs } from 'aes-js';
 // var aesjs = require('aes-js');
-var key_128 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-var KEY = ['Z', 'N', 'D', '2', '0', '1', '7', '1', '0', '3', '0', 'A', 'P', 'I', 'M', 'M']
 // var textBytes = aesjs.utils.utf8.toBytes(text);
 // var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
 // var encryptedBytes = aesCtr.encrypt(textBytes);
@@ -46,7 +44,7 @@ function strDec1(text, key) {
     return decryptedText
 }
 export function strEnc(word, key) {
-    var key = CryptoJS.enc.Utf8.parse(key);
+    key = CryptoJS.enc.Utf8.parse(key);
     var srcs = CryptoJS.enc.Utf8.parse(word);
     var encrypted = CryptoJS.AES.encrypt(srcs, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
     return encrypted.toString();
@@ -58,7 +56,9 @@ export function strEnc(word, key) {
  * @returns {*}
  */
 export function strDec(word, key) {
-    var key = CryptoJS.enc.Utf8.parse(key);
+    key = CryptoJS.enc.Utf8.parse(key);
     var decrypt = CryptoJS.AES.decrypt(word, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
+    console.log("hhhh", decrypt)
+    console.log(CryptoJS.enc.Utf8.stringify(decrypt))
     return CryptoJS.enc.Utf8.stringify(decrypt).toString();
 }
