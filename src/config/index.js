@@ -10,7 +10,8 @@ if (process.env.NODE_ENV === 'development') {
     // baseUrl = '/zndai/'
 } else if (process.env.NODE_ENV === 'production') {
     baseUrl = 'http://fsapi.starjrcs.com:8887/'
-    baseUrl2 = 'http://wuhanxingrong.vicp.io:8185/'
+    // baseUrl = 'http://wuhanxingrong.vicp.io:18887/'
+    baseUrl2 = 'http://marketoa.istarcredit.com:8185/'
 }
 export {
     baseUrl,
