@@ -9,9 +9,10 @@
           <span>{{money}}</span>
           <p>星币</p>
         </div>
-        <div class="btn">
+        <!-- 充值功能先注释掉 -->
+        <!-- <div class="btn">
          <input type="button" value="充值" @click="goPay">
-        </div>
+        </div> -->
     </div>
    <div class="select flex">
       <!-- <ul>
