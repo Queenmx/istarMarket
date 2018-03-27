@@ -11,7 +11,7 @@
 		<div v-for="(items,i) in data" :key="i">
 			<split></split>
 			<ul>
-				<li class="wrap flex item" v-for="(item,i) in items" :key="i" @click="goFun(item.url)">
+				<li class="wrap flex item" v-for="(item,i) in items" v-if="item.url" :key="i" @click="goFun(item.url)">
 					<span :class="item.class"></span>
 					<div class="desc">{{item.desc}}</div>
 					<i class="el-icon-arrow-right" :class="[{'el-icon-arrow-right':item.isIcon},'right']" v-if="item.isIcon"></i>
@@ -34,7 +34,17 @@ export default {
       phone: "",
       companyName: "",
       userName: "",
-      data: [
+      accountType: JSON.parse(getItem("userInfo")).accountType,
+      data: []
+    };
+  },
+  mounted() {
+    this.setItems();
+    this.initData();
+  },
+  methods: {
+    setItems() {
+      var data = [
         [
           {
             class: "icon-money",
@@ -61,17 +71,13 @@ export default {
             class: "icon-myService",
             desc: "我的客服",
             isIcon: true,
-            url: "/users/myService"
+            url: this.accountType === "主账号" ? "/users/myService" : ""
           },
           { class: "icon-set", desc: "设置", isIcon: true, url: "/users/set" }
         ]
-      ]
-    };
-  },
-  mounted() {
-    this.initData();
-  },
-  methods: {
+      ];
+      this.data = data;
+    },
     async initData() {
       getItem("userinfo");
       console.log(localStorage);
@@ -91,6 +97,7 @@ export default {
         this.companyName = res.data.companyName;
         this.headPic = res.data.headPic;
         this.userName = res.data.userName;
+        this.accountType = res.data.accountType;
       }
     },
 

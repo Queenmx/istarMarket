@@ -25,7 +25,7 @@
             <span class="dialog">{{item.data}}</span>
           </div>
           <div v-else>
-            <span class="faceImg"><img src="../../assets/images/usersPic.png" alt="" ></span>
+            <span class="faceImg"><img src="../../assets/images/yixiang.png" alt="" ></span>
             <span class="dialog">{{item.data}}</span>
         </div>
       </li>
@@ -56,79 +56,11 @@ export default {
       selected: "xiaoxiao",
       Emoji: WebIM.Emoji,
       userInfo: JSON.parse(getItem("userInfo")),
-      token: ""
+      tokenkey: ""
     };
   },
   mounted() {
-    this.initData();
-    var self = this;
-    this.conn = new WebIM.connection({
-      isMultiLoginSessions: WebIM.config.isMultiLoginSessions,
-      //   https:
-      //     typeof WebIM.config.https === "boolean"
-      //       ? WebIM.config.https
-      //       : location.protocol === "https:",
-      https: WebIM.config.https,
-      url: WebIM.config.xmppURL,
-      heartBeatWait: WebIM.config.heartBeatWait,
-      autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
-      autoReconnectInterval: WebIM.config.autoReconnectInterval,
-      apiUrl: WebIM.config.apiURL,
-      isAutoLogin: true
-    });
-    // this.register();
-    this.login();
-    this.conn.listen({
-      onOpened: function() {
-        self.conn.setPresence();
-        console.log(this.context.userId + "登陆成功");
-        this.getRoster({
-          success: function(roster) {
-            self.friends = roster;
-          },
-          error: function() {}
-        });
-      },
-      onClosed: function() {
-        console.log("onClosed");
-        // self.$route.$router.go({ name: "index" });
-      },
-      onTextMessage: function(message) {
-        console.log(message);
-        // self.returnMessage.push(message);
-        self.messageList.push(message);
-        console.log(message);
-        if (WebIM.config.isWindowSDK) {
-          message = eval("(" + message + ")");
-        }
-
-        Demo.api.addToChatRecord(message, "txt");
-        Demo.api.appendMsg(message, "txt");
-
-        if (Demo.selected == message.from) {
-          var id = message.id,
-            sentByMe = message.from === Demo.user;
-          var targetId =
-            sentByMe || message.type !== "chat" ? message.to : message.from;
-          Demo.chatRecord[targetId].messages[id].read = true;
-          // 发送已读回执
-          Demo.api.sendRead(message);
-        }
-      },
-      onEmojiMessage: function(message) {
-        console.log("Emoji");
-        var data = message.data;
-        for (var i = 0, l = data.length; i < l; i++) {
-          console.log(data[i]);
-        }
-      },
-      onPictureMessage: function(message) {
-        console.log("Location of Picture is ", message.url);
-      },
-      onError: function(message) {
-        console.log("回调失败", message);
-      }
-    });
+    this.init();
   },
   watch: {
     messageList: function() {
@@ -136,13 +68,72 @@ export default {
     }
   },
   methods: {
+    async init() {
+      var self = this;
+      await self.initData();
+      this.conn = new WebIM.connection({
+        isMultiLoginSessions: WebIM.config.isMultiLoginSessions,
+        //   https:
+        //     typeof WebIM.config.https === "boolean"
+        //       ? WebIM.config.https
+        //       : location.protocol === "https:",
+        https: WebIM.config.https,
+        url: WebIM.config.xmppURL,
+        heartBeatWait: WebIM.config.heartBeatWait,
+        autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
+        autoReconnectInterval: WebIM.config.autoReconnectInterval,
+        apiUrl: WebIM.config.apiURL,
+        isAutoLogin: true
+      });
+      // this.register();
+      this.login();
+      this.conn.listen({
+        onOpened: function() {
+          self.conn.setPresence();
+          console.log(this.context.userId + "登陆成功");
+          this.getRoster({
+            success: function(roster) {
+              self.friends = roster;
+            },
+            error: function() {}
+          });
+        },
+        onClosed: function() {
+          console.log("onClosed");
+          // self.$route.$router.go({ name: "index" });
+        },
+        onTextMessage: function(message) {
+          console.log(message);
+          // self.returnMessage.push(message);
+          self.messageList.push(message);
+          console.log(message);
+          // if (WebIM.config.isWindowSDK) {
+          //   message = eval("(" + message + ")");
+          // }
+        },
+        onEmojiMessage: function(message) {
+          console.log("Emoji");
+          var data = message.data;
+          for (var i = 0, l = data.length; i < l; i++) {
+            console.log(data[i]);
+          }
+        },
+        onPictureMessage: function(message) {
+          console.log("Location of Picture is ", message.url);
+        },
+        onError: function(message) {
+          console.log("回调失败", message);
+        }
+      });
+    },
     async initData() {
       var data = {
         userId: this.userInfo.userId
       };
       let res = await getToken(data);
-      if (res.data === "0000") {
-        this.token = res.data.access_token;
+      if (res.code === "0000") {
+        this.tokenkey = res.data.access_token;
+        // console.log("aaaa", this.tokenkey, res.data.access_token);
       }
     },
     pop() {
@@ -158,8 +149,8 @@ export default {
     //   }
     // },
     register() {
-      var username = userInfo.userId;
-      var password = userInfo.userId;
+      var username = this.userInfo.userId;
+      var password = this.userInfo.userId;
       var options = {
         username: username,
         password: password,
@@ -177,7 +168,8 @@ export default {
       //   WebIM.utils.registerUser(options);
     },
     login() {
-      var username = userInfo.userName;
+      var self = this;
+      var username = self.userInfo.userName;
       //   var options = {
       //     apiUrl: WebIM.config.apiURL,
       //     user: username,
@@ -192,7 +184,9 @@ export default {
       var options = {
         apiUrl: WebIM.config.apiURL,
         user: username,
-        accessToken: this.token,
+        // accessToken:
+        //   "YWMtOp_hejGpEei6Ae01fyg3ZcioNyAKVxHokWCftwEolXJ2rp1AMaUR6Kx4-z9GM8AWAwMAAAFiZv4iXwBPGgDuQoRyOpzOBzvz9qpamykOgJAA62S2Gm1ZLm4Y-Qva1w",
+        accessToken: self.tokenkey,
         appKey: WebIM.config.appkey
         // success: function(token) {
         //   var token = token.access_token;
@@ -204,7 +198,7 @@ export default {
     },
     sendMessage() {
       var self = this;
-      var username = userInfo.userId;
+      var username = this.userInfo.userId;
       var messageContext = document.getElementById("msg").value;
       if (!messageContext.trim()) {
         // this.$message("不能发送空白信息");
