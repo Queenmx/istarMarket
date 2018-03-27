@@ -25,7 +25,7 @@
             <span class="dialog">{{item.data}}</span>
           </div>
           <div v-else>
-            <span class="faceImg"><img src="../../assets/images/usersPic.png" alt="" ></span>
+            <span class="faceImg"><img src="../../assets/images/yixiang.png" alt="" ></span>
             <span class="dialog">{{item.data}}</span>
         </div>
       </li>
