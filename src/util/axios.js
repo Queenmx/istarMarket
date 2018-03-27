@@ -16,8 +16,13 @@ function fetch(url, params, isOa) {
             }
         }).then(function (response) {
             //这里做解密
-            resolve(response.data)
-            console.log(res.data)
+            console.log(response.data)
+            var deData = strDec(response.data, KEY);
+            console.log(deData)
+            // console.log(response.data);
+            resolve(deData);
+           
+         
         }).catch(function (error) {
             reject(error)
             // console.log("失败")
