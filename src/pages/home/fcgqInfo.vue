@@ -250,6 +250,18 @@ export default {
   //   position: relative;
   //   box-sizing: border-box;
   //   overflow: auto;
+  .rest{
+   .el-select{
+     
+        input{
+       text-indent: -999em; /*文本向左缩进*/  
+  margin-left: -100%; /*输入框光标起始点向左左移*／ 
+  width: 200%; /*输入框增大一倍*/  
+  opacity: 0;  
+    }
+    
+   }
+  }
   .over {
     width: rem(10px);
     height: rem(10px);
