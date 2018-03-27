@@ -55,7 +55,8 @@ export default {
       messageList: [],
       selected: "xiaoxiao",
       Emoji: WebIM.Emoji,
-      userInfo: JSON.parse(getItem("userInfo"))
+      userInfo: JSON.parse(getItem("userInfo")),
+      token: ""
     };
   },
   mounted() {
@@ -140,6 +141,9 @@ export default {
         userId: this.userInfo.userId
       };
       let res = await getToken(data);
+      if (res.data === "0000") {
+        this.token = res.data.access_token;
+      }
     },
     pop() {
       this.openService = true;
@@ -154,10 +158,8 @@ export default {
     //   }
     // },
     register() {
-      var userInfo = window.localStorage.getItem("userInfo");
-      var user = JSON.parse(userInfo);
-      var username = user.userId;
-      var password = user.userId;
+      var username = userInfo.userId;
+      var password = userInfo.userId;
       var options = {
         username: username,
         password: password,
@@ -175,10 +177,7 @@ export default {
       //   WebIM.utils.registerUser(options);
     },
     login() {
-      var userInfo = window.localStorage.getItem("userInfo");
-      var user = JSON.parse(userInfo);
-      var username = user.userName;
-      var password = user.userName;
+      var username = userInfo.userName;
       //   var options = {
       //     apiUrl: WebIM.config.apiURL,
       //     user: username,
@@ -193,8 +192,7 @@ export default {
       var options = {
         apiUrl: WebIM.config.apiURL,
         user: username,
-        accessToken:
-          "YWMtoThfSjGTEeiGZMOzgKD_2cioNyAKVxHokWCftwEolXIGPkswMYQR6IH_Ky-kkXwqAwMAAAFiZnCU3QBPGgC2ybtnetUIdTWrvDPz4fmR8Hfn8bz9bSJhJbe1-tVMyg",
+        accessToken: this.token,
         appKey: WebIM.config.appkey
         // success: function(token) {
         //   var token = token.access_token;
@@ -206,9 +204,7 @@ export default {
     },
     sendMessage() {
       var self = this;
-      var userInfo = window.localStorage.getItem("userInfo");
-      var user = JSON.parse(userInfo);
-      var username = user.userId;
+      var username = userInfo.userId;
       var messageContext = document.getElementById("msg").value;
       if (!messageContext.trim()) {
         // this.$message("不能发送空白信息");
