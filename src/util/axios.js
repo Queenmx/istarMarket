@@ -309,3 +309,11 @@ export const creditHistory = (params) => {
     params = JSON.stringify(params)
     return fetch('jrcs/report/queryHistory', { params })
 }
+/**
+ * 获取token
+ * @param {*} params 
+ */
+export const getToken = (params) => {
+    params = JSON.stringify(params)
+    return fetch('jrcs/user/huanXinToken', { params })
+}
