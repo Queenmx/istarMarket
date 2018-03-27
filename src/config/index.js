@@ -5,6 +5,8 @@ const KEY = "ZND171030APIMM"
 if (process.env.NODE_ENV === 'development') {
     baseUrl = 'http://wuhanxingrong.vicp.io:18887/'
     baseUrl2 = 'http://wuhanxingrong.vicp.io:8185/'
+    // baseUrl = 'http://192.168.0.31:8185/'
+    // baseUrl2 = 'http://192.168.0.31:8185/'
     // baseUrl = '192.168.0.42:8887/'//金融超市地址
     // baseUrl2 = ''//OA地址
     // baseUrl = 'http://tdx.free.ngrok.cc/zndai/'
