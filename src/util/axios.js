@@ -1,19 +1,21 @@
 import axios from 'axios'
 import Qs from 'qs'
-import { baseUrl, baseUrl2 } from '../config'
-
+import { baseUrl, baseUrl2, KEY } from '../config'
+import { strEnc, strDec } from './aes.js'
 function fetch(url, params, isOa) {
     var baseurl = baseUrl
     if (isOa) {
         baseurl = baseUrl2
     }
     return new Promise((resolve, reject) => {
+        //这里做加密
         // params
         axios.post(baseurl + url, Qs.stringify(params), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         }).then(function (response) {
+            //这里做解密
             resolve(response.data)
             console.log(res.data)
         }).catch(function (error) {

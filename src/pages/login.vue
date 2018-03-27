@@ -51,7 +51,7 @@ export default {
         let res = await getUser(data);
         if (res.code === "0000") {
           setItem("userInfo", res.data);
-          if (res.data.changePwd === 0) {
+          if (res.data.changePwd === "0") {
             this.$router.push({ path: "/resetPassword" });
           } else {
             this.$router.push({ path: "/" });

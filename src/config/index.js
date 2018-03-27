@@ -1,6 +1,7 @@
 let baseUrl, baseUrl2 = ''
 let routerMode = 'history'
 let imgBaseUrl = 'http://images.cangdu.org/'
+const KEY = "ZND171030APIMM"
 if (process.env.NODE_ENV === 'development') {
     baseUrl = 'http://wuhanxingrong.vicp.io:18887/'
     baseUrl2 = 'http://wuhanxingrong.vicp.io:8185/'
@@ -17,5 +18,6 @@ export {
     baseUrl,
     baseUrl2,
     routerMode,
-    imgBaseUrl
+    imgBaseUrl,
+    KEY
 }
