@@ -56,7 +56,7 @@ export default {
       selected: "xiaoxiao",
       Emoji: WebIM.Emoji,
       userInfo: JSON.parse(getItem("userInfo")),
-      token: ""
+      tokenkey: ""
     };
   },
   mounted() {
@@ -142,7 +142,8 @@ export default {
       };
       let res = await getToken(data);
       if (res.data === "0000") {
-        this.token = res.data.access_token;
+        this.tokenkey = res.data.access_token;
+        console.log(this.tokenkey);
       }
     },
     pop() {
@@ -158,8 +159,8 @@ export default {
     //   }
     // },
     register() {
-      var username = userInfo.userId;
-      var password = userInfo.userId;
+      var username = this.userInfo.userId;
+      var password = this.userInfo.userId;
       var options = {
         username: username,
         password: password,
@@ -177,7 +178,7 @@ export default {
       //   WebIM.utils.registerUser(options);
     },
     login() {
-      var username = userInfo.userName;
+      var username = this.userInfo.userName;
       //   var options = {
       //     apiUrl: WebIM.config.apiURL,
       //     user: username,
@@ -192,7 +193,7 @@ export default {
       var options = {
         apiUrl: WebIM.config.apiURL,
         user: username,
-        accessToken: this.token,
+        accessToken: this.tokenkey,
         appKey: WebIM.config.appkey
         // success: function(token) {
         //   var token = token.access_token;
@@ -204,7 +205,7 @@ export default {
     },
     sendMessage() {
       var self = this;
-      var username = userInfo.userId;
+      var username = this.userInfo.userId;
       var messageContext = document.getElementById("msg").value;
       if (!messageContext.trim()) {
         // this.$message("不能发送空白信息");
