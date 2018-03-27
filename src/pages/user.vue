@@ -26,6 +26,7 @@
 <script>
 import { getUserinfo } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
+import { strEnc , strDec} from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -79,6 +80,10 @@ export default {
       var data = {
         userId: userinfo.userId
       };
+      var endata = strEnc(data);
+      console.log(endata);
+      var dedata = strDec(endata);
+      console.log(dedata)
       let res = await getUserinfo(data);
       if (res.code === "0000") {
         this.phone = res.data.phone;
