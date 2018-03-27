@@ -9,11 +9,13 @@
 			<split></split>
             <!-- <h4 class="wrap item-title">贷款信息</h4> -->
             <ul>
-                <li class="wrap flex item" v-for="(val,key) in temple[curPage]" :key="curPage+''+key">
+              
+          <li class="wrap flex item" v-for="(val,key) in temple[curPage]" :key="curPage+''+key">
 					<label :class="[val.required==='yes'?'required':'','left']">{{val.name}}</label>
 					<div class="rest">
 						<input type="text" :placeholder="'请输入'+val.name" v-if="val.type=='text'" v-model="data[curPage][key]">
-                        <el-select v-model="data[curPage][key]" placeholder="请选择" v-else>
+                        <el-select v-model="data[curPage][key]" placeholder="请选择" v-else @focus="preventBorad">
+                          
                             <el-option v-for="ops in val.list" :key="ops" :label="ops" :value="ops">
                             </el-option>
                         </el-select>
@@ -96,7 +98,7 @@ export default {
             for (let subkey in data[key]) {
               if (data[key].hasOwnProperty(subkey)) {
                 obj[key][subkey] = "";
-                if (data[key][subkey].required) {
+                if (data[key][subkey].required === "yes") {
                   requiredObj[key][subkey] = data[key][subkey].name;
                 }
               }
@@ -120,6 +122,9 @@ export default {
       } else {
         // this.$message(res.msg);
       }
+    },
+    preventBorad(e) {
+      document.activeElement.blur();
     },
     updateData() {
       let res = this.check(this.curPage);
@@ -177,10 +182,16 @@ export default {
     check(curPage) {
       let data = this.data[curPage];
       let required = this.requiredObj[curPage];
-      if ((curPage === 1 && data["estate_status"]) !== "租赁") {
+      if (
+        (curPage === 1 && data["estate_status"]) !== "租赁" &&
+        this.temple[1].estate_desc &&
+        this.temple[1].estate_desc.name == "租金" //租金判断是因为后台有字段冲突，租金key与所属部门key相同
+      ) {
         delete required["estate_desc"];
       } else {
-        required["estate_desc"] = "租金";
+        if (this.temple[1].estate_desc) {
+          required["estate_desc"] = this.temple[1].estate_desc.name;
+        }
       }
       for (let key in data) {
         if (required[key]) {
@@ -235,9 +246,28 @@ export default {
   padding-bottom: rem(91px);
   min-height: 100%;
   background-color: $bgcolor;
+  box-sizing: border-box;
   //   position: relative;
   //   box-sizing: border-box;
   //   overflow: auto;
+  .rest{
+   .el-select{
+     
+        input{
+       text-indent: -999em; /*文本向左缩进*/  
+  margin-left: -100%; /*输入框光标起始点向左左移*／ 
+  width: 200%; /*输入框增大一倍*/  
+  opacity: 0;  
+    }
+    
+   }
+  }
+  .over {
+    width: rem(10px);
+    height: rem(10px);
+    background-color: #000;
+    position: absolute;
+  }
   .required {
     &:after {
       content: "*";
@@ -256,6 +286,7 @@ export default {
     background-color: #fff;
     input {
       border: none;
+      width: 100%;
     }
     .left {
       width: rem(190px);

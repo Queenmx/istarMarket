@@ -86,7 +86,7 @@
 </template>
 <script>
 import { oaDayly } from "@/util/axios.js";
-import { getItem, checkSys } from "@/util/util.js";
+import { getItem, checkSys, callAddress, initMap } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
@@ -104,7 +104,7 @@ export default {
       // 定位
       center: { lng: 0, lat: 0 },
       zoom: 4,
-      address: self.address,
+      address: "定位中",
       //树形图
 
       input: "",
@@ -131,9 +131,23 @@ export default {
     };
   },
   mounted() {
-    this.initMap();
-    this.getPosition();
+    // this.initMap();
+    // this.getPosition();
+    var res = checkSys();
+    var self = this;
     this.initData();
+    if (res === "ios") {
+      setTimeout(function() {
+        self.initMap();
+        self.getPosition();
+      }, 1000);
+    } else {
+      callAddress();
+      setTimeout(function() {
+        self.address = getItem("location");
+        initMap(self.address);
+      }, 1000);
+    }
   },
   components: {
     BaiduMap,
@@ -181,9 +195,8 @@ export default {
       //树形图
       console.log(data);
     },
-    
+
     handleRemove(file, fileList) {
-      
       console.log(file, fileList);
     },
     handlePictureCardPreview(file) {
@@ -199,14 +212,13 @@ export default {
     //   console.log(file.name);
     //   var reader = new FileReader();
     //     reader.readAsDataURL(file);
-    //     reader.onload = function(e){ 
+    //     reader.onload = function(e){
     //        console.log(this.result) // 这个就是base64编码了
     //     }
     // },
-    
+
     //获取经纬度
     initMap() {
-     
       //   map = new BMap.Map("container");
       //   point = new BMap.Point(116.331398, 39.897445);
       //   map.centerAndZoom(point, 11);
@@ -282,20 +294,17 @@ export default {
       localStorage.removeItem("daylySendto");
       localStorage.removeItem("daylyApprover");
     },
-    removeDone(){
+    removeDone() {
       // console.log(this.done)
-      this.done = ''
-      
+      this.done = "";
     },
-    removeNotDone(){
+    removeNotDone() {
       // console.log(this.done)
-      this.notDone = ''
-      
+      this.notDone = "";
     },
-    removeC(){
+    removeC() {
       // console.log(this.done)
-      this.coordinate = ''
-      
+      this.coordinate = "";
     }
   }
 };

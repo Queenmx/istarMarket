@@ -60,7 +60,7 @@
         <attendanceApartment :seletedDepartment.sync="seletedDepartment" @close="isShowAparment=false"></attendanceApartment>
         </div>
         <div class="subpage-wrap"  v-show="isShowMember">
-        <attendanceMember :memberFlag="memberFlag" :inUsers.sync="inUsers" :leader.sync="leader" @close="isShowMember=false"></attendanceMember>
+        <attendanceMember :memberFlag="memberFlag" :inUsers.sync="inUsers" :leader.sync="leader" @close="isShowMember=false" :seletedDepartment="seletedDepartment"></attendanceMember>
         </div>
         <div class="subpage-wrap"  v-show="isShowAddress">
         <addAddress @submit="getAddress" @close="isShowAddress=false"></addAddress>

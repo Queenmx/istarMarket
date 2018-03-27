@@ -31,7 +31,13 @@
 </template>
 <script>
 import { oaSignIn, oaGetCompany } from "@/util/axios.js";
-import { getItem, checkSys, formateTime } from "@/util/util.js";
+import {
+  getItem,
+  checkSys,
+  formateTime,
+  callAddress,
+  initMap
+} from "@/util/util.js";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
 var map, point, myGeo, geolocation;
 export default {
@@ -69,11 +75,34 @@ export default {
     }
   },
   mounted() {
+    // navigator.geolocation.getCurrentPosition(function(position) {
+    //   x = position.coords.longitude;
+    //   y = position.coords.latitude;
+    // });
+    // setTimeout(function() {
+    //   console.log("========", x, y);
+    // }, 3000);
     this.$refs.addAddress.style.height =
       this.$refs.addAddress.clientHeight + "px";
-    this.initMap();
-    this.getPosition();
+    // this.initMap();
+    // this.getPosition();
+    // this.initData();
+    var res = checkSys();
+    var self = this;
     this.initData();
+    if (res === "ios") {
+      setTimeout(function() {
+        self.initMap();
+        self.getPosition();
+      }, 1000);
+    } else {
+      //   this.initData();
+      callAddress();
+      setTimeout(function() {
+        self.address = getItem("location");
+        initMap(self.address);
+      }, 1000);
+    }
   },
   components: {
     BaiduMap,
@@ -91,21 +120,26 @@ export default {
     initMap() {
       map = new BMap.Map("container");
       point = new BMap.Point(116.331398, 39.897445);
-      map.centerAndZoom(point, 11);
+      map.centerAndZoom(point, 12);
       // 创建地理编码实例
       myGeo = new BMap.Geocoder();
       map.addControl(new BMap.NavigationControl());
       geolocation = new BMap.Geolocation();
     },
     getPosition() {
+      //   var xlng = 0.04819374,
+      //     ylat = -0.0058955;
+      var xlng = 0,
+        ylat = 0;
       var self = this;
       geolocation.getCurrentPosition(
         function(r) {
           if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            map.centerAndZoom(point, 16);
             var mk = new BMap.Marker(r.point);
             map.addOverlay(mk);
             map.panTo(r.point);
-            self.changeToAddress(r.point.lng, r.point.lat);
+            self.changeToAddress(r.point.lng + xlng, r.point.lat + ylat);
           } else {
             alert("failed" + this.getStatus());
           }

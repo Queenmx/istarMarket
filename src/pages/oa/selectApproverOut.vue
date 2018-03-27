@@ -80,7 +80,7 @@ export default {
     go() {
       if (this.user && this.user !== "") {
         setItem("approverOut", this.user);
-        setItem('approverOutId',this.radioType)
+        setItem("approverOutId", this.radioType);
         // setItem("approverOutId1", this.radioType);
         this.$router.push({ path: "/oaSystem/out" });
       }
@@ -98,7 +98,9 @@ export default {
 ul {
   width: 100%;
   height: 100%;
-  margin-bottom: rem(100px);
+  padding-bottom: rem(100px);
+  box-sizing: border-box;
+  //   margin-bottom: rem(100px);
 }
 .selectApartment {
   .el-icon-circle-check {

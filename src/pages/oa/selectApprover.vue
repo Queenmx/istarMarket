@@ -80,7 +80,7 @@ export default {
     go() {
       if (this.user && this.user !== "") {
         setItem("approver", this.user);
-        setItem('approverId',this.radioType)
+        setItem("approverId", this.radioType);
         // setItem("approverId", this.radioType);
         console.log(localStorage);
         this.$router.push({ path: "/oaSystem/leave" });
@@ -100,7 +100,8 @@ export default {
 ul {
   width: 100%;
   height: 100%;
-  margin-bottom: rem(100px);
+  padding-bottom: rem(100px);
+  box-sizing: border-box;
 }
 .selectApartment {
   .el-icon-circle-check {

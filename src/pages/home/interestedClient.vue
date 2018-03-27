@@ -12,14 +12,17 @@
 					<div class="rest">
 						<div class="avatar-wrap">
 							<img class="avatar" :src="item.headPic" >
+              <div v-show="item.userId" class="done">已抢单</div>
 						</div>
+            
 						<div class="inblock">
 							<p>{{item.name}}</p>
 							<p class="orange">{{item.applyMoney}}</p>
 							<p class="grey">贷款期限：{{item.limitDay}}</p>
 						</div>
 					</div>
-					<div class="btn" @click="grabOrder(item.customerId)"><span>抢单</span></div>
+          
+					<div class="btn" @click="grabOrder(item.customerId,item.userId)"><span>抢单</span></div>
 				</div>
 			</li>
 		</ul>
@@ -51,11 +54,16 @@ export default {
         console.log(res.data.customerList);
       }
     },
-    grabOrder(customerId) {
-      this.$router.push({
-        name: "clientInfo",
-        params: { customerId }
-      });
+    grabOrder(customerId,userId) {
+      if(userId){
+        this.$message('已抢单，请勿重复抢单')
+      }else{
+        this.$router.push({
+                name: "clientInfo",
+                params: { customerId }
+              });
+      }
+     
     },
     goRecord() {
       this.$router.push({ path: "/home/orderRecord" });
@@ -68,7 +76,17 @@ export default {
 .interestedClient {
   min-height: 100%;
   background-color: $bgcolor;
+  .done{
+    position: absolute;
+    top:rem(5px);
+    font-size: rem(12px);
+    right: rem(15px);
+   
+    background-color: grey;
+    color: #fff;
+  }
   .item {
+    position: relative;
     align-items: center;
     height: rem(200px);
     font-size: rem(30px);
@@ -90,7 +108,11 @@ export default {
     border-radius: 5px;
     box-shadow: 2px 2px 5px #fdbbbb;
   }
+  .avatar-wrap{
+ position: relative;
+  }
   .avatar {
+   
     width: rem(120px);
     height: rem(120px);
     vertical-align: middle;

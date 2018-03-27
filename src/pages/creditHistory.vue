@@ -32,13 +32,15 @@ export default {
       var data = {
         salerId: JSON.parse(getItem("userInfo")).userId
       };
-
       console.log(data);
       let res = await creditHistory(data);
       console.log(res);
       if (res.code === "0000") {
         this.list = res.data.reportList;
         console.log(res.data);
+        if(!res.data.reportList){
+          this.$message(res.data.message)
+        }
       } else {
         this.$message(res.msg);
       }

@@ -20,7 +20,7 @@ import footer2 from "../../components/footer2";
 import { getMembers, oaSearchUser } from "@/util/axios";
 import { getItem } from "@/util/util";
 export default {
-  props: ["memberFlag", "inUsers", "leader"],
+  props: ["memberFlag", "inUsers", "leader", "seletedDepartment"],
   data() {
     return {
       status: this.$route.query.status,
@@ -49,6 +49,12 @@ export default {
           break;
       }
       console.log(this.memberFlag);
+    },
+    seletedDepartment: function() {
+      console.log(
+        "length:",
+        Object.getOwnPropertyNames(this.seletedDepartment)
+      );
     }
   },
   mounted() {
@@ -64,6 +70,10 @@ export default {
         this.isAll = false;
       }
       return length;
+    },
+    filterUsers() {
+      let length = this.seletedDepartment.length;
+      console.log("length", length);
     }
   },
   components: {

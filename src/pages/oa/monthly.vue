@@ -84,7 +84,7 @@
 </template>
 <script>
 import { oaMonthly } from "@/util/axios.js";
-import { getItem, checkSys } from "@/util/util.js";
+import { getItem, checkSys, callAddress, initMap } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
@@ -102,7 +102,8 @@ export default {
       // 定位
       center: { lng: 0, lat: 0 },
       zoom: 4,
-      address: self.address,
+      //   address: self.address,
+      address: "定位中",
       //树形图
 
       defaultProps: {
@@ -133,9 +134,23 @@ export default {
     };
   },
   mounted() {
-    this.initMap();
-    this.getPosition();
+    // this.initMap();
+    // this.getPosition();
+    var res = checkSys();
+    var self = this;
     this.initData();
+    if (res === "ios") {
+      setTimeout(function() {
+        self.initMap();
+        self.getPosition();
+      }, 1000);
+    } else {
+      callAddress();
+      setTimeout(function() {
+        self.address = getItem("location");
+        initMap(self.address);
+      }, 1000);
+    }
   },
   components: {
     BaiduMap,

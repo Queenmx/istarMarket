@@ -59,7 +59,9 @@ export default {
     .item-main {
       flex: 1;
       span {
-        font-size: rem(22px);
+        // font-size: rem(22px);
+        font-size: rem(32px);
+        color: #323232;
       }
     }
     .right {
@@ -73,8 +75,10 @@ export default {
     padding-right: rem(10px);
   }
   .avatar {
-    width: rem(60px);
-    height: rem(60px);
+    // width: rem(60px);
+    // height: rem(60px);
+    width: rem(91px);
+    height: rem(94px);
     border-radius: 50%;
     vertical-align: middle;
   }
