@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Qs from 'qs'
 import { baseUrl, baseUrl2, KEY } from '../config'
-// import { strEnc, strDec } from './aes.js'
+import { strEnc, strDec } from './aes.js'
 function fetch(url, params, isOa) {
     var baseurl = baseUrl
     if (isOa) {
@@ -11,7 +11,7 @@ function fetch(url, params, isOa) {
         //这里做加密
         // var encData = strEnc(JSON.stringify(params), KEY)
         // params
-        axios.post(baseurl + url, Qs.stringify(params), {
+        axios.post(baseurl + url, Qs.stringify(encData), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
