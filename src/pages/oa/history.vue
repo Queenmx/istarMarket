@@ -45,7 +45,7 @@
 import { BaiduMap, BmMarker, BmLabel, BmGeolocation } from "vue-baidu-map";
 import { oaTrack } from "@/util/axios.js";
 import { centerTabs, getItem } from "@/util/util.js";
-
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -129,10 +129,13 @@ export default {
         companyId: this.companyId,
         date: this.date
       };
-      let res = await oaTrack(data);
-      if (res.code === "0000") {
-        this.signList = res.data.done;
-        this.unSignList = res.data.unDone;
+        var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaTrack(enData);
+       let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
+        this.signList = deData.data.done;
+        this.unSignList = deData.data.unDone;
       }
     },
     handleClick(tab, event) {

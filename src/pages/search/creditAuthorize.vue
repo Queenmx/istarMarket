@@ -22,6 +22,7 @@
 import { checkMoney, queryMoney } from "@/util/axios";
 import { getItem } from "@/util/util";
 import { costXb } from "@/config/baseVar";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -39,9 +40,13 @@ export default {
       var data = {
         userId: this.userId
       };
-      let res = await queryMoney(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await queryMoney(enData);
+     
       if (res.code === "0000") {
-        this.xb = res.data.xb;
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        this.xb = deData.xb;
         data = {};
       }
     },
@@ -50,9 +55,13 @@ export default {
         userId: this.userId,
         xb: costXb
       };
-      var res = await checkMoney(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var res = await checkMoney(enData);
+      
       if (res.code === "0000") {
-        if (res.data.status == 1) {
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        if (deData.status == 1) {
           this.$router.push({ path: "/search/credit" });
         } else {
           this.$message("星币不足");

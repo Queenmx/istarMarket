@@ -37,6 +37,7 @@
 </template>
 <script>
 import { oaAuditSuggestion } from "@/util/axios.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -67,12 +68,15 @@ export default {
         remarks: this.messge,
         dialogImageUrl: this.dialogImageUrl
       };
-      let res = await oaAuditSuggestion(data);
-      if (res.code == "0000") {
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaAuditSuggestion(enData);
+       let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code == "0000") {
         this.$message("提交成功");
         this.$router.push("/oaSystem/audit");
       } else {
-        this.$message(res.msg);
+        this.$message(deData.msg);
       }
       //   console.log(data);
     }

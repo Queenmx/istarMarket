@@ -22,6 +22,7 @@
 <script>
 import { getItem } from "@/util/util.js";
 import { oaAttendance } from "@/util/axios.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -39,9 +40,12 @@ export default {
         companyId: userinfo.companyId,
         userId: userinfo.userId
       };
-      let res = await oaAttendance(data);
-      if (res.code == "0000") {
-        this.arr = res.data;
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaAttendance(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code == "0000") {
+        this.arr = deData.data;
         console.log(this.arr);
       }
     }

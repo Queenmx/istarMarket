@@ -65,6 +65,7 @@ require("echarts/lib/component/title");
 require("echarts/lib/component/legendScroll");
 import { productDetail, getFee } from "@/util/axios";
 import { getItem, checkSys } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 var myChart;
 export default {
   data() {
@@ -99,10 +100,13 @@ export default {
       var data = {
         loanId: this.loanId
       };
-      var res = await productDetail(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var res = await productDetail(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         // console.log(res.data)
-        this.detailInfo = res.data;
+        this.detailInfo = deData;
         this.money = this.detailInfo.loanAmount;
         this.periods = this.detailInfo.loanPeriod;
         // this.drawChart();
@@ -131,21 +135,24 @@ export default {
         periods: this.periods,
         loanId: this.loanId
       };
-      let res = await getFee(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await getFee(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         let label = [
           `贷款 ${this.money}${this.detailInfo.moneyUnit}/${this.periods}${
             this.detailInfo.limitType
           }`,
-          `利息 ${res.data.interest}${this.detailInfo.moneyUnit}（${
-            res.data.rate
-          }%/${res.data.rateUnit}）`
+          `利息 ${deData.interest}${this.detailInfo.moneyUnit}（${
+            deData.rate
+          }%/${deData.rateUnit}）`
         ];
         let chartData = [
           { value: this.money, name: label[0] },
-          { value: res.data.interest, name: label[1] }
+          { value: deData.interest, name: label[1] }
         ];
-        this.updateChart(res.data.total, label, chartData);
+        this.updateChart(deData.total, label, chartData);
       }
     },
     updateChart(total, label, chartData) {

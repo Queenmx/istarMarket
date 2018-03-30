@@ -82,22 +82,25 @@ export default {
       getItem("userinfo");
       console.log(localStorage);
       let userinfo = JSON.parse(localStorage.userInfo);
-      console.log(userinfo);
+      // console.log(userinfo);
       var data = {
         userId: userinfo.userId
       };
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       // var endata = strEnc(data);
-      var endata = strEnc("你好", "ZND20171030APIMM");
-      console.log(endata);
-      var dedata = strDec(endata, "ZND20171030APIMM");
-      console.log(dedata);
-      let res = await getUserinfo(data);
+      // var endata = strEnc("你好", "ZND20171030APIMM");
+      // console.log(endata);
+      // var dedata = strDec(endata, "ZND20171030APIMM");
+      // console.log(dedata);
+      let res = await getUserinfo(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        this.phone = res.data.phone;
-        this.companyName = res.data.companyName;
-        this.headPic = res.data.headPic;
-        this.userName = res.data.userName;
-        this.accountType = res.data.accountType;
+        this.phone = deData.phone;
+        this.companyName = deData.companyName;
+        this.headPic = deData.headPic;
+        this.userName = deData.userName;
+        this.accountType = deData.accountType;
       }
     },
 

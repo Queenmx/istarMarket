@@ -88,6 +88,7 @@ import { getItem, checkSys, callAddress, initMap } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
+import { strEnc, strDec } from '@/util/aes.js'
 var map, point, myGeo, geolocation;
 export default {
   data() {
@@ -247,6 +248,7 @@ export default {
         approver: localStorage.weeklyApproverId,
         sendTo: this.weeklySendtoinfo
       };
+       let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       if (!this.done.trim()) {
         this.$message("本周完成不能为空");
       } else if (!this.summary.trim()) {
@@ -258,13 +260,15 @@ export default {
       } else if (!localStorage.weeklyApprover) {
         this.$message("发送至不能为空");
       } else {
-        let res = await oaWeekly(data);
-        if (res.code === "0000") {
+        let res = await oaWeekly(enData);
+        let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        if (deData.code === "0000") {
           this.$message("提交成功");
           // console.log(res.code)
           this.$router.push("/oaSystem");
         } else {
-          this.$message(res.msg);
+          this.$message(deData.msg);
         }
       }
     },

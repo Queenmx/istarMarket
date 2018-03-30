@@ -85,6 +85,7 @@
 <script>
 import { getItem } from "@/util/util";
 import { getDetails } from "@/util/axios";
+import { strEnc, strDec } from "@/util/aes.js";
 // import { getTanjiReport, getReportState, crawReport } from "@/util/axios";
 export default {
   data() {
@@ -117,21 +118,23 @@ export default {
        var data = {
         reportId :this.$route.query.reportId
       }
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       console.log(data)
-      let res = await getDetails(data)
-     
+      let res = await getDetails(enData)
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       // console.log(res);
-      this.search_id = res.data.report.head_info.search_id;
-      this.report_time = res.data.report.head_info.report_time;
-      this.score = res.data.report.rong_evaluation.score;
-      this.rating = res.data.report.rong_evaluation.rating;
-      this.real_name = res.data.report.basic_info.real_name;
-      this.id_card = res.data.report.basic_info.id_card;
-      this.credit_card_cnt = res.data.report.credit_card_repay.credit_card_cnt;
-      this.credit_card_repay_amt = res.data.report.credit_card_repay.credit_card_repay_amt;
-      this.credit_card_repay_cnt = res.data.report.credit_card_repay.credit_card_repay_cnt;
-      this.credit_card_max_per_amt = res.data.report.credit_card_repay.credit_card_max_per_amt;
-      this.items = res.data.report.recent_revenue_expend_trend;
+      this.search_id = deData.report.head_info.search_id;
+      this.report_time = deData.report.head_info.report_time;
+      this.score = deData.report.rong_evaluation.score;
+      this.rating = deData.report.rong_evaluation.rating;
+      this.real_name = deData.report.basic_info.real_name;
+      this.id_card = deData.report.basic_info.id_card;
+      this.credit_card_cnt = deData.report.credit_card_repay.credit_card_cnt;
+      this.credit_card_repay_amt = deData.report.credit_card_repay.credit_card_repay_amt;
+      this.credit_card_repay_cnt = deData.report.credit_card_repay.credit_card_repay_cnt;
+      this.credit_card_max_per_amt = deData.report.credit_card_repay.credit_card_max_per_amt;
+      this.items =deData.report.recent_revenue_expend_trend;
 
     } 
   }

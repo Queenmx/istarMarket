@@ -85,6 +85,7 @@
 import Bus from "../../util/Bus.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { oaWaitQuery, oaAlready } from "@/util/axios.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -139,16 +140,19 @@ export default {
       // getItem('sendto')
       getItem("approverOutId");
       getItem("approverOvertimeWorkId");
-      console.log(localStorage);
+      // console.log(localStorage);
       // console.log(value)
       let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
         userId: userinfo.userId
       };
-      let res = await oaWaitQuery(data);
-      if (res.code === "0000") {
-        this.list = res.data;
-        console.log(res.data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaWaitQuery(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
+        this.list = deData.data;
+        // console.log(res.data);
       }
     },
     async already() {
@@ -157,9 +161,13 @@ export default {
       var data = {
         userId: userinfo.userId
       };
-      let res = await oaAlready(data);
-      if (res.code === "0000") {
-        this.listData = res.data;
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaAlready(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      // console.log(deData1);
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
+        this.listData = deData.data;
       }
     },
     goHistory() {

@@ -108,6 +108,7 @@ import { MessageBox } from "element-ui";
 import { oaOut } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -198,7 +199,7 @@ export default {
         approver: localStorage.approverOutId,
         sendTo: this.sendToOut
       };
-
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       if (!this.value2) {
         this.$message("请假开始时间不能为空");
       } else if (!this.value3) {
@@ -210,13 +211,15 @@ export default {
       } else if (!localStorage.approverOutId) {
         this.$message("审批人不能为空");
       } else {
-        let res = await oaOut(data);
-        if (res.code === "0000") {
+        let res = await oaOut(enData);
+         let deData1 = strDec(res,"ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
+        if (deData.code === "0000") {
           this.$message("请假成功");
           // console.log(res.code)
           this.$router.push("/oaSystem");
         } else {
-          this.$message(res.msg);
+          this.$message(deData.msg);
         }
       }
     },

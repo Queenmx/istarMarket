@@ -124,6 +124,7 @@
 </template>
 <script>
 import { oaFlowInfo } from "@/util/axios.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -163,13 +164,15 @@ export default {
         mainId: this.mainId,
         applyId: this.applyId
       };
-
-      let res = await oaFlowInfo(data);
-      if (res.code === "0000") {
-        this.list = res.data.info;
-        console.log(res.data.info);
-        console.log(this.list.status);
-        this.listPlan = res.data.operateList;
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaFlowInfo(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
+        this.list = deData.data.info;
+        // console.log(res.data.info);
+        // console.log(this.list.status);
+        this.listPlan = deData.data.operateList;
       }
     }
   }

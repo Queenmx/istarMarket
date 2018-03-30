@@ -61,6 +61,7 @@ import attendanceCardList from "../../components/attendanceCardList";
 import localPosition from "@/components/localPosition";
 import cardAlert from "../../components/cardAlert";
 import { getItem, formateTime, callAddress, checkSys } from "@/util/util";
+import { strEnc, strDec } from '@/util/aes.js'
 import {
   oaAttendanceInfo,
   oaAttendanceSign,
@@ -139,6 +140,7 @@ export default {
         userId: this.userId,
         date: formateTime(this.timeStamp, "yyyy-MM-dd") + " 00:00:00"
       };
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       console.log(data.date);
       await this.getCompany();
       await this.getAttendance(data);
@@ -148,9 +150,12 @@ export default {
       let data = {
         companyId: JSON.parse(getItem("userInfo")).companyId
       };
-      let res = await oaGetCompany(data);
-      if (res.code === "0000") {
-        this.companyName = res.data.name;
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaGetCompany(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
+        this.companyName = deData.data.name;
       }
     },
     async getGroupName() {
@@ -158,12 +163,15 @@ export default {
         userId: this.userId,
         deptId: this.deptId
       };
-      let res = await oaGroupCheck(data);
-      if (res.code === "0000") {
-        this.groupName = res.data.groupName;
-        this.groupAddress = res.data.location;
-      } else if (res.code === "9999") {
-        this.errorMsg = res.msg;
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaGroupCheck(enData);
+       let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
+        this.groupName = deData.data.groupName;
+        this.groupAddress = deData.data.location;
+      } else if (deData.code === "9999") {
+        this.errorMsg = deData.msg;
       }
     },
     async updateCard() {
@@ -172,20 +180,26 @@ export default {
         time: this.date,
         location: this.address
       };
-      let res = await oaUpdateTime(data);
-      if (res.code === "0000") {
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaUpdateTime(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
         this.$message("更新时间成功");
         let time = formateTime(this.timeStamp, "yyyy-MM-dd") + " 00:00:00";
         this.getData(time);
       } else {
-        this.$message(res.code);
+        this.$message(deData.code);
       }
     },
     async getAttendance(data) {
-      var res = await oaAttendanceInfo(data);
-      if (res.code === "0000") {
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var res = await oaAttendanceInfo(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
         this.flag = [];
-        this.info = res.data;
+        this.info = deData.data;
         if (!Object.keys(this.info).length) {
           this.aPm = false;
           return;
@@ -221,8 +235,11 @@ export default {
         time: this.date,
         location: this.address
       };
-      var res = await oaAttendanceSign(data);
-      if (res.code === "0000") {
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var res = await oaAttendanceSign(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
         this.$refs.alert.open();
         data = {
           userId: this.userId,

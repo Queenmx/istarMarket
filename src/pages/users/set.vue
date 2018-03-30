@@ -66,6 +66,7 @@
 <script>
 import { getSet } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -89,15 +90,18 @@ export default {
         userId: userinfo.userId,
         userName: userinfo.userName
       };
-      let res = await getSet(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await getSet(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        console.log(res.data);
-        this.companyName = res.data.companyName;
-        this.realName = res.data.realName;
-        this.phone = res.data.phone;
-        this.userName = res.data.userName;
-        this.headPic = res.data.headPic;
-        this.accountType = res.data.accountType;
+        
+        this.companyName = deData.companyName;
+        this.realName = deData.realName;
+        this.phone = deData.phone;
+        this.userName = deData.userName;
+        this.headPic =deData.headPic;
+        this.accountType = deData.accountType;
       }
     },
     changepwd() {
