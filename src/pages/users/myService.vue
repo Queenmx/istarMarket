@@ -31,7 +31,7 @@
       </li>
     </ul>
     <ul class="footer">
-        <li class="img1"><img src="../../assets/images/face.png" alt=""></li>
+        <!-- <li class="img1"><img src="../../assets/images/face.png" alt=""></li> -->
         <li class="in1"><textarea type="text" id="msg"></textarea></li>
         <li class="btn" @click="sendMessage()">
             <el-tooltip :disabled="disabled" content="不能发送空白信息" placement="bottom" effect="light">
@@ -184,15 +184,8 @@ export default {
       var options = {
         apiUrl: WebIM.config.apiURL,
         user: username,
-        // accessToken:
-        //   "YWMtOp_hejGpEei6Ae01fyg3ZcioNyAKVxHokWCftwEolXJ2rp1AMaUR6Kx4-z9GM8AWAwMAAAFiZv4iXwBPGgDuQoRyOpzOBzvz9qpamykOgJAA62S2Gm1ZLm4Y-Qva1w",
         accessToken: self.tokenkey,
         appKey: WebIM.config.appkey
-        // success: function(token) {
-        //   var token = token.access_token;
-        //   WebIM.utils.setCookie("webim_" + encryptUsername, token, 1);
-        // },
-        // error: function() {}
       };
       this.conn.open(options);
     },
@@ -311,15 +304,14 @@ export default {
     width: 100%;
     background-color: #f8f8f8;
     position: fixed;
-    bottom: 0;
+    bottom: rem(20px);
     height: rem(100px);
     li:nth-child(1) {
       float: left;
+      margin-left: rem(30px);
+      //   margin-top: rem(20px);
     }
-    li:nth-child(2) {
-      float: left;
-    }
-    li:nth-child(3) {
+    li:last-child {
       float: right;
     }
     .img1 {
@@ -337,7 +329,7 @@ export default {
       }
     }
     .in1 {
-      width: 60%;
+      width: 67%;
       height: rem(70px);
       margin-top: rem(14px);
       textarea {

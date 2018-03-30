@@ -91,7 +91,7 @@ export default {
       let navWidth = nav.offsetWidth;
       let headerWidth = headerNav.offsetWidth;
       console.log(navWidth, headerWidth);
-      if (navWidth < headerWidth) {
+      if (headerWidth > 0 && navWidth < headerWidth) {
         centerTabs();
       }
     },
