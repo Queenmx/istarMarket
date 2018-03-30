@@ -61,6 +61,7 @@
 <script>
 import { getMoney, queryMoney } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     var date = new Date();
@@ -105,14 +106,17 @@ export default {
         pageNum: 1,
         pageSize: 100
       };
-      console.log(this.value2);
-      let res = await getMoney(data);
-
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      // console.log(this.value2);
+      
+      let res = await getMoney(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         // console.log(res.data.xbConsumeList)
         // this.data.desc=res.data.xbConsumeList[0].consume_type
-        this.items = res.data.xbConsumeList;
-        console.log(res.data);
+        this.items =deData.xbConsumeList;
+      
       }
     },
     async queryMoney() {
@@ -121,9 +125,12 @@ export default {
       var data = {
         userId: this.userInfo.userId
       };
-      let res = await queryMoney(data);
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await queryMoney(enData);
+       let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        this.money = res.data.xb;
+        this.money = deData.xb;
       } else {
         // this.$message(res.msg);
       }
@@ -135,7 +142,7 @@ export default {
       this.bill();
     },
     disable() {
-      console.log("aaa");
+      // console.log("aaa");
     }
   }
 };

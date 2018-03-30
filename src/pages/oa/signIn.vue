@@ -30,6 +30,7 @@
   </div>
 </template>
 <script>
+import { strEnc, strDec } from '@/util/aes.js'
 import { oaSignIn, oaGetCompany } from "@/util/axios.js";
 import {
   getItem,
@@ -113,8 +114,11 @@ export default {
       let data = {
         companyId: JSON.parse(getItem("userInfo")).companyId
       };
-      let res = await oaGetCompany(data);
-      this.companyName = res.data.name;
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaGetCompany(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      this.companyName = deData.data.name;
     },
     //获取经纬度
     initMap() {
@@ -158,12 +162,15 @@ export default {
     async submit() {
       console.log("submit");
       let data = this.signData;
-      let res = await oaSignIn(data);
-      if (res.code === "0000") {
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaSignIn(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
         this.$message("提交成功");
         // this.$router.push("/oaSystem");
       } else {
-        this.$message(res.msg);
+        this.$message(deData.msg);
       }
     }
   }

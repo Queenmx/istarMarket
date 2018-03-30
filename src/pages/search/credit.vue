@@ -49,6 +49,7 @@
 <script>
 import { getReport, getReportState } from "@/util/axios";
 import { getItem, setItem, delItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -131,6 +132,7 @@ export default {
         phone: this.phone,
         salerId:JSON.parse(getItem('userInfo')).userId
       };
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       console.log(localStorage)
       console.log(data)
       if (!this.name.trim()) {
@@ -143,16 +145,19 @@ export default {
         this.$message("请输入手机号");
         return;
       }
-      var res = await getReport(data);
+      var res = await getReport(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+
       console.log(res)
       if (res.code === "0000") {
         // setItem("reportUserInfo", data);
-        console.log(res.data.url);
+        console.log(deData.url);
         // setItem('ppId',res.data.ppId);
       //  setItem("ppId",res.data.ppId)
       //  console.log(localStorage)
       //  localStorage.removeItem('reportUserInfo')
-        window.location.href = res.data.url;
+        window.location.href = deData.url;
        
         //  console.log(localStorage)
       }

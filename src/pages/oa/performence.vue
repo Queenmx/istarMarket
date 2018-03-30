@@ -67,6 +67,7 @@ import { getItem, checkSys } from "@/util/util.js";
 import { setItem, isRealNum } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
+import { strEnc, strDec } from '@/util/aes.js'
 var map, point, myGeo, geolocation;
 export default {
   data() {
@@ -233,6 +234,8 @@ export default {
         approver: localStorage.performenceApproverId,
         sendTo: this.performenceSendtoinfo
       };
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+
       if (!this.preTask.trim()) {
         this.$message("上月工作任务不能为空");
       } else if (!this.preFinishTask.trim()) {
@@ -250,13 +253,15 @@ export default {
       } else if (!localStorage.performenceApprover) {
         this.$message("审批人不能为空");
       } else {
-        let res = await oaPerformence(data);
-        if (res.code === "0000") {
+        let res = await oaPerformence(enData);
+           let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        if (deData.code === "0000") {
           this.$message("提交成功");
           // console.log(res.code)
           this.$router.push("/oaSystem");
         } else {
-          this.$message(res.msg);
+          this.$message(deData.msg);
         }
       }
     }

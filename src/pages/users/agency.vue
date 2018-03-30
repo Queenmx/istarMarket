@@ -29,6 +29,7 @@
 import { getAgency } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -62,10 +63,13 @@ export default {
         pageNum: parseInt(localStorage.currentPage),
         pageSize: 10
       };
-      let res = await getAgency(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await getAgency(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        this.items = res.data.xbConsumeList;
-        this.totalNum = parseInt(res.data.total);
+        this.items = deData.xbConsumeList;
+        this.totalNum = parseInt(deData.total);
       }
     }
   }

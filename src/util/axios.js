@@ -9,6 +9,7 @@ function fetch(url, params, isOa) {
     }
     return new Promise((resolve, reject) => {
         //这里做加密
+        // var params = strEnc(JSON.stringify(params), KEY)
         // params
         axios.post(baseurl + url, Qs.stringify(params), {
             headers: {
@@ -125,6 +126,14 @@ export const getReportState = (params) => {
 export const getDetails = (params) => {
     params = JSON.stringify(params)
     return fetch('jrcs/report/details', { params })
+}
+/**
+ * 获取模板跳转方式
+ * @param {*} params 
+ */
+export const getJumpWay = (params) => {
+    params = JSON.stringify(params)
+    return fetch('jrcs/third/getLoanUrl', { params })
 }
 /**
  * 获取用户填写模板

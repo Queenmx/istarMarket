@@ -31,6 +31,7 @@
 <script>
 import { customerList } from "@/util/axios";
 import { getItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -48,10 +49,13 @@ export default {
         pageNum: 1,
         pageSize: 20
       };
-      var res = await customerList(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var res = await customerList(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        this.customerList = res.data.customerList;
-        console.log(res.data.customerList);
+        this.customerList = deData.customerList;
+        // console.log(res.data.customerList);
       }
     },
     grabOrder(customerId,userId) {

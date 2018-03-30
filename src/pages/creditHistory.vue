@@ -16,7 +16,7 @@
 <script>
 import { getItem } from "@/util/util";
 import { creditHistory } from "@/util/axios";
-
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -32,14 +32,16 @@ export default {
       var data = {
         salerId: JSON.parse(getItem("userInfo")).userId
       };
-      console.log(data);
-      let res = await creditHistory(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await creditHistory(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       console.log(res);
       if (res.code === "0000") {
-        this.list = res.data.reportList;
+        this.list = deData.reportList;
         console.log(res.data);
-        if(!res.data.reportList){
-          this.$message(res.data.message)
+        if(!deData.reportList){
+          this.$message(deData.message)
         }
       } else {
         this.$message(res.msg);

@@ -67,6 +67,7 @@ import timerPicker from "../components/timePicker";
 import reporter from "./reporter";
 import { oaIReport } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
+import { strEnc, strDec } from '@/util/aes.js'
 var echarts = require("echarts/lib/echarts");
 // 引入柱状图
 require("echarts/lib/chart/pie");
@@ -120,17 +121,23 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
-
-      let res = await oaIReport(data);
-      this.reportInfo = res;
-      this.reporterList = res.dailyReportCommitList;
-      this.attendanceNum = res.actualAttendancePNum;
-      this.shouldAttendancePNum = res.shouldAttendancePNum;
-      this.stauts[0][0].value = res.isLatePNum;
-      this.stauts[0][1].value = res.leaveEarlyPNum;
-      this.stauts[0][2].value = res.absenteeismPNum;
-      this.stauts[1][0].value = res.outPNum;
-      this.stauts[1][1].value = res.missingCardPNum;
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+   
+      let res = await oaIReport(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      // console.log(deData1);
+      let deData = JSON.parse(deData1);
+      // console.log(deData)
+      // console.log(deData.code)
+      this.reportInfo = deData;
+      this.reporterList = deData.dailyReportCommitList;
+      this.attendanceNum = deData.actualAttendancePNum;
+      this.shouldAttendancePNum = deData.shouldAttendancePNum;
+      this.stauts[0][0].value = deData.isLatePNum;
+      this.stauts[0][1].value = deData.leaveEarlyPNum;
+      this.stauts[0][2].value = deData.absenteeismPNum;
+      this.stauts[1][0].value = deData.outPNum;
+      this.stauts[1][1].value = deData.missingCardPNum;
       this.updateChart();
     },
     updateChart() {

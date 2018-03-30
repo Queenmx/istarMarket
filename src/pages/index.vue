@@ -46,9 +46,10 @@
                                 <p>额度范围（{{item.moneyUnit}}）</p>
                             </div>
                             <ul class="list_ad">
-                                <li>{{item.loanTime}}</li>
+                                <li v-html="item.spread"></li>
+                                <!-- <li>{{item.loanTime}}</li>
                                 <li>{{item.rateType}}{{(item.rate*1).toFixed(2) + '%'}}</li>
-                                <li>贷款期限{{item.limitMin}}~{{item.limitMax}}{{item.limitType}}</li>
+                                <li>贷款期限{{item.limitMin}}~{{item.limitMax}}{{item.limitType}}</li> -->
                             </ul>
                             <button @click="applyLoan(item.loanId,item.loanName)" class="apply_btn">申请贷款</button>
                         </div>
@@ -63,6 +64,7 @@
 <script>
 import { getAd, product } from "@/util/axios.js";
 import { setItem, getItem } from "../util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -80,9 +82,12 @@ export default {
   methods: {
     async msg_list() {
       let res = await getAd();
+     
       if (res.code === "0000") {
+         let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
         // console.log(res.data.adList);
-        this.ad = res.data.adList;
+        this.ad = deData.adList;
       } else {
         this.adMes = res.msg;
       }
@@ -94,14 +99,11 @@ export default {
       });
     },
     applyLoan(loanId, loanName) {
-      //   setItem('loanId',loanId);
-      //   setItem('loanName',loanName)
-      // console.log(localStorage)
       this.$router.push({
         path: "/product",
         query: { loanId: loanId, loanName: loanName }
       });
-      // console.log(loanId)
+ 
     },
     jumpRouter(str) {
       if (str === "product") {
@@ -109,7 +111,7 @@ export default {
       } else if (str === "client") {
         this.$router.push({ path: "/home/interestedClient" });
       } else if (str === "productCenter") {
-        // this.$router.push({ path: "/product" });
+       
         this.$router.push({
           path: "/product",
           query: { loanId: loanId, loanName: loanName }
@@ -122,11 +124,14 @@ export default {
         pageSize: 500,
         userId: this.userInfo.userId
       };
-      let res = await product(data);
-      //   console.log(res);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await product(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+    
       if (res.code === "0000") {
-        this.list = res.data.loansList;
-        // console.log(res.data)
+        this.list =deData.loansList;
+    
       } else {
         this.list = res.msg;
       }

@@ -14,9 +14,10 @@
 					<label :class="[val.required==='yes'?'required':'','left']">{{val.name}}</label>
 					<div class="rest">
 						<input type="text" :placeholder="'请输入'+val.name" v-if="val.type=='text'" v-model="data[curPage][key]">
+                        
                         <el-select v-model="data[curPage][key]" placeholder="请选择" v-else @focus="preventBorad">
                           
-                            <el-option v-for="ops in val.list" :key="ops" :label="ops" :value="ops">
+                            <el-option v-for="(ops,subkey) in val.list" :key="ops" :label="ops" :value="subkey">
                             </el-option>
                         </el-select>
 					</div>
@@ -34,8 +35,14 @@
 	</div>
 </template>
 <script>
-import { queryMoney, getInfoTemple, oaFcgqInfo } from "@/util/axios.js";
+import {
+  queryMoney,
+  getInfoTemple,
+  oaFcgqInfo,
+  getJumpWay
+} from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -51,6 +58,8 @@ export default {
       money: "",
       requiredObj: {},
       title: [],
+      pageNameList: [],
+      jumpInfo: {},
       isShowCouple: true //是否展示配偶页
     };
   },
@@ -64,9 +73,9 @@ export default {
     },
     data: function() {
       if (
-        this.data[1].marriage === "未婚" ||
-        this.data[1].marriage === "离异" ||
-        this.data[1].marriage === "丧偶"
+        this.data[1].marriage === "7" ||
+        this.data[1].marriage === "82" ||
+        this.data[1].marriage === "83"
       ) {
         this.isShowCouple = false;
       } else {
@@ -76,21 +85,40 @@ export default {
   },
   mounted() {
     this.initDate();
+    this.getJump();
     this.fixedFooter();
   },
   methods: {
+    async getJump() {
+      let data = {
+        loanId: this.categoryId
+      };
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await getJumpWay(enData);
+      if (res.code === "0000") {
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        this.jumpInfo = deData;
+      } else {
+        this.$message(res.msg);
+      }
+    },
     async initDate() {
       let temdata = {
         loanId: this.categoryId
       };
+      var enData = strEnc(JSON.stringify(temdata), "ZND20171030APIMM" );
       await this.queryMoney();
-      let res = await getInfoTemple(temdata);
+      let res = await getInfoTemple(enData);
       if (res.code === "0000") {
-        let data = res.data[0]["data"],
+          let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        let data =deData[0]["data"],
           obj = {},
           requiredObj = {};
         this.temple = data;
-        this.title = res.data[0]["title"];
+        this.title = deData[0]["title"];
+        this.pageNameList = deData[0]["titleVal"];
         for (let key in data) {
           if (data.hasOwnProperty(key)) {
             obj[key] = {};
@@ -116,9 +144,12 @@ export default {
       var data = {
         userId: userinfo.userId
       };
-      let res = await queryMoney(data);
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await queryMoney(enData);
       if (res.code === "0000") {
-        this.money = res.data.xb;
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        this.money = deData.xb;
       } else {
         // this.$message(res.msg);
       }
@@ -152,7 +183,8 @@ export default {
       }
       var self = this;
       var mainData = {};
-      var apl = ["a", "b", "c", "d", "e", "f", "g", "h"];
+      //   var apl = ["a", "b", "c", "d", "e", "f", "g", "h"];
+      var apl = this.pageNameList;
       for (let key in this.data) {
         mainData[apl[key]] = this.data[key];
       }
@@ -195,16 +227,24 @@ export default {
       }
       for (let key in data) {
         if (required[key]) {
-          if (!data[key].trim()) {
+          //   if (data[key] == 0 || !data[key] == "") {
+          //     return { text: required[key], res: false };
+          //   } else if (typeof data[key] == "string" && !data[key].trim()) {
+          //     return { text: required[key], res: false };
+          //   }
+          console.log(typeof data[key]);
+          if (typeof data[key] == "string" && !data[key].trim()) {
+            return { text: required[key], res: false };
+          } else if (typeof data[key] == "number" && data[key] != "") {
             return { text: required[key], res: false };
           }
         }
       }
       if (this.curPage === 1) {
         if (
-          this.data[1].marriage === "未婚" ||
-          this.data[1].marriage === "离异" ||
-          this.data[1].marriage === "丧偶"
+          this.data[1].marriage === "7" ||
+          this.data[1].marriage === "82" ||
+          this.data[1].marriage === "83"
         ) {
           this.isShowCouple = false;
         } else {
@@ -250,17 +290,15 @@ export default {
   //   position: relative;
   //   box-sizing: border-box;
   //   overflow: auto;
-  .rest{
-   .el-select{
-     
-        input{
-       text-indent: -999em; /*文本向左缩进*/  
-  margin-left: -100%; /*输入框光标起始点向左左移*／ 
-  width: 200%; /*输入框增大一倍*/  
-  opacity: 0;  
+  .rest {
+    .el-select {
+      input {
+        text-indent: -999em; /*文本向左缩进*/
+        margin-left: -100%; /*输入框光标起始点向左左移*／ 
+  width: 200%; /*输入框增大一倍*/
+        opacity: 0;
+      }
     }
-    
-   }
   }
   .over {
     width: rem(10px);

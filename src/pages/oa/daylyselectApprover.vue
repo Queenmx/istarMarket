@@ -31,6 +31,7 @@
 import { oaQueryCompany } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
+import { strEnc, strDec } from '@/util/aes.js'
 import footer2 from "../../components/footer2";
 export default {
   data() {
@@ -67,10 +68,14 @@ export default {
       var data = {
         companyId: userinfo.companyId
       };
-      let res1 = await oaQueryCompany(data);
-      if (res1.code === "0000") {
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res1 = await oaQueryCompany(enData);
+      let deData1 = strDec(res1,"ZND20171030APIMM");
+      // console.log(deData1);
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
         // this.$router.push({path:'oaSystem/leave',query:{userId:this.radioType}})
-        this.list1 = res1.data;
+        this.list1 = deData.data;
         console.log(this.list1);
         //  this.$router.push({path: '/oaSystem/leave', query: {userId: this.radioType}})
       }

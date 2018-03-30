@@ -44,6 +44,7 @@
 import Bus from "../../util/Bus.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { oaAuditHistory } from "@/util/axios.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -60,9 +61,12 @@ export default {
       let data = {
         userId: this.userId
       };
-      let res = await oaAuditHistory(data);
-      if (res.code === "0000") {
-        this.list = res.data;
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaAuditHistory(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      if (deData.code === "0000") {
+        this.list = deData.data;
       }
     },
     goAudit(item) {
