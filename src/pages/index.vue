@@ -46,9 +46,10 @@
                                 <p>额度范围（{{item.moneyUnit}}）</p>
                             </div>
                             <ul class="list_ad">
-                                <li>{{item.loanTime}}</li>
+                                <li v-html="item.spread"></li>
+                                <!-- <li>{{item.loanTime}}</li>
                                 <li>{{item.rateType}}{{(item.rate*1).toFixed(2) + '%'}}</li>
-                                <li>贷款期限{{item.limitMin}}~{{item.limitMax}}{{item.limitType}}</li>
+                                <li>贷款期限{{item.limitMin}}~{{item.limitMax}}{{item.limitType}}</li> -->
                             </ul>
                             <button @click="applyLoan(item.loanId,item.loanName)" class="apply_btn">申请贷款</button>
                         </div>

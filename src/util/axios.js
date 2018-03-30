@@ -9,7 +9,8 @@ function fetch(url, params, isOa) {
     }
     return new Promise((resolve, reject) => {
         //这里做加密
-        console.log(params)
+        // var params = strEnc(JSON.stringify(params), KEY)
+        // params
         axios.post(baseurl + url, Qs.stringify(params), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -20,7 +21,9 @@ function fetch(url, params, isOa) {
             // var deData = strDec(response.data, KEY);
             // console.log(deData)
             // console.log(response.data);
-            resolve(response.data);  
+            resolve(response.data);
+
+
         }).catch(function (error) {
             reject(error)
             // console.log("失败")
@@ -123,6 +126,14 @@ export const getReportState = (params) => {
 export const getDetails = (params) => {
     params = JSON.stringify(params)
     return fetch('jrcs/report/details', { params })
+}
+/**
+ * 获取模板跳转方式
+ * @param {*} params 
+ */
+export const getJumpWay = (params) => {
+    params = JSON.stringify(params)
+    return fetch('jrcs/third/getLoanUrl', { params })
 }
 /**
  * 获取用户填写模板
