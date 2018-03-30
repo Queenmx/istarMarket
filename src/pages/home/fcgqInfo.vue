@@ -195,13 +195,16 @@ export default {
         // loanName: this.loanName
       };
       var res = await oaFcgqInfo(data);
+     
       if (res.code === "0000") {
+         let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
         // if (res.data.type === "1") {
         //   self.$router.push({ path: "/" });
         // } else {
         //   window.location.href = res.data.url;
         // }
-        if (res.data.code === "1") {
+        if (deData.code === "1") {
           this.$router.push({ path: "/success" });
         } else {
           this.$router.push({ path: "/fail" });
