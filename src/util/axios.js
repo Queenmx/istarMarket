@@ -128,6 +128,14 @@ export const getDetails = (params) => {
     return fetch('jrcs/report/details', { params })
 }
 /**
+ * 获取模板跳转方式
+ * @param {*} params 
+ */
+export const getJumpWay = (params) => {
+    params = JSON.stringify(params)
+    return fetch('jrcs/third/getLoanUrl', { params })
+}
+/**
  * 获取用户填写模板
  * @param {*} params 
  */

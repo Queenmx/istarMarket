@@ -35,7 +35,12 @@
 	</div>
 </template>
 <script>
-import { queryMoney, getInfoTemple, oaFcgqInfo } from "@/util/axios.js";
+import {
+  queryMoney,
+  getInfoTemple,
+  oaFcgqInfo,
+  getJumpWay
+} from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
 export default {
   data() {
@@ -53,6 +58,7 @@ export default {
       requiredObj: {},
       title: [],
       pageNameList: [],
+      jumpInfo: {},
       isShowCouple: true //是否展示配偶页
     };
   },
@@ -78,9 +84,21 @@ export default {
   },
   mounted() {
     this.initDate();
+    this.getJump();
     this.fixedFooter();
   },
   methods: {
+    async getJump() {
+      let data = {
+        loanId: this.categoryId
+      };
+      let res = await getJumpWay(data);
+      if (res.code === "0000") {
+        this.jumpInfo = res.data;
+      } else {
+        this.$message(res.msg);
+      }
+    },
     async initDate() {
       let temdata = {
         loanId: this.categoryId

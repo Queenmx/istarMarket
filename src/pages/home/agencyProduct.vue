@@ -21,9 +21,10 @@
                                         <p>额度范围（{{itemSecond.moneyUnit}}）</p>
                                     </div>
                                     <ul class="list_ad">
-                                        <li>{{itemSecond.loanTime}}</li>
+                                         <li v-html="itemSecond.spread"></li>
+                                        <!-- <li>{{itemSecond.loanTime}}</li>
                                         <li>{{itemSecond.rateType}}{{(itemSecond.rate*1).toFixed(2)}}%</li>
-                                        <li>贷款期限{{itemSecond.limitMin}}~{{itemSecond.limitMax}}{{itemSecond.limitType}}</li>
+                                        <li>贷款期限{{itemSecond.limitMin}}~{{itemSecond.limitMax}}{{itemSecond.limitType}}</li> -->
                                     </ul>
                                     <button @click="jumpRouter('productCenter',itemSecond)" class="apply_btn">申请借款</button>
                                 </div>
@@ -48,9 +49,10 @@
                                         <p>额度范围（{{itemSecond.moneyUnit}}）</p>
                                     </div>
                                     <ul class="list_ad">
-                                        <li>{{itemSecond.loanTime}}</li>
+                                        <li v-html="itemSecond.spread"></li>
+                                        <!-- <li>{{itemSecond.loanTime}}</li>
                                         <li>{{itemSecond.rateType}}{{(itemSecond.rate*1).toFixed(2)}}%</li>
-                                        <li>贷款期限{{itemSecond.limitMin}}~{{itemSecond.limitMax}}{{itemSecond.limitType}}</li>
+                                        <li>贷款期限{{itemSecond.limitMin}}~{{itemSecond.limitMax}}{{itemSecond.limitType}}</li> -->
                                     </ul>
                                     <button @click="applyLoan(itemSecond)" class="apply_btn">申请借款</button>
                                 </div>
