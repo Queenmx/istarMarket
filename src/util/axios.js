@@ -9,20 +9,19 @@ function fetch(url, params, isOa) {
     }
     return new Promise((resolve, reject) => {
         //这里做加密
-        var encData = strEnc(JSON.stringify(params), KEY)
+        // var params = strEnc(JSON.stringify(params), KEY)
         // params
-        console.log(encData)
-        axios.post(baseurl + url, Qs.stringify(encData), {
+        axios.post(baseurl + url, Qs.stringify(params), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         }).then(function (response) {
             //这里做解密
-            console.log(response.data)
-            var deData = strDec(response.data, KEY);
-            console.log(deData)
+            // console.log(response.data)
+            // var deData = strDec(response.data, KEY);
+            // console.log(deData)
             // console.log(response.data);
-            resolve(deData);
+            resolve(response.data);
 
 
         }).catch(function (error) {

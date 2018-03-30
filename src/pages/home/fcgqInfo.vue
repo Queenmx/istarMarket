@@ -14,9 +14,10 @@
 					<label :class="[val.required==='yes'?'required':'','left']">{{val.name}}</label>
 					<div class="rest">
 						<input type="text" :placeholder="'请输入'+val.name" v-if="val.type=='text'" v-model="data[curPage][key]">
+                        
                         <el-select v-model="data[curPage][key]" placeholder="请选择" v-else @focus="preventBorad">
                           
-                            <el-option v-for="ops in val.list" :key="ops" :label="ops" :value="ops">
+                            <el-option v-for="(ops,subkey) in val.list" :key="ops" :label="ops" :value="subkey">
                             </el-option>
                         </el-select>
 					</div>
@@ -51,6 +52,7 @@ export default {
       money: "",
       requiredObj: {},
       title: [],
+      pageNameList: [],
       isShowCouple: true //是否展示配偶页
     };
   },
@@ -91,6 +93,7 @@ export default {
           requiredObj = {};
         this.temple = data;
         this.title = res.data[0]["title"];
+        this.pageNameList = res.data[0]["titleVal"];
         for (let key in data) {
           if (data.hasOwnProperty(key)) {
             obj[key] = {};
@@ -152,7 +155,8 @@ export default {
       }
       var self = this;
       var mainData = {};
-      var apl = ["a", "b", "c", "d", "e", "f", "g", "h"];
+      //   var apl = ["a", "b", "c", "d", "e", "f", "g", "h"];
+      var apl = this.pageNameList;
       for (let key in this.data) {
         mainData[apl[key]] = this.data[key];
       }
@@ -195,7 +199,15 @@ export default {
       }
       for (let key in data) {
         if (required[key]) {
-          if (!data[key].trim()) {
+          //   if (data[key] == 0 || !data[key] == "") {
+          //     return { text: required[key], res: false };
+          //   } else if (typeof data[key] == "string" && !data[key].trim()) {
+          //     return { text: required[key], res: false };
+          //   }
+          console.log(typeof data[key]);
+          if (typeof data[key] == "string" && !data[key].trim()) {
+            return { text: required[key], res: false };
+          } else if (typeof data[key] == "number" && data[key] != "") {
             return { text: required[key], res: false };
           }
         }
@@ -250,17 +262,15 @@ export default {
   //   position: relative;
   //   box-sizing: border-box;
   //   overflow: auto;
-  .rest{
-   .el-select{
-     
-        input{
-       text-indent: -999em; /*文本向左缩进*/  
-  margin-left: -100%; /*输入框光标起始点向左左移*／ 
-  width: 200%; /*输入框增大一倍*/  
-  opacity: 0;  
+  .rest {
+    .el-select {
+      input {
+        text-indent: -999em; /*文本向左缩进*/
+        margin-left: -100%; /*输入框光标起始点向左左移*／ 
+  width: 200%; /*输入框增大一倍*/
+        opacity: 0;
+      }
     }
-    
-   }
   }
   .over {
     width: rem(10px);
