@@ -109,7 +109,7 @@ export default {
       // let deData1 = strDec(res.data,"ZND20171030APIMM");
       // let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
       let deData = JSON.parse(deData1);
         this.categoryList = deData.categoryList;
         this.loansList = deData.loansList;
