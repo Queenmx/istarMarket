@@ -42,6 +42,7 @@ import {
   getJumpWay
 } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -72,9 +73,9 @@ export default {
     },
     data: function() {
       if (
-        this.data[1].marriage === "未婚" ||
-        this.data[1].marriage === "离异" ||
-        this.data[1].marriage === "丧偶"
+        this.data[1].marriage === "7" ||
+        this.data[1].marriage === "82" ||
+        this.data[1].marriage === "83"
       ) {
         this.isShowCouple = false;
       } else {
@@ -92,9 +93,12 @@ export default {
       let data = {
         loanId: this.categoryId
       };
-      let res = await getJumpWay(data);
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await getJumpWay(enData);
       if (res.code === "0000") {
-        this.jumpInfo = res.data;
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        this.jumpInfo = deData;
       } else {
         this.$message(res.msg);
       }
@@ -103,15 +107,18 @@ export default {
       let temdata = {
         loanId: this.categoryId
       };
+      var enData = strEnc(JSON.stringify(temdata), "ZND20171030APIMM" );
       await this.queryMoney();
-      let res = await getInfoTemple(temdata);
+      let res = await getInfoTemple(enData);
       if (res.code === "0000") {
-        let data = res.data[0]["data"],
+          let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        let data =deData[0]["data"],
           obj = {},
           requiredObj = {};
         this.temple = data;
-        this.title = res.data[0]["title"];
-        this.pageNameList = res.data[0]["titleVal"];
+        this.title = deData[0]["title"];
+        this.pageNameList = deData[0]["titleVal"];
         for (let key in data) {
           if (data.hasOwnProperty(key)) {
             obj[key] = {};
@@ -137,9 +144,12 @@ export default {
       var data = {
         userId: userinfo.userId
       };
-      let res = await queryMoney(data);
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await queryMoney(enData);
       if (res.code === "0000") {
-        this.money = res.data.xb;
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        this.money = deData.xb;
       } else {
         // this.$message(res.msg);
       }
@@ -185,13 +195,16 @@ export default {
         // loanName: this.loanName
       };
       var res = await oaFcgqInfo(data);
+     
       if (res.code === "0000") {
+         let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
         // if (res.data.type === "1") {
         //   self.$router.push({ path: "/" });
         // } else {
         //   window.location.href = res.data.url;
         // }
-        if (res.data.code === "1") {
+        if (deData.code === "1") {
           this.$router.push({ path: "/success" });
         } else {
           this.$router.push({ path: "/fail" });
@@ -232,9 +245,9 @@ export default {
       }
       if (this.curPage === 1) {
         if (
-          this.data[1].marriage === "未婚" ||
-          this.data[1].marriage === "离异" ||
-          this.data[1].marriage === "丧偶"
+          this.data[1].marriage === "7" ||
+          this.data[1].marriage === "82" ||
+          this.data[1].marriage === "83"
         ) {
           this.isShowCouple = false;
         } else {

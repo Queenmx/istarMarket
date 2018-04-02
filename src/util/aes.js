@@ -58,7 +58,7 @@ export function strEnc(word, key) {
 export function strDec(word, key) {
     key = CryptoJS.enc.Utf8.parse(key);
     var decrypt = CryptoJS.AES.decrypt(word, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
-    console.log("hhhh", decrypt)
-    console.log(CryptoJS.enc.Utf8.stringify(decrypt))
+    // console.log("hhhh", decrypt)
+    // console.log(CryptoJS.enc.Utf8.stringify(decrypt))
     return CryptoJS.enc.Utf8.stringify(decrypt).toString();
 }

@@ -68,6 +68,7 @@
 <script>
 import { cateAndPro, typeProduct } from "@/util/axios";
 import { centerTabs, getItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -103,10 +104,15 @@ export default {
         pageSize: 500,
         userId: JSON.parse(getItem("userInfo")).userId
       };
-      let res = await cateAndPro(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await cateAndPro(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        this.categoryList = res.data.categoryList;
-        this.loansList = res.data.loansList;
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        this.categoryList = deData.categoryList;
+        this.loansList = deData.loansList;
         this.activeName = this.categoryList[0].categoryName;
         for (var i = 0, len = this.categoryList.length; i < len; i++) {
           this.getTypeData(this.categoryList[i].categoryId, i);
@@ -140,9 +146,14 @@ export default {
         categoryId: categoryId,
         userId: JSON.parse(getItem("userInfo")).userId
       };
-      let res = await typeProduct(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await typeProduct(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        this.typeList[index] = res.data.Products;
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+        this.typeList[index] = deData.Products;
       }
     },
     async handleClick(tab, event) {

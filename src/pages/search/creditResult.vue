@@ -85,6 +85,7 @@
 <script>
 import { getItem } from "@/util/util";
 import { getTanjiReport, getReportState, crawReport } from "@/util/axios";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -136,7 +137,6 @@ export default {
       var requst = new UrlSearch();
       var ppId = requst.ppId
       console.log(ppId)
-     
       // function getReport() {
         //console.log(self.search_id);
         // setTimeout(async function() {
@@ -145,10 +145,12 @@ export default {
           //  ppId:JSON.parse(getItem('ppId'))
          ppId:ppId
          }
+         var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
          console.log(data)
-          let res = await getReportState(data);
+          let res = await getReportState(enData);
+          let deData1 = strDec(res.data,"ZND20171030APIMM");
+          let deData = JSON.parse(deData1);
           console.log(res.code);
-          console.log(res.data.state)
           // let data = getItem("ppId");
           // console.log(localStorage)
           // if(data){
@@ -172,36 +174,36 @@ export default {
           //     // let res4 = await getReportState();
           //     // console.log(res4)
               var salerId = requst.salerId
-              if (res.code === "0000" && res.data.state ==="报告生成成功!"){
+              if (res.code === "0000" && deData.state ==="报告生成成功!"){
               let data2 = {
                 ppId:ppId,
                 customerId: "111",
                 salerId: salerId
               };
-              console.log(localStorage)
-              console.log(data2)
-              // console.log(res2.data.state);
-              let res2 = await getTanjiReport(data2);
+              var enData = strEnc(JSON.stringify(data2), "ZND20171030APIMM" );
+              let res2 = await getTanjiReport(enData);
+              let deData1 = strDec(res2.data,"ZND20171030APIMM");
+              let deData = JSON.parse(deData1);
               this.head_info = res2.head_info;
-              console.log(res2.data);
-              this.search_id = res2.data.reportData.head_info.search_id;
-              this.report_time = res2.data.reportData.head_info.report_time;
-              this.applyNum = res2.data.applyNum;
-              this.real_name = res2.data.reportData.basic_info.real_name;
-              this.id_card = res2.data.reportData.basic_info.id_card;
-              this.phone = res2.data.reportData.basic_info.phone;
-              this.score = res2.data.reportData.rong_evaluation.score;
-              this.rating = res2.data.reportData.rong_evaluation.rating;
-              this.trade_type = res2.data.reportData.risk_trade.trade_type;
-              this.trade_amt = res2.data.reportData.risk_trade.trade_amt;
-              this.trade_time = res2.data.reportData.risk_trade.trade_time;
-              this.credit_card_cnt = res2.data.reportData.credit_card_repay.credit_card_cnt;
-              this.credit_card_repay_amt = res2.data.reportData.credit_card_repay.credit_card_repay_amt;
-              this.credit_card_repay_cnt = res2.data.reportData.credit_card_repay.credit_card_repay_cnt;
-              this.credit_card_max_per_amt = res2.data.reportData.credit_card_repay.credit_card_max_per_amt;
-              this.items = res2.data.reportData.recent_revenue_expend_trend;
+              // console.log(res2.data);
+              this.search_id = deData.reportData.head_info.search_id;
+              this.report_time = deData.reportData.head_info.report_time;
+              this.applyNum = deData.applyNum;
+              this.real_name = deData.reportData.basic_info.real_name;
+              this.id_card = deData.reportData.basic_info.id_card;
+              this.phone = deData.reportData.basic_info.phone;
+              this.score = deData.reportData.rong_evaluation.score;
+              this.rating = deData.reportData.rong_evaluation.rating;
+              this.trade_type = deData.reportData.risk_trade.trade_type;
+              this.trade_amt = deData.reportData.risk_trade.trade_amt;
+              this.trade_time = deData.reportData.risk_trade.trade_time;
+              this.credit_card_cnt =deData.reportData.credit_card_repay.credit_card_cnt;
+              this.credit_card_repay_amt = deData.reportData.credit_card_repay.credit_card_repay_amt;
+              this.credit_card_repay_cnt = deData.reportData.credit_card_repay.credit_card_repay_cnt;
+              this.credit_card_max_per_amt = deData.reportData.credit_card_repay.credit_card_max_per_amt;
+              this.items = deData.reportData.recent_revenue_expend_trend;
               }
-             else if(res.code === "0000" && res.data.state !=="报告生成成功!"){
+             else if(res.code === "0000" && deData.state !=="报告生成成功!"){
                this.$message("异地登录，为确保账户安全，请重新登录");
              }
             } 

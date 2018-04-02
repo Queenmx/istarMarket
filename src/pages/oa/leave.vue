@@ -96,6 +96,7 @@ import { MessageBox } from "element-ui";
 import { oaLeave } from "@/util/axios.js";
 import { setItem } from "@/util/util.js";
 import { getItem, checkSys } from "@/util/util.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -221,8 +222,7 @@ export default {
         approver: localStorage.approverId,
         sendTo: localStorage.sendToId
       };
-      console.log(localStorage);
-      console.log(localStorage.sendToId);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       if (!this.value) {
         this.$message("请假类型不能为空");
       } else if (!this.value2) {
@@ -236,13 +236,15 @@ export default {
       } else if (!localStorage.approverId) {
         this.$message("审批人不能为空");
       } else {
-        let res = await oaLeave(data);
-        if (res.code === "0000") {
+        let res = await oaLeave(enData);
+        let deData1 = strDec(res,"ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
+        if (deData.code === "0000") {
           this.$message("请假成功");
           // this.clear();
           this.$router.push("/oaSystem");
         } else {
-          this.$message(res.msg);
+          this.$message(deData.msg);
         }
       }
     },

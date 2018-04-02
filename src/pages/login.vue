@@ -27,6 +27,7 @@
 <script>
 import { getUser } from "@/util/axios.js";
 import { setItem, checkSys } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -42,15 +43,18 @@ export default {
         platform: checkSys(),
         deviceno: ""
       };
-      console.log(this);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      // console.log(this);
       if (!this.userName.trim()) {
         this.$message("账号不能为空");
       } else if (!this.pwd.trim()) {
         this.$message("密码不能为空");
       } else {
-        let res = await getUser(data);
+        let res = await getUser(enData);
         if (res.code === "0000") {
-          setItem("userInfo", res.data);
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
+          setItem("userInfo", deData);
           if (res.data.changePwd === "0") {
             this.$router.push({ path: "/resetPassword" });
           } else {

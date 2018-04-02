@@ -29,6 +29,7 @@
 <script>
 import { oaIReport } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
+import { strEnc, strDec } from '@/util/aes.js'
 var echarts = require("echarts/lib/echarts");
 // 引入柱状图
 require("echarts/lib/chart/bar");
@@ -59,18 +60,21 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
-      let res = await oaIReport(data);
-      this.info.push((+res.weeklyAverageWorkingHours).toFixed(2));
-      this.info.push(+res.absenteeismPNum);
-      this.info.push(+res.leaveEarlyPNum);
-      this.info.push(+res.isLatePNum);
-      let attendceNum = res.shouldAttendancePNum;
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let res = await oaIReport(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
+      this.info.push((+deData.weeklyAverageWorkingHours).toFixed(2));
+      this.info.push(+deData.absenteeismPNum);
+      this.info.push(+deData.leaveEarlyPNum);
+      this.info.push(+deData.isLatePNum);
+      let attendceNum = deData.shouldAttendancePNum;
       this.info.forEach(val => {
         attendceNum -= val;
       });
-      this.rate = (res.weelyAttRate * 1).toFixed(2);
-      console.log("=======", this.rate, res.weelyAttRate);
-      let weeklyAttendanceRate = res.weeklyAttendanceRate;
+      this.rate = (deData.weelyAttRate * 1).toFixed(2);
+      console.log("=======", this.rate, deData.weelyAttRate);
+      let weeklyAttendanceRate = deData.weeklyAttendanceRate;
       arrWeek.forEach(item => {
         this.detailRate.push(weeklyAttendanceRate[item].split("%")[0]);
       });

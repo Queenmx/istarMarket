@@ -47,6 +47,7 @@
 import { customerInfo, queryMoney, grabCustomer } from "@/util/axios";
 import { costXb } from "@/config/baseVar";
 import { getItem, phoneMask } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -57,7 +58,8 @@ export default {
       money: 0,
       xbCost: costXb,
       isGrab: this.$route.params.isGrab || false,
-      isEnough: true
+      isEnough: true,
+      // customer:''
     };
   },
   mounted() {
@@ -75,15 +77,24 @@ export default {
       var data = {
         customerId: this.customerId
       };
-      var res = await customerInfo(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var res = await customerInfo(enData);
       if (res.code === "0000") {
-        this.cusInfo = res.data.customer;
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
+        this.cusInfo = deData.customer;
         let data2 = {
           userId: this.userInfo.userId
         };
-        let moneyres = await queryMoney(data2);
+        console.log(res.data)
+        var enData1 = strEnc(JSON.stringify(data2), "ZND20171030APIMM" );
+        let moneyres = await queryMoney(enData1);
+        let deData2 = strDec(moneyres.data,"ZND20171030APIMM");
+        let deData3 = JSON.parse(deData2);
+        console.log(deData3);
+        console.log(moneyres)
         if (moneyres.code === "0000") {
-          this.money = moneyres.data.xb;
+          this.money = deData3.xb;
           if (this.money >= this.xbCost) {
             this.isEnough = true;
           } else {
@@ -200,7 +211,10 @@ export default {
         companyId: this.userInfo.companyId,
         xbCost: this.xbCost
       };
-      var res = await grabCustomer(data);
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var res = await grabCustomer(enData);
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         this.isGrab = true;
         this.$message({
