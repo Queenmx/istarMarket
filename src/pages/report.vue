@@ -122,7 +122,6 @@ export default {
         companyId: this.userInfo.companyId
       };
       let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
-   
       let res = await oaIReport(enData);
       let deData1 = strDec(res,"ZND20171030APIMM");
       // console.log(deData1);

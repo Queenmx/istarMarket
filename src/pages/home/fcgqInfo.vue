@@ -199,6 +199,7 @@ export default {
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
+        console.log(deData.code);
         // if (res.data.type === "1") {
         //   self.$router.push({ path: "/" });
         // } else {
