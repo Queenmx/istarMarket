@@ -16,6 +16,7 @@
 <script>
 import { changePwd } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -66,11 +67,13 @@ export default {
         this.$message("确认密码不能为空");
       } else if (this.newPwd === this.confirm) {
         let res = await changePwd(enData);
-        if (res.code === "0000") {
+        if (res.code === "0000"){
         let deData1 = strDec(res.data,"ZND20171030APIMM");
         let deData = JSON.parse(deData1);
-          console.log(res.data);
+          // console.log(res.data);
           this.$router.push("/user");
+        }else{
+          this.$message(res.msg)
         }
       }
     }
