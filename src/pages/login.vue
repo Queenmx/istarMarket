@@ -55,7 +55,7 @@ export default {
         let deData1 = strDec(res.data,"ZND20171030APIMM");
         let deData = JSON.parse(deData1);
           setItem("userInfo", deData);
-          if (res.data.changePwd === "0") {
+          if (deData.changePwd === "0") {
             this.$router.push({ path: "/resetPassword" });
           } else {
             this.$router.push({ path: "/" });
