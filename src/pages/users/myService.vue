@@ -3,7 +3,7 @@
     <v-header class="header">
 			<i slot="left" class="el-icon-arrow-left"></i>
 			<p slot="title">在线客服</p>
-      <i slot="right"><img src="../../assets/images/service.png" alt="" @click="pop"></i>
+      <!-- <i slot="right"><img src="../../assets/images/service.png" alt="" @click="pop"></i> -->
 		</v-header>
     <div class="open" v-show="openService">
       <div  class="openBox">

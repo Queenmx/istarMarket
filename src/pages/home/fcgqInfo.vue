@@ -93,11 +93,11 @@ export default {
       let data = {
         loanId: this.categoryId
       };
-       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await getJumpWay(enData);
       if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         this.jumpInfo = deData;
       } else {
         this.$message(res.msg);
@@ -107,13 +107,13 @@ export default {
       let temdata = {
         loanId: this.categoryId
       };
-      var enData = strEnc(JSON.stringify(temdata), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(temdata), "ZND20171030APIMM");
       await this.queryMoney();
       let res = await getInfoTemple(enData);
       if (res.code === "0000") {
-          let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
-        let data =deData[0]["data"],
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
+        let data = deData[0]["data"],
           obj = {},
           requiredObj = {};
         this.temple = data;
@@ -144,11 +144,11 @@ export default {
       var data = {
         userId: userinfo.userId
       };
-       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await queryMoney(enData);
       if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         this.money = deData.xb;
       } else {
         // this.$message(res.msg);
@@ -195,10 +195,10 @@ export default {
         // loanName: this.loanName
       };
       var res = await oaFcgqInfo(data);
-     
+
       if (res.code === "0000") {
-         let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         // if (res.data.type === "1") {
         //   self.$router.push({ path: "/" });
         // } else {
