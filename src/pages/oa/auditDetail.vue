@@ -103,6 +103,7 @@
 </template>
 <script>
 import { oaFlowInfo } from "@/util/axios.js";
+import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
@@ -128,14 +129,16 @@ export default {
         mainId: this.mainId,
         applyId: this.applyId
       };
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       console.log(this.type)
-      let res = await oaFlowInfo(data);
+      let res = await oaFlowInfo(enData);
+      let deData1 = strDec(res,"ZND20171030APIMM");
+      // console.log(deData1);
+      let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        this.list = res.data.info;
-        this.remarks = res.data.operateList[1].remarks
-        console.log(res.data.info);
-        console.log(this.list.status);
-        this.listPlan = res.data.operateList;
+        this.list = deData.info;
+        this.remarks = deData.operateList[1].remarks
+        this.listPlan = deData.operateList;
       }
     }
   }
