@@ -67,7 +67,7 @@ import timerPicker from "../components/timePicker";
 import reporter from "./reporter";
 import { oaIReport } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 var echarts = require("echarts/lib/echarts");
 // 引入柱状图
 require("echarts/lib/chart/pie");
@@ -121,13 +121,13 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
-   
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
+
       let res = await oaIReport(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
-      // console.log(deData1);
+      let deData1 = strDec(res, "ZND20171030APIMM");
+      //   console.log(deData1);
       let deData = JSON.parse(deData1);
-      // console.log(deData)
+      console.log(deData);
       // console.log(deData.code)
       this.reportInfo = deData;
       this.reporterList = deData.dailyReportCommitList;
