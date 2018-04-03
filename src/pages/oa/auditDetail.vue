@@ -135,10 +135,10 @@ export default {
       let deData1 = strDec(res,"ZND20171030APIMM");
       // console.log(deData1);
       let deData = JSON.parse(deData1);
-      if (res.code === "0000") {
-        this.list = deData.info;
-        this.remarks = deData.operateList[1].remarks
-        this.listPlan = deData.operateList;
+      if (deData.code === "0000") {
+        this.list = deData.data.info;
+        this.remarks = deData.data.operateList[1].remarks
+        this.listPlan = deData.data.operateList;
       }
     }
   }

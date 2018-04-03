@@ -9,8 +9,9 @@ function fetch(url, params, isOa) {
     }
     return new Promise((resolve, reject) => {
         //这里做加密
-        // var params = strEnc(JSON.stringify(params), KEY)
+        // var params1 = strEnc(JSON.stringify(params), KEY)
         // params
+        // console.log(params1)
         axios.post(baseurl + url, Qs.stringify(params), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
