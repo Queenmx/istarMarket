@@ -14,7 +14,7 @@
                 </el-select>
             </el-col>
         </el-row> -->
-        <p class="leave_tips">年假/调休余额可设置，并支持自动扣减</p>
+        <!-- <p class="leave_tips">年假/调休余额可设置，并支持自动扣减</p> -->
         <el-row class="leave_name">
             <el-col :span="7" class="leave_label"><i class="red_must">*</i>开始时间</el-col>
             <el-col :span="17" class="leave_value">
@@ -108,7 +108,7 @@ import { MessageBox } from "element-ui";
 import { oaOut } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -199,7 +199,7 @@ export default {
         approver: localStorage.approverOutId,
         sendTo: this.sendToOut
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       if (!this.value2) {
         this.$message("请假开始时间不能为空");
       } else if (!this.value3) {
@@ -212,7 +212,7 @@ export default {
         this.$message("审批人不能为空");
       } else {
         let res = await oaOut(enData);
-         let deData1 = strDec(res,"ZND20171030APIMM");
+        let deData1 = strDec(res, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
         if (deData.code === "0000") {
           this.$message("请假成功");

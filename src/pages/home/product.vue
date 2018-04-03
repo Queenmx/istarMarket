@@ -39,16 +39,16 @@
 	        	<p class="go-detail">查看详情<i class="el-icon-arrow-down"></i></p>
 	        </div> -->
 	        <split></split>
-	        <div class="flow">
+	        <!-- <div class="flow">
 	        	<p class="title">办理流程（门店办理）</p>
 	        	<div class="wrap" v-html="detailInfo.loanFlow"></div>
-	        </div>
+	        </div> -->
 	        <div class="condition">
 	        	<h4 class="title">申请条件</h4>
                 <div class="wrap" v-html="detailInfo.applicationRequirement"></div>
-	        	<h4 class="title">所需材料</h4>
+	        	<!-- <h4 class="title">所需材料</h4>
                 <div class="wrap" v-html="detailInfo.materialsneed"></div>
-	        	<split></split>
+	        	<split></split> -->
 	        </div>
 		</div>
 	<div class="footer">
