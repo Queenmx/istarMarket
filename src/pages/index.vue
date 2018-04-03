@@ -84,7 +84,7 @@ export default {
       let res = await getAd();
      
       if (res.code === "0000") {
-         let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data,"ZND20171030APIMM");
       let deData = JSON.parse(deData1);
         // console.log(res.data.adList);
         this.ad = deData.adList;

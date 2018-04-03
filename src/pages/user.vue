@@ -97,10 +97,10 @@ export default {
       let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         this.phone = deData.phone;
-        this.companyName = deData.companyName;
-        this.headPic = deData.headPic;
-        this.userName = deData.userName;
-        this.accountType = deData.accountType;
+        this.companyName =  deData.companyName;
+        this.headPic =  deData.headPic;
+        this.userName =  deData.userName;
+        this.accountType =  deData.accountType;
       }
     },
 

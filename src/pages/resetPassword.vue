@@ -26,6 +26,7 @@
 <script>
 import { changePwd } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -43,13 +44,16 @@ export default {
         oldPwd: "",
         newPwd: this.pwd1
       };
+       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
       if (!this.pwd1.trim()) {
         this.$message("密码不能为空");
       } else if (this.pwd1 != this.pwd2) {
         this.$message("密码不一致");
       } else {
-        let res = await changePwd(data);
+        let res = await changePwd(enData);
         if (res.code === "0000") {
+        let deData1 = strDec(res.data,"ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
           this.$message({
             showClose: true,
             message: "修改密码成功",

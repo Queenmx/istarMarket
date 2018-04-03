@@ -94,7 +94,7 @@ export default {
       let navWidth = nav.offsetWidth;
       let headerWidth = headerNav.offsetWidth;
       console.log(navWidth, headerWidth);
-      if (navWidth < headerWidth) {
+      if (headerWidth > 0 && navWidth < headerWidth) {
         centerTabs();
       }
     },
@@ -106,8 +106,8 @@ export default {
       };
       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await cateAndPro(enData);
-      let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+      // let deData1 = strDec(res.data,"ZND20171030APIMM");
+      // let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);

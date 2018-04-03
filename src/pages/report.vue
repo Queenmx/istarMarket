@@ -122,7 +122,6 @@ export default {
         companyId: this.userInfo.companyId
       };
       let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-
       let res = await oaIReport(enData);
       let deData1 = strDec(res, "ZND20171030APIMM");
       //   console.log(deData1);
@@ -145,7 +144,15 @@ export default {
       myChart.setOption({
         title: {
           text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`
-        }
+        },
+        series: [
+          {
+            data: [
+              { value: self.attendanceNum },
+              { value: self.shouldAttendancePNum }
+            ]
+          }
+        ]
       });
     },
     drawChart() {
@@ -153,6 +160,8 @@ export default {
       myChart = echarts.init(document.getElementById("canvas"));
       // 绘制图表
       var self = this;
+
+      console.log(self.attendanceNum, self.shouldAttendancePNum);
       myChart.setOption({
         title: {
           text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`,
@@ -165,7 +174,7 @@ export default {
             fontSize: 18
           },
           subtextStyle: {
-            fontSize: 18
+            fontSize: 16
           }
         },
         color: ["#53a6ff", "#e4e4e4"],
@@ -195,7 +204,10 @@ export default {
                 show: false
               }
             },
-            data: [{ value: 1 }, { value: 3 }]
+            data: [
+              { value: self.attendanceNum },
+              { value: self.shouldAttendancePNum }
+            ]
           }
         ]
       });
