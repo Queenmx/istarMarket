@@ -104,13 +104,13 @@ export default {
         pageSize: 500,
         userId: JSON.parse(getItem("userInfo")).userId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await cateAndPro(enData);
       // let deData1 = strDec(res.data,"ZND20171030APIMM");
       // let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         this.categoryList = deData.categoryList;
         this.loansList = deData.loansList;
         this.activeName = this.categoryList[0].categoryName;
@@ -146,13 +146,13 @@ export default {
         categoryId: categoryId,
         userId: JSON.parse(getItem("userInfo")).userId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await typeProduct(enData);
-      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         this.typeList[index] = deData.Products;
       }
     },
