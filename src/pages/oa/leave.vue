@@ -1,5 +1,5 @@
 <template>
-<div class="leave">
+<div class="leaver">
     <v-header>
         <i slot="left" class="el-icon-arrow-left" @click="clear"></i>
         <p slot="title">请假</p>
@@ -258,7 +258,7 @@ export default {
 </script>
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.leave {
+.leaver {
   .leave_tips {
     color: #979797;
     font-size: rem(26px);

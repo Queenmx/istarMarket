@@ -199,20 +199,21 @@ export default {
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
-        console.log(deData.code);
+        // console.log(deData.code);
         // if (res.data.type === "1") {
         //   self.$router.push({ path: "/" });
         // } else {
         //   window.location.href = res.data.url;
         // }
-        if (deData.code === "1") {
-          this.$router.push({ path: "/success" });
-        } else {
-          this.$router.push({ path: "/fail" });
-        }
+        // if (deData.code === "1") {
+        //   this.$router.push({ path: "/success" });
+        // } else {
+        //   this.$router.push({ path: "/fail" });
+        // }
+        this.$router.push({ path: "/success" });
       } else {
-        this.$message(res.msg);
-        // this.$router.push({ path: "/fail" });
+        // this.$message(res.msg);
+        this.$router.push({ path: "/fail" });
       }
     },
     check(curPage) {

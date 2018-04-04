@@ -1,5 +1,5 @@
 <template>
-<div class="leave">
+<div class="overtimework">
     <v-header>
         <i slot="left" class="el-icon-arrow-left" @click="clear"></i>
         <p slot="title">加班</p>
@@ -230,7 +230,7 @@ export default {
 </script>
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.leave {
+.overtimework {
   .leave_tips {
     color: #979797;
     font-size: rem(26px);

@@ -57,7 +57,9 @@
                 <el-button type="text"   class="adduser" @click="sendTo"><i class="el-icon-plus"></i></el-button>
             </el-col> -->
           </el-row>
+          <el-row class="leave_name gray_line">
         <el-button class="submit_btn" type="primary" @click="submit">提交</el-button>
+          </el-row>
     </div>
 </div>  
 </template>
@@ -67,7 +69,7 @@ import { getItem, checkSys } from "@/util/util.js";
 import { setItem, isRealNum } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 var map, point, myGeo, geolocation;
 export default {
   data() {
@@ -234,7 +236,7 @@ export default {
         approver: localStorage.performenceApproverId,
         sendTo: this.performenceSendtoinfo
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
 
       if (!this.preTask.trim()) {
         this.$message("上月工作任务不能为空");
@@ -254,8 +256,8 @@ export default {
         this.$message("审批人不能为空");
       } else {
         let res = await oaPerformence(enData);
-           let deData1 = strDec(res,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         if (deData.code === "0000") {
           this.$message("提交成功");
           // console.log(res.code)
@@ -345,7 +347,7 @@ export default {
     width: 100%;
     // margin-left:10%;
     // height:rem(60px);
-    font-size: rem(24px);
+    // font-size: rem(24px);
   }
 }
 .el-message-box {

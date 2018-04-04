@@ -45,6 +45,7 @@
 <script>
 import { getToken } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -130,7 +131,9 @@ export default {
       var data = {
         userId: this.userInfo.userId
       };
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await getToken(data);
+      res.data = JSON.parse(strDec(res.data, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.tokenkey = res.data.access_token;
         // console.log("aaaa", this.tokenkey, res.data.access_token);

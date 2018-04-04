@@ -62,6 +62,7 @@
 <script>
 import { oaAttendanceGroupInfo, oaAttendSetting } from "@/util/axios";
 import { setItem, getItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 var fromFlag = 0;
 export default {
   data() {
@@ -119,8 +120,9 @@ export default {
         let data = {
           groupId: this.groupId
         };
-
+        data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
         let res = await oaAttendanceGroupInfo(data);
+        res.data = strDec(res.data, "ZND20171030APIMM");
         if (res.code === "0000") {
           this.info = res.data;
           if (!sessionStorage.getItem("flag")) {
@@ -208,7 +210,7 @@ export default {
         location: sessionStorage.getItem("location") || this.info.location
       };
       this.ObjectToString(data, ["inDepts", "inUsers", "leader"]);
-      console.log(data);
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAttendSetting(data);
       if (res.code === "0000") {
         this.$router.push({ path: "/oaSystem/attendanceGroup" });
