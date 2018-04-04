@@ -53,7 +53,7 @@ export default {
       };
       data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAttendanceGroupQuery(data);
-      res.data = JSON.parse(strDec(res.data, "ZND20171030APIMM"));
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.list = res.data.list;
         this.coNum = res.data.coNum;
@@ -73,7 +73,7 @@ export default {
       };
       data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAttendanceGroupDel(data);
-      res.data = JSON.parse(strDec(res.data, "ZND20171030APIMM"));
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.initData();
       } else {

@@ -134,6 +134,7 @@ export default {
         data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
         let res = await oaAttendanceGroupInfo(data);
         res = JSON.parse(strDec(res, "ZND20171030APIMM"));
+
         if (res.code === "0000") {
           this.info = res.data;
           this.location = this.info.location;

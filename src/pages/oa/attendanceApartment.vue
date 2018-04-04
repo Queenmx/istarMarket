@@ -70,6 +70,7 @@ export default {
       };
       data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaQuery(data);
+      console.log(res);
       res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         res.data.forEach(item => {

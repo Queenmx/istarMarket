@@ -82,7 +82,6 @@ export default {
   mounted() {
     this.initTemplate();
     this.initData();
-    console.log(fromFlag);
   },
   computed: {
     departmentLength() {
