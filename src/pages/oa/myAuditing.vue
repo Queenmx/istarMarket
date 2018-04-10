@@ -58,10 +58,7 @@
 				<span class="left">工作计划</span>
 				<span class="rest">{{list.workPlan}}</span>
 			</li> -->
-      <li class="wrap flex list-item" v-if="list.remark">
-				<span class="left">备注</span>
-				<span class="rest">{{list.remark}}</span>
-			</li>
+      
       <li class="wrap flex list-item" v-if="list.preTask">
 				<span class="left">上月工作任务</span>
 				<span class="rest">{{list.preTask}}</span>
@@ -85,6 +82,10 @@
        <li class="wrap flex list-item" v-if="list.workPlan">
 				<span class="left">工作计划</span>
 				<span class="rest">{{list.workPlan}}</span>
+			</li>
+        <li class="wrap flex list-item" v-if="list.remark">
+				<span class="left">备注</span>
+				<span class="rest">{{list.remark}}</span>
 			</li>
 		</ul>
         <div v-if="type!='日报'&&type!='周报'&&type!='月报'&&type!='绩效'">
@@ -124,7 +125,7 @@
 </template>
 <script>
 import { oaFlowInfo } from "@/util/axios.js";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -158,15 +159,15 @@ export default {
       });
     },
     async initData() {
-      console.log(this.$route.query.type)
+      console.log(this.$route.query.type);
       var data = {
         type: this.type,
         mainId: this.mainId,
         applyId: this.applyId
       };
-       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaFlowInfo(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.list = deData.data.info;

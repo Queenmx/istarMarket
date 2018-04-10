@@ -90,17 +90,16 @@ export default {
         userId: userinfo.userId,
         userName: userinfo.userName
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await getSet(enData);
-      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (res.code === "0000") {
-        
         this.companyName = deData.companyName;
         this.realName = deData.realName;
         this.phone = deData.phone;
         this.userName = deData.userName;
-        this.headPic =deData.headPic;
+        this.headPic = deData.headPic;
         this.accountType = deData.accountType;
       }
     },
