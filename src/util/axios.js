@@ -137,6 +137,14 @@ export const getJumpWay = (params) => {
     return fetch('jrcs/third/getLoanUrl', { params })
 }
 /**
+ * 保存第三方订单
+ * @param {*} params 
+ */
+export const setThirdOrder = (params) => {
+    params = JSON.stringify(params)
+    return fetch('jrcs/third/thirdOrder', { params })
+}
+/**
  * 获取用户填写模板
  * @param {*} params 
  */
