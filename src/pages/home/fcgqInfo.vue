@@ -116,7 +116,7 @@ export default {
       if (!this.isThird) {
         this.initDate();
       } else {
-        await this.thirdTemple();
+        this.thirdTemple();
       }
       this.queryMoney();
     },
@@ -130,7 +130,7 @@ export default {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
         console.log(deData);
-        if (deData.type == "1") {
+        if (deData.type == 1) {
           this.isThird = false;
         } else {
           this.isThird = true;
@@ -184,6 +184,12 @@ export default {
         userId: userinfo.userId
       };
       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
+      console.log(
+        strDec(
+          "BXp/KM+FqvA56JNXvRcTdHHIHI/rhGFKFUnFHU+gI58sgSKi/H/nvufWA4dIV9W7",
+          "ZND20171030APIMM"
+        )
+      );
       let res = await queryMoney(enData);
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
@@ -263,6 +269,8 @@ export default {
         data: mainData
         // loanName: this.loanName
       };
+
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await oaFcgqInfo(data);
 
       if (res.code === "0000") {
@@ -290,6 +298,9 @@ export default {
       for (var key in list) {
         if (list[key].required === "yes" && this.thirdInfo[key].trim() == "") {
           this.$message(list[key].text + "不能为空");
+          return false;
+        } else if (!(this.thirdInfo[key] > 0)) {
+          this.$message(list[key].text + "数据非法");
           return false;
         }
       }
