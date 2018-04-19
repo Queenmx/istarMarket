@@ -1,16 +1,24 @@
 <template>
-  <div class="contain_index">
-      <v-header>
+  <div class="contain_index" ref="container">
+      <div ref="header">
+      <v-header >
         <i slot="left" class="el-icon-arrow-left"></i>
         <p slot="title">产品中心</p>
       </v-header>
+      </div>
       <div class="product_list">
           <ul class="product_contain">
-            <el-tabs v-model="activeName" @tab-click="handleClick" ref="tabs" v-if="categoryList.length">
-                <el-tab-pane  v-for="(item, index) in categoryList" :label="item.categoryName" :name="item.categoryId" :key="item.categoryId">
+            <el-tabs v-model="activeName" v-if="categoryList.length" @tab-click="handleClick">
+                <el-tab-pane  v-for="item in categoryList" :label="item.categoryName" :name="item.categoryId" :key="item.categoryId">
                     <el-row>
-                        <el-col :span="24" v-if="typeList[index]&&typeList[index].length">
-                            <li class="product_info" v-for="itemSecond in typeList[index]" :key="itemSecond.loanId" @click="jumpRouter('productCenter',itemSecond)" >
+                        <el-col :span="5">
+                            <el-menu class="el-menu-vertical-demo" :default-active="subActiveName" @select="setsubActiveName">
+                                <el-menu-item :index="subItem.categoryId" v-for="subItem in item.subcategoryList" :key="subItem.categoryId">{{subItem.categoryName}}</el-menu-item>
+                            </el-menu>
+                        </el-col>
+                        <el-col :span="19" v-show="productList.length" >
+                            <ul refs="list" class="list-wrap">
+                            <li class="product_info" v-for="itemSecond in productList" :key="itemSecond.loanId" @click="jumpRouter('productCenter',itemSecond)" >
                                 <h3 class="list_title">
                                     <img :src="itemSecond.logo" />
                                     <span>{{itemSecond.loanName}}</span>
@@ -22,45 +30,17 @@
                                     </div>
                                     <ul class="list_ad">
                                          <li v-html="itemSecond.spread"></li>
-                                        <!-- <li>{{itemSecond.loanTime}}</li>
-                                        <li>{{itemSecond.rateType}}{{(itemSecond.rate*1).toFixed(2)}}%</li>
-                                        <li>贷款期限{{itemSecond.limitMin}}~{{itemSecond.limitMax}}{{itemSecond.limitType}}</li> -->
                                     </ul>
                                     <button @click="jumpRouter('productCenter',itemSecond)" class="apply_btn">申请借款</button>
                                 </div>
                                 <split></split>
                             </li>
+                            </ul>
                         </el-col>
-                        <el-col :span="24" v-else><p class="none">暂无产品</p></el-col>
+                        <el-col :span="19" v-show="!productList.length"><p class="none" >暂无产品</p></el-col>
                     </el-row>
                 </el-tab-pane>
             </el-tabs>
-            <div v-if="isDefault">
-                <el-row>
-                        <el-col :span="24">
-                            <li class="product_info" v-for="itemSecond in loansList" :key="itemSecond.loanId" @click="applyLoan(itemSecond)">
-                                <h3 class="list_title">
-                                    <img :src="itemSecond.logo" />
-                                    <span>{{itemSecond.loanName}}</span>
-                                </h3>
-                                <div class="list_body">
-                                    <div class="list_price">
-                                        <h4>{{itemSecond.moneyMin}}~{{itemSecond.moneyMax}}</h4>
-                                        <p>额度范围（{{itemSecond.moneyUnit}}）</p>
-                                    </div>
-                                    <ul class="list_ad">
-                                        <li v-html="itemSecond.spread"></li>
-                                        <!-- <li>{{itemSecond.loanTime}}</li>
-                                        <li>{{itemSecond.rateType}}{{(itemSecond.rate*1).toFixed(2)}}%</li>
-                                        <li>贷款期限{{itemSecond.limitMin}}~{{itemSecond.limitMax}}{{itemSecond.limitType}}</li> -->
-                                    </ul>
-                                    <button @click="applyLoan(itemSecond)" class="apply_btn">申请借款</button>
-                                </div>
-                                <split></split>
-                            </li>
-                        </el-col>
-                    </el-row>
-                </div>  
           </ul>
       </div>
   </div>
@@ -75,8 +55,11 @@ export default {
       categoryList: [],
       loansList: [],
       typeList: [],
-      activeName: "",
-      isDefault: true
+      activeName: "", //当前一级菜单
+      subActiveName: "", //当前二级菜单
+      productList: [],
+      activeCache: {}, //二级菜单缓存
+      contentHeight: 0
     };
   },
   mounted() {
@@ -86,6 +69,11 @@ export default {
     // centerTabs();
     this.init();
   },
+  watch: {
+    subActiveName: function() {
+      this.getTypeData(this.subActiveName);
+    }
+  },
   methods: {
     async init() {
       await this.initData();
@@ -93,10 +81,11 @@ export default {
       let headerNav = document.getElementsByClassName("el-tabs")[0];
       let navWidth = nav.offsetWidth;
       let headerWidth = headerNav.offsetWidth;
-      console.log(navWidth, headerWidth);
+      //   console.log(navWidth, headerWidth);
       if (headerWidth > 0 && navWidth < headerWidth) {
         centerTabs();
       }
+      this.calSubmenu();
     },
     async initData() {
       var data = {
@@ -106,17 +95,49 @@ export default {
       };
       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await cateAndPro(enData);
-      // let deData1 = strDec(res.data,"ZND20171030APIMM");
-      // let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
         this.categoryList = deData.categoryList;
-        this.loansList = deData.loansList;
-        this.activeName = this.categoryList[0].categoryName;
-        for (var i = 0, len = this.categoryList.length; i < len; i++) {
-          this.getTypeData(this.categoryList[i].categoryId, i);
+        this.activeName = this.categoryList[0].categoryId;
+        this.subActiveName = this.categoryList[0].subcategoryList[0].categoryId;
+        this.saveSubActiveName(this.activeName, this.subActiveName);
+        // this.getTypeData(this.subActiveName);
+      }
+    },
+    //保存一级菜单的active二级菜单
+    saveSubActiveName(categoryId, subCategoryId) {
+      if (!subCategoryId) {
+        let categoryList = this.categoryList;
+        for (let i = 0, len = categoryList.length; i < len; i++) {
+          if (categoryList[i].categoryId == categoryId) {
+            this.$set(
+              this.activeCache,
+              categoryId,
+              categoryList[i].subcategoryList[0].categoryId
+            );
+            break;
+          }
         }
+      } else {
+        this.$set(this.activeCache, categoryId, subCategoryId);
+      }
+    },
+    //计算子菜单高度
+    calSubmenu() {
+      var pageHeight = this.$refs.container.clientHeight;
+      var headerHeight = this.$refs.header.clientHeight;
+      var paneHeight = document.getElementsByClassName("el-tabs__nav-scroll")[0]
+        .clientHeight;
+      var restHeight = pageHeight - headerHeight - paneHeight;
+      var menuNodes = document.getElementsByClassName("el-menu-vertical-demo");
+
+      var listNode = document.getElementsByClassName("list-wrap");
+      menuNodes = Array.prototype.slice.apply(menuNodes);
+      listNode = Array.prototype.slice.apply(listNode);
+      for (let i = 0, len = menuNodes.length; i < len; i++) {
+        menuNodes[i].style.height = restHeight + "px";
+        listNode[i].style.height = restHeight + "px";
       }
     },
     broadcast() {
@@ -141,7 +162,13 @@ export default {
         });
       }
     },
-    async getTypeData(categoryId, index) {
+    setsubActiveName(categoryId) {
+      this.subActiveName = categoryId;
+      this.saveSubActiveName(this.activeName, categoryId);
+    },
+    //获取产品数据
+    async getTypeData(categoryId) {
+      this.saveSubActiveName(this.activeName, categoryId);
       let data = {
         categoryId: categoryId,
         userId: JSON.parse(getItem("userInfo")).userId
@@ -153,13 +180,23 @@ export default {
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
-        this.typeList[index] = deData.Products;
+        this.productList = deData.Products;
+        console.log("999" + JSON.stringify(deData.Products));
       }
     },
-    async handleClick(tab, event) {
-      var self = this;
-      if (this.isDefault) {
-        this.isDefault = false;
+    handleClick(tab, event) {
+      var activeId = tab.name;
+      if (this.activeCache[this.activeName]) {
+        this.subActiveName = this.activeCache[this.activeName];
+      } else {
+        for (let i = 0, len = this.categoryList.length; i < len; i++) {
+          if (this.categoryList[i].categoryId == this.activeName) {
+            this.subActiveName = this.categoryList[
+              i
+            ].subcategoryList[0].categoryId;
+            break;
+          }
+        }
       }
     }
   }
@@ -167,6 +204,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
+.contain_index {
+  height: 100%;
+  .list-wrap {
+    overflow: auto;
+  }
+}
 .none {
   font-size: rem(28px);
   color: $grey;
@@ -312,6 +355,9 @@ export default {
     height: rem(80px);
     line-height: rem(80px);
     font-size: rem(30px);
+  }
+  .el-tabs__header {
+    margin: 0;
   }
 }
 </style>

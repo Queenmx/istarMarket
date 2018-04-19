@@ -41,11 +41,17 @@
 		</div>
         <div class="footer" v-show="isShowFooter">
 			<!-- <span>提交</span> -->
-            <div class="middle" @click="updateData" v-if="curPage<this.temple.length-1">下一页</div>
-            <div @click="submit" v-else>
-                <div class="first">提交</div>
-                <div>花费20星币，剩余{{money}}星币</div>
+            <div v-if="isThird">
+                <div class="middle" @click="submit">提交</div>
             </div>
+            <div v-else>
+                <div class="middle" @click="updateData" v-if="curPage<this.temple.length-1">下一页</div>
+                <div @click="submit" v-else>
+                    <div class="first">提交</div>
+                    <div>花费20星币，剩余{{money}}星币</div>
+                </div>
+            </div>
+            
 		</div>
 	</div>
 </template>
@@ -184,12 +190,6 @@ export default {
         userId: userinfo.userId
       };
       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      console.log(
-        strDec(
-          "BXp/KM+FqvA56JNXvRcTdHHIHI/rhGFKFUnFHU+gI58sgSKi/H/nvufWA4dIV9W7",
-          "ZND20171030APIMM"
-        )
-      );
       let res = await queryMoney(enData);
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
