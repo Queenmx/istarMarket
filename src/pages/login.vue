@@ -43,7 +43,7 @@ export default {
         platform: checkSys(),
         deviceno: ""
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       // console.log(this);
       if (!this.userName.trim()) {
         this.$message("账号不能为空");
@@ -52,8 +52,8 @@ export default {
       } else {
         let res = await getUser(enData);
         if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
-        let deData = JSON.parse(deData1);
+          let deData1 = strDec(res.data, "ZND20171030APIMM");
+          let deData = JSON.parse(deData1);
           setItem("userInfo", deData);
           if (deData.changePwd === "0") {
             this.$router.push({ path: "/resetPassword" });
