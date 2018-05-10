@@ -67,7 +67,7 @@ import timerPicker from "../components/timePicker";
 import reporter from "./reporter";
 import { oaIReport } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 var echarts = require("echarts/lib/echarts");
 // 引入柱状图
 require("echarts/lib/chart/pie");
@@ -121,12 +121,12 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaIReport(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
-      // console.log(deData1);
+      let deData1 = strDec(res, "ZND20171030APIMM");
+      //   console.log(deData1);
       let deData = JSON.parse(deData1);
-      // console.log(deData)
+      console.log(deData);
       // console.log(deData.code)
       this.reportInfo = deData;
       this.reporterList = deData.dailyReportCommitList;
@@ -144,7 +144,15 @@ export default {
       myChart.setOption({
         title: {
           text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`
-        }
+        },
+        series: [
+          {
+            data: [
+              { value: self.attendanceNum },
+              { value: self.shouldAttendancePNum }
+            ]
+          }
+        ]
       });
     },
     drawChart() {
@@ -152,6 +160,8 @@ export default {
       myChart = echarts.init(document.getElementById("canvas"));
       // 绘制图表
       var self = this;
+
+      console.log(self.attendanceNum, self.shouldAttendancePNum);
       myChart.setOption({
         title: {
           text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`,
@@ -164,7 +174,7 @@ export default {
             fontSize: 18
           },
           subtextStyle: {
-            fontSize: 18
+            fontSize: 16
           }
         },
         color: ["#53a6ff", "#e4e4e4"],
@@ -194,7 +204,10 @@ export default {
                 show: false
               }
             },
-            data: [{ value: 1 }, { value: 3 }]
+            data: [
+              { value: self.attendanceNum },
+              { value: self.shouldAttendancePNum }
+            ]
           }
         ]
       });

@@ -62,7 +62,8 @@ export default {
             map.panTo(r.point);
             self.changeToAddress(r.point.lng, r.point.lat);
           } else {
-            alert("failed" + this.getStatus());
+            self.$message(this.getStatus());
+            // alert("failed" + this.getStatus());
           }
         },
         { enableHighAccuracy: true }
@@ -79,10 +80,10 @@ export default {
     submit() {
       // sessionStorage.setItem("location", this.address);
       // this.$router.go(-1);
-      this.$emit('submit', this.address)
+      this.$emit("submit", this.address);
     },
-    cancel(){
-      this.$emit('close')
+    cancel() {
+      this.$emit("close");
     }
   }
   //   beforeRouteLeave(to, from, next) {

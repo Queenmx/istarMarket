@@ -33,6 +33,7 @@
 <script>
 import { oaAttendanceGroupQuery, oaAttendanceGroupDel } from "@/util/axios";
 import { getItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -50,7 +51,9 @@ export default {
       let data = {
         companyId: this.userInfo.companyId
       };
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAttendanceGroupQuery(data);
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.list = res.data.list;
         this.coNum = res.data.coNum;
@@ -68,7 +71,9 @@ export default {
       let data = {
         groupId: id
       };
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAttendanceGroupDel(data);
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.initData();
       } else {

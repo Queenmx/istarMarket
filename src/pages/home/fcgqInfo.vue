@@ -2,13 +2,28 @@
 	<div class="carInfo" ref="carInfo">
 		<v-header @leftEvent="back" :isBack="isBack">
 			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">{{title[curPage]}}</p>
+            <p slot="title"  v-if="isThird">贷款主体信息</p>
+			<p slot="title" v-else>{{title[curPage]}}</p>
 		</v-header>
         <!-- 贷款信息 -->
         <div id="loan">
 			<split></split>
             <!-- <h4 class="wrap item-title">贷款信息</h4> -->
-            <ul>
+            <ul v-if="isThird">
+                <li class="wrap flex item" v-for="(val,key) in thirdForm.read" :key="key">
+                    <label :class="[val.required==='yes'?'required':'','left']">{{val.text}}</label>
+					<div class="rest">
+						<input type="text" :value="thirdData[key]" readonly="readonly">
+					</div>
+                 </li>
+                 <li class="wrap flex item" v-for="(val,key) in thirdForm.write" :key="key">
+                    <label :class="[val.required==='yes'?'required':'','left']">{{val.text}}</label>
+					<div class="rest">
+						<input type="text" :placeholder="'请输入'+val.text"  v-model="thirdInfo[key]">
+					</div>
+                 </li>
+            </ul>
+            <ul v-else>
               
           <li class="wrap flex item" v-for="(val,key) in temple[curPage]" :key="curPage+''+key">
 					<label :class="[val.required==='yes'?'required':'','left']">{{val.name}}</label>
@@ -26,11 +41,17 @@
 		</div>
         <div class="footer" v-show="isShowFooter">
 			<!-- <span>提交</span> -->
-            <div class="middle" @click="updateData" v-if="curPage<this.temple.length-1">下一页</div>
-            <div @click="submit" v-else>
-                <div class="first">提交</div>
-                <div>花费20星币，剩余{{money}}星币</div>
+            <div v-if="isThird">
+                <div class="middle" @click="submit">提交</div>
             </div>
+            <div v-else>
+                <div class="middle" @click="updateData" v-if="curPage<this.temple.length-1">下一页</div>
+                <div @click="submit" v-else>
+                    <div class="first">提交</div>
+                    <div>花费20星币，剩余{{money}}星币</div>
+                </div>
+            </div>
+            
 		</div>
 	</div>
 </template>
@@ -39,7 +60,8 @@ import {
   queryMoney,
   getInfoTemple,
   oaFcgqInfo,
-  getJumpWay
+  getJumpWay,
+  setThirdOrder
 } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
 import { strEnc, strDec } from "@/util/aes.js";
@@ -60,6 +82,11 @@ export default {
       title: [],
       pageNameList: [],
       jumpInfo: {},
+      isThird: true, //是否为第三方订单
+      thirdUrl: "",
+      thirdInfo: {}, //表单信息
+      thirdForm: {}, //第三方表单
+      thirdData: {}, //第三方商家信息
       isShowCouple: true //是否展示配偶页
     };
   },
@@ -84,11 +111,21 @@ export default {
     }
   },
   mounted() {
-    this.initDate();
-    this.getJump();
+    this.init();
+    // this.initDate();
+    // this.getJump();
     this.fixedFooter();
   },
   methods: {
+    async init() {
+      await this.getJump();
+      if (!this.isThird) {
+        this.initDate();
+      } else {
+        this.thirdTemple();
+      }
+      this.queryMoney();
+    },
     async getJump() {
       let data = {
         loanId: this.categoryId
@@ -98,7 +135,15 @@ export default {
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
-        this.jumpInfo = deData;
+        console.log(deData);
+        if (deData.type == 1) {
+          this.isThird = false;
+        } else {
+          this.isThird = true;
+          this.thirdUrl = deData.url;
+          this.$set(this.thirdData, "companyName", deData.companyName);
+          this.$set(this.thirdData, "loanName", deData.loanName);
+        }
       } else {
         this.$message(res.msg);
       }
@@ -154,6 +199,32 @@ export default {
         // this.$message(res.msg);
       }
     },
+    thirdTemple() {
+      this.thirdForm = {
+        read: {
+          companyName: {
+            text: "商家名字"
+          },
+          loanName: {
+            text: "产品名称"
+          }
+        },
+        write: {
+          applyPrice: {
+            text: "申请金额（元）",
+            required: "yes"
+          },
+          applyPeriod: {
+            text: "申请期限",
+            required: "yes"
+          }
+        }
+      };
+      this.thirdInfo = {
+        applyPrice: "",
+        applyPeriod: ""
+      };
+    },
     preventBorad(e) {
       document.activeElement.blur();
     },
@@ -176,6 +247,10 @@ export default {
       }
     },
     async submit() {
+      if (this.isThird) {
+        this.thirdSubmit();
+        return;
+      }
       let lastRes = this.check(this.curPage);
       if (!lastRes.res) {
         this.$message(lastRes.text + "不能为空");
@@ -194,25 +269,54 @@ export default {
         data: mainData
         // loanName: this.loanName
       };
+
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await oaFcgqInfo(data);
 
       if (res.code === "0000") {
         let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
-        console.log(deData.code);
+        // console.log(deData.code);
         // if (res.data.type === "1") {
         //   self.$router.push({ path: "/" });
         // } else {
         //   window.location.href = res.data.url;
         // }
-        if (deData.code === "1") {
-          this.$router.push({ path: "/success" });
-        } else {
-          this.$router.push({ path: "/fail" });
-        }
+        // if (deData.code === "1") {
+        //   this.$router.push({ path: "/success" });
+        // } else {
+        //   this.$router.push({ path: "/fail" });
+        // }
+        this.$router.push({ path: "/success" });
       } else {
-        this.$message(res.msg);
-        // this.$router.push({ path: "/fail" });
+        // this.$message(res.msg);
+        this.$router.push({ path: "/fail" });
+      }
+    },
+    async thirdSubmit() {
+      var list = this.thirdForm.write;
+      for (var key in list) {
+        if (list[key].required === "yes" && this.thirdInfo[key].trim() == "") {
+          this.$message(list[key].text + "不能为空");
+          return false;
+        } else if (!(this.thirdInfo[key] > 0)) {
+          this.$message(list[key].text + "数据非法");
+          return false;
+        }
+      }
+      var data = {
+        loanId: this.categoryId,
+        loanName: this.thirdData.loanName,
+        companyName: this.thirdData.companyName,
+        applyPrice: this.thirdInfo.applyPrice,
+        applyPeriod: this.thirdInfo.applyPeriod,
+        userId: this.userId
+      };
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
+      let res = await setThirdOrder(data);
+      console.log(this.thirdUrl);
+      if (res.code === "0000") {
+        window.location.href = this.thirdUrl;
       }
     },
     check(curPage) {

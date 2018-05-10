@@ -1,10 +1,12 @@
 <template>
-<div class="leave">
+<div class="rooterEle out">
+    <div class="header-wrap">
     <v-header>
         <i slot="left" class="el-icon-arrow-left" @click="clear"></i>
         <p slot="title">外出</p>
     </v-header>
-    <div class="leave">
+    </div>
+    <div class="leave-wrap">
         <!-- <p class="leave_tips">这里本月第2次提交请假</p> -->
         <!-- <el-row class="leave_name">
             <el-col :span="7" class="leave_label"><i class="red_must">*</i>请假类型</el-col>
@@ -99,7 +101,7 @@
                 </el-dialog> -->
             <!-- </el-col>
         </el-row> -->
-        <el-button class="submit_btn" type="primary" @click="submit">提交</el-button>
+         <el-button class="submit_btn" type="primary" @click="submit">提交</el-button>
     </div>
 </div>  
 </template>
@@ -233,75 +235,85 @@ export default {
 </script>
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.leave {
-  .leave_tips {
-    color: #979797;
-    font-size: rem(26px);
-    padding: rem(40px) rem(30px) rem(20px);
-    background-color: $bgcolor;
-  }
-  .leave_name {
-    font-size: rem(32px);
-    color: $fontcolor;
-    padding: rem(30px);
-    border-bottom: 1px solid $bdcolor;
-    .red_must {
-      color: red;
-      font-style: normal;
-      padding-right: rem(8px);
+.out {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  .leave-wrap {
+    position: relative;
+    flex: 1;
+    background: #fff;
+    .leave_tips {
+      color: #979797;
+      font-size: rem(26px);
+      padding: rem(40px) rem(30px) rem(20px);
+      background-color: $bgcolor;
     }
-    .leave_label {
-      padding-top: rem(10px);
-    }
-    .textarea {
-      padding: rem(20px) 0 rem(10px);
-    }
-    .adduser {
-      border: 1px dashed #c0ccda;
-      width: rem(98px);
-      height: rem(98px);
-      border-radius: 50%;
-      vertical-align: middle;
-      text-align: center;
-      i {
-        color: #c0ccda;
+    .leave_name {
+      font-size: rem(32px);
+      color: $fontcolor;
+      padding: rem(30px);
+      border-bottom: 1px solid $bdcolor;
+      .red_must {
+        color: red;
+        font-style: normal;
+        padding-right: rem(8px);
+      }
+      .leave_label {
+        padding-top: rem(10px);
+      }
+      .textarea {
+        padding: rem(20px) 0 rem(10px);
+      }
+      .adduser {
+        border: 1px dashed #c0ccda;
+        width: rem(98px);
+        height: rem(98px);
+        border-radius: 50%;
+        vertical-align: middle;
+        text-align: center;
+        i {
+          color: #c0ccda;
+        }
       }
     }
-  }
-  .nameList {
-    padding: rem(30px) 0;
-    overflow: hidden;
-    .userName {
-      span {
-        display: inline-block;
-        background-color: #409eff;
-        color: #fff;
-        // padding: rem(10px);
-        border-radius: rem(5px);
-        margin: rem(5px);
+    .nameList {
+      padding: rem(30px) 0;
+      overflow: hidden;
+      .userName {
+        span {
+          display: inline-block;
+          background-color: #409eff;
+          color: #fff;
+          // padding: rem(10px);
+          border-radius: rem(5px);
+          margin: rem(5px);
+        }
       }
     }
+    .gray_line {
+      border-top: rem(20px) solid $bgcolor;
+    }
+    .leave_value {
+      text-align: right;
+    }
+    .submit_btn {
+      position: absolute;
+      bottom: 0;
+      // margin-top: rem(30px) ;
+      // box-sizing: content-box;
+      width: 100%;
+      // margin-left: 10%;
+      height: rem(80px);
+      font-size: rem(30px);
+    }
   }
-  .gray_line {
-    border-top: rem(20px) solid $bgcolor;
+  .el-message-box {
+    width: 90%;
   }
-  .leave_value {
-    text-align: right;
+  .el-dialog {
+    width: 70%;
   }
-  .submit_btn {
-    // margin-top: rem(30px) ;
-    // box-sizing: content-box;
-    width: 100%;
-    // margin-left: 10%;
-    height: rem(80px);
-    font-size: rem(30px);
-  }
-}
-.el-message-box {
-  width: 90%;
-}
-.el-dialog {
-  width: 70%;
 }
 </style>
 <style lang="scss">

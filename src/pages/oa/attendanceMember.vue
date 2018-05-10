@@ -19,6 +19,7 @@ import selectMemberList from "../../components/selectMemberList";
 import footer2 from "../../components/footer2";
 import { getMembers, oaSearchUser } from "@/util/axios";
 import { getItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   props: ["memberFlag", "inUsers", "leader", "seletedDepartment"],
   data() {
@@ -58,6 +59,7 @@ export default {
     }
   },
   mounted() {
+    console.log("===");
     this.initTemplate();
     this.initData();
   },
@@ -114,7 +116,10 @@ export default {
       let data = {
         companyId: this.userInfo.companyId
       };
+
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await getMembers(data);
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         res.data.forEach(item => {
           this.userList.push({
@@ -150,7 +155,10 @@ export default {
         companyId: this.userInfo.companyId,
         userName: this.searchUser
       };
+
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaSearchUser(data);
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.userList = [];
         res.data.forEach(item => {

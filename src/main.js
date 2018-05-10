@@ -5,7 +5,7 @@ import App from './App'
 import { router } from './router'
 import commonComponents from '@/components'
 import {
-    Pagination , RadioGroup, Radio, Button, Select, Checkbox, Input, Icon, InputNumber, Carousel, CarouselItem, Row, Col, Message, Tag, Tabs, TabPane, DatePicker, Option, Upload, Dialog, MessageBox, Tree, Dropdown, DropdownMenu, DropdownItem, CheckboxGroup, CheckboxButton, Tooltip
+    Pagination, RadioGroup, Radio, Button, Select, Checkbox, Input, Icon, InputNumber, Carousel, CarouselItem, Row, Col, Message, Tag, Tabs, TabPane, DatePicker, Option, Upload, Dialog, MessageBox, Tree, Dropdown, DropdownMenu, DropdownItem, CheckboxGroup, CheckboxButton, Tooltip, Menu, MenuItem
 } from 'element-ui'
 Vue.config.productionTip = false
 
@@ -39,6 +39,8 @@ Vue.use(DropdownItem)
 Vue.use(CheckboxGroup)
 Vue.use(CheckboxButton)
 Vue.use(Tooltip)
+Vue.use(Menu)
+Vue.use(MenuItem)
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

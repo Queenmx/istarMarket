@@ -21,8 +21,9 @@
 import footer2 from "../../components/footer2";
 import { oaQuery } from "@/util/axios";
 import { getItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
-  props:['seletedDepartment'],
+  props: ["seletedDepartment"],
   data() {
     return {
       userInfo: JSON.parse(getItem("userInfo")),
@@ -30,12 +31,14 @@ export default {
       departments: [],
       length: 0,
       isAll: false,
-      newSeletedDepartment:{}
+      newSeletedDepartment: {}
     };
   },
-  watch:{
-    seletedDepartment:function(){
-      this.newSeletedDepartment=JSON.parse(JSON.stringify(this.seletedDepartment))
+  watch: {
+    seletedDepartment: function() {
+      this.newSeletedDepartment = JSON.parse(
+        JSON.stringify(this.seletedDepartment)
+      );
     }
   },
   components: {
@@ -43,7 +46,8 @@ export default {
   },
   computed: {
     getLength() {
-      let length=Object.getOwnPropertyNames(this.newSeletedDepartment).length-1
+      let length =
+        Object.getOwnPropertyNames(this.newSeletedDepartment).length - 1;
       if (length == this.departments.length) {
         this.isAll = true;
       } else {
@@ -53,6 +57,7 @@ export default {
     }
   },
   mounted() {
+    console.log("777");
     this.initData();
   },
   methods: {
@@ -63,7 +68,10 @@ export default {
       let data = {
         companyId: this.userInfo.companyId
       };
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaQuery(data);
+      console.log(res);
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         res.data.forEach(item => {
           if (item.status === 0) {
@@ -79,30 +87,30 @@ export default {
     toggleDep(item) {
       let id = item.deptId;
       if (this.newSeletedDepartment[id]) {
-       this.$delete(this.newSeletedDepartment, id);
+        this.$delete(this.newSeletedDepartment, id);
       } else {
-        this.$set(this.newSeletedDepartment,id,1)
+        this.$set(this.newSeletedDepartment, id, 1);
       }
-      console.log(this.seletedDepartment)
+      console.log(this.seletedDepartment);
     },
     seletedAll() {
       if (this.isAll) {
-        this.newSeletedDepartment={};
+        this.newSeletedDepartment = {};
       } else {
         this.departments.forEach(item => {
           let id = item.deptId;
-          if(!this.newSeletedDepartment[id]){
-            this.$set(this.newSeletedDepartment,id,1)
+          if (!this.newSeletedDepartment[id]) {
+            this.$set(this.newSeletedDepartment, id, 1);
           }
         });
       }
     },
     sure() {
-      this.$emit('update:seletedDepartment', this.newSeletedDepartment)
-      this.$emit('close')
+      this.$emit("update:seletedDepartment", this.newSeletedDepartment);
+      this.$emit("close");
     },
-    cancel(){
-      this.$emit('close')
+    cancel() {
+      this.$emit("close");
     }
   }
 };

@@ -73,6 +73,7 @@ import attendanceMember from "./attendanceMember";
 import addAddress from "./addAddress";
 import { oaAttendanceGroupInfo, oaAttendSetting } from "@/util/axios";
 import { setItem, getItem } from "@/util/util";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -130,8 +131,10 @@ export default {
         let data = {
           groupId: this.groupId
         };
-
+        data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
         let res = await oaAttendanceGroupInfo(data);
+        res = JSON.parse(strDec(res, "ZND20171030APIMM"));
+
         if (res.code === "0000") {
           this.info = res.data;
           this.location = this.info.location;
@@ -209,7 +212,9 @@ export default {
         location: this.location
       };
       console.log(data);
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAttendSetting(data);
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.$router.push({ path: "/oaSystem/attendanceGroup" });
       } else {
