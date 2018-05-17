@@ -10,9 +10,9 @@
           <p>星币</p>
         </div>
         <!-- 充值功能先注释掉 -->
-        <!-- <div class="btn">
+        <div class="btn">
          <input type="button" value="充值" @click="goPay">
-        </div> -->
+        </div>
     </div>
    <div class="select flex">
       <!-- <ul>
@@ -61,7 +61,7 @@
 <script>
 import { getMoney, queryMoney } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     var date = new Date();
@@ -106,17 +106,16 @@ export default {
         pageNum: 1,
         pageSize: 100
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       // console.log(this.value2);
-      
+
       let res = await getMoney(enData);
-      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         // console.log(res.data.xbConsumeList)
         // this.data.desc=res.data.xbConsumeList[0].consume_type
-        this.items =deData.xbConsumeList;
-      
+        this.items = deData.xbConsumeList;
       }
     },
     async queryMoney() {
@@ -125,9 +124,9 @@ export default {
       var data = {
         userId: this.userInfo.userId
       };
-       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await queryMoney(enData);
-       let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         this.money = deData.xb;

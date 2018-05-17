@@ -22,6 +22,7 @@
 <script>
 import { oaIReport } from "@/util/axios.js";
 import { setItem, getItem } from "@/util/util.js";
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -41,7 +42,10 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
+      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaIReport(data);
+      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
+      console.log(res);
       this.list = res.dailyReportCommitList;
       sessionStorage.setItem("dateRange", this.dateRange);
     }
