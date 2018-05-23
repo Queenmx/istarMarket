@@ -5,6 +5,10 @@ import App from "./App";
 import { router } from "./router";
 import commonComponents from "@/components";
 import "@/assets/style/images.css";
+import Vant from "vant";
+import "vant/lib/vant-css/index.css";
+
+Vue.use(Vant);
 import {
   Pagination,
   RadioGroup,

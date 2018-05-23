@@ -7,6 +7,54 @@
 .login-bg {
   background-image: url("../images/login-bg.jpg");
 }
+.icon-eye-close {
+  background-image: url("../images/icon-eye-close@2x.png");
+}
+.icon-go {
+  background-image: url("../images/icon-go@2x.png");
+}
+.font-jinrong {
+  background-image: url("../images/font-jinrong@2x.png");
+}
+.font-xiaotiao {
+  background-image: url("../images/font-xiaotiao@2x.png");
+}
+.icon-car {
+  background-image: url("../images/icon-car@2x.png");
+}
+.icon-house {
+  background-image: url("../images/icon-house@2x.png");
+}
+.icon-card {
+  background-image: url("../images/icon-card@2x.png");
+}
+.icon-client {
+  background-image: url("../images/icon-client@2x.png");
+}
+.icon-home {
+  background-image: url("../images/icon-home@2x.png");
+}
+.icon-home-active {
+  background-image: url("../images/icon-home-active@2x.png");
+}
+.icon-search {
+  background-image: url("../images/icon-search@2x.png");
+}
+.icon-search-active {
+  background-image: url("../images/icon-search-active@2x.png");
+}
+.icon-system {
+  background-image: url("../images/icon-system@2x.png");
+}
+.icon-system-active {
+  background-image: url("../images/icon-system-active@2x.png");
+}
+.icon-user {
+  background-image: url("../images/icon-user@2x.png");
+}
+.icon-user-active {
+  background-image: url("../images/icon-user-active@2x.png");
+}
 @media only screen and (-webkit-min-device-pixel-ratio: 3),
   only screen and (-moz-min-device-pixel-ratio: 3),
   only screen and (-o-min-device-pixel-ratio: 3),
@@ -16,5 +64,47 @@
   }
   .rectangle24 {
     background-image: url("../images/Rectangle26@3x.png");
+  }
+  .icon-eye-close {
+    background-image: url("../images/icon-eye-close@3x.png");
+  }
+  .icon-go {
+    background-image: url("../images/icon-go@3x.png");
+  }
+  .font-jinrong {
+    background-image: url("../images/font-jinrong@3x.png");
+  }
+  .font-xiaotiao {
+    background-image: url("../images/font-xiaotiao@3x.png");
+  }
+  .icon-car {
+    background-image: url("../images/icon-car@3x.png");
+  }
+  .icon-client {
+    background-image: url("../images/icon-client@2x.png");
+  }
+  .icon-home {
+    background-image: url("../images/icon-home@3x.png");
+  }
+  .icon-home-active {
+    background-image: url("../images/icon-home-active@3x.png");
+  }
+  .icon-search {
+    background-image: url("../images/icon-search@3x.png");
+  }
+  .icon-search-active {
+    background-image: url("../images/icon-search-active@3x.png");
+  }
+  .icon-system {
+    background-image: url("../images/icon-system@3x.png");
+  }
+  .icon-system-active {
+    background-image: url("../images/icon-system-active@3x.png");
+  }
+  .icon-user {
+    background-image: url("../images/icon-user@3x.png");
+  }
+  .icon-user-active {
+    background-image: url("../images/icon-user-active@3x.png");
   }
 }
