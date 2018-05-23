@@ -10,7 +10,7 @@
                     <input type="password" placeholder="请输入密码" v-model="pwd">
                 </li>
             </ul>
-            <!-- <div class="btn" @click="login"><span>登录</span></div> -->
+            <div class="btn" @click="login"><span>登录</span></div>
         </form>
 	</div>
 </template>
