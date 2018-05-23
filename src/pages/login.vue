@@ -59,6 +59,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+<<<<<<< HEAD
 @import "~@/assets/style/common.scss";
 .login {
   position: relative;
@@ -76,6 +77,31 @@ export default {
     left: rem(24px);
     bottom: 0;
     right: rem(24px);
+=======
+@import "../assets/style/common.scss";
+.login {
+  position: relative;
+  height: 100%;
+  .logo {
+    margin: 0 auto;
+    width: rem(384px);
+    height: rem(284px);
+    background-image: url("../assets/logo.png");
+    background-size: 100%;
+  }
+  .form {
+    position: absolute;
+    padding: rem(30px) rem(48px) rem(74px) rem(53px);
+    left: 50%;
+    top: rem(218px);
+    transform: translateX(-50%);
+    width: rem(610px);
+    font-size: rem(26px);
+    color: $black;
+    box-shadow: 0 rem(14px) rem(29px) rgba($color: #ddd, $alpha: 0.75);
+    border-radius: rem(10px);
+    box-sizing: border-box;
+>>>>>>> 975f76cf195a81577a1798bd110f18be8dd49507
     .btn {
       margin-top: rem(74px);
       height: rem(82px);
@@ -88,6 +114,7 @@ export default {
     }
   }
   .item {
+<<<<<<< HEAD
     padding-top: rem(26px);
     padding-bottom: rem(32px);
     color: #f8f9fe;
@@ -103,11 +130,26 @@ export default {
   }
   input::-webkit-input-placeholder {
     color: #f8f9fe;
+=======
+    height: rem(100px);
+    border-bottom: 1px solid $bdcolor;
+  }
+  label {
+    display: inline-block;
+    width: rem(150px);
+  }
+  input {
+    border: none;
+>>>>>>> 975f76cf195a81577a1798bd110f18be8dd49507
   }
 }
 </style>
 <style lang="scss">
+<<<<<<< HEAD
 @import "~@/assets/style/common.scss";
+=======
+@import "../assets/style/common.scss";
+>>>>>>> 975f76cf195a81577a1798bd110f18be8dd49507
 .login {
   .el-input__inner {
     border: 0;
