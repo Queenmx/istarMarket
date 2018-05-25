@@ -55,6 +55,84 @@
 .icon-user-active {
   background-image: url("../images/icon-user-active@2x.png");
 }
+.icon-report {
+  background-image: url("../images/icon-report@2x.png");
+}
+.icon-calendar {
+  background-image: url("../images/icon-calendar@2x.png");
+}
+.icon-seal {
+  background-image: url("../images/icon-seal@2x.png");
+}
+.icon-touch {
+  background-image: url("../images/icon-touch@2x.png");
+}
+.icon-signin {
+  background-image: url("../images/icon-signin@2x.png");
+}
+.icon-offwork {
+  background-image: url("../images/icon-offwork@2x.png");
+}
+.icon-out {
+  background-image: url("../images/icon-out@2x.png");
+}
+.icon-overtime {
+  background-image: url("../images/icon-overtime@2x.png");
+}
+.icon-dayly {
+  background-image: url("../images/icon-dayly@2x.png");
+}
+.icon-weekly {
+  background-image: url("../images/icon-weekly@2x.png");
+}
+.icon-monthly {
+  background-image: url("../images/icon-monthly@2x.png");
+}
+.icon-evaluation {
+  background-image: url("../images/icon-evaluation@2x.png");
+}
+.icon-creditcard {
+  background-image: url("../images/icon-creditcard@2x.png");
+}
+.icon-illegal {
+  background-image: url("../images/icon-illegal@2x.png");
+}
+.icon-insurance-car {
+  background-image: url("../images/icon-insurance-car@2x.png");
+}
+.icon-housing-fund {
+  background-image: url("../images/icon-housing-fund@2x.png");
+}
+.icon-insurance {
+  background-image: url("../images/icon-insurance@2x.png");
+}
+.icon-electric {
+  background-image: url("../images/icon-electric@2x.png");
+}
+.icon-fire {
+  background-image: url("../images/icon-fire@2x.png");
+}
+.icon-water {
+  background-image: url("../images/icon-water@2x.png");
+}
+.icon-recharge {
+  background-image: url("../images/icon-recharge@2x.png");
+}
+.icon-back {
+  background-image: url("../images/icon-back@2x.png");
+}
+.icon-edit {
+  background-image: url("../images/icon-edit@2x.png");
+}
+.icon-arrow-right-active {
+  background-image: url("../images/icon-arrow-right-active@2x.png");
+}
+.icon-arrow-right {
+  background-image: url("../images/icon-arrow-right@2x.png");
+}
+.icon-chart {
+  background-image: url("../images/icon-chart@2x.png");
+}
 @media only screen and (-webkit-min-device-pixel-ratio: 3),
   only screen and (-moz-min-device-pixel-ratio: 3),
   only screen and (-o-min-device-pixel-ratio: 3),

@@ -53,8 +53,13 @@ export default {
       ad: "",
       adMes: "",
       list: "",
-      activeIndex:0,
-      cateArr:[{class:'icon-car',text:"车贷",url:""},{class:'icon-house',text:"房贷",url:""},{class:'icon-card',text:"信贷",url:""},{class:'icon-client',text:"意向客户",url:""}],
+      activeIndex: 0,
+      cateArr: [
+        { class: "icon-car", text: "车贷", url: "" },
+        { class: "icon-house", text: "房贷", url: "" },
+        { class: "icon-card", text: "信贷", url: "" },
+        { class: "icon-client", text: "意向客户", url: "" }
+      ],
       userInfo: JSON.parse(getItem("userInfo"))
     };
   },
@@ -92,7 +97,7 @@ export default {
       }
     },
     broadcast() {
-        let item=this.ad[this.activeIndex]
+      let item = this.ad[this.activeIndex];
       this.$router.push({
         name: "broadcast",
         params: { content: item.content }
@@ -104,119 +109,122 @@ export default {
         query: { loanId: loanId, loanName: loanName }
       });
     },
-    changeBroadcast(index){
-        this.activeIndex=index
+    changeBroadcast(index) {
+      this.activeIndex = index;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/common.scss";
-.index{
-    padding-bottom:rem(100px);
-    .banner{
-        img{
-            height:rem(400px);
-            width:100%;
-        }
+.index {
+  padding-bottom: rem(100px);
+  .banner {
+    img {
+      height: rem(400px);
+      width: 100%;
     }
-    .main-container{
-        position:relative;
-        margin-top:rem(-90px);
+  }
+  .main-container {
+    position: relative;
+    margin-top: rem(-90px);
+  }
+  .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: rem(270px);
+    border-radius: rem(40px) rem(40px) 0 0;
+    background: #fff;
+  }
+  .broadcast {
+    margin: 0 rem(24px);
+    padding-top: rem(27px);
+    padding-bottom: rem(14px);
+    border-bottom: rem(1px) solid #e7e4e4;
+  }
+  .font-group {
+    margin-right: rem(40px);
+    i {
+      @include icon(rem(50px), rem(24px));
+      display: block;
+      &:not(:last-child) {
+        margin-bottom: rem(6px);
+      }
     }
-    .header{
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        height:rem(270px);
-        border-radius:rem(40px) rem(40px) 0 0;
-        background:#fff;
+  }
+  .swiper-vertical {
+    height: rem(48px);
+    width: 100%;
+  }
+  .icon-go {
+    @include icon(rem(30px), rem(30px));
+  }
+  .icon-car,
+  .icon-house,
+  .icon-card,
+  .icon-client {
+    @include icon(rem(70px), rem(70px));
+  }
+  .cate {
+    padding-top: rem(30px);
+    text-align: center;
+  }
+  .cate-name {
+    text-align: center;
+  }
+  .list {
+    padding-top: rem(270px);
+    text-align: center;
+    h3 {
+      margin-top: rem(12px);
+      margin-bottom: rem(34px);
+      font-size: rem(30px);
+      color: #2b2b2b;
+      letter-spacing: rem(0.36px);
+      &::before,
+      &::after {
+        content: "";
+        display: inline-block;
+        width: rem(32px);
+        height: rem(2px);
+        vertical-align: middle;
+        background: #2b2b2b;
+      }
+      &::before {
+        margin-right: rem(10px);
+      }
+      &::after {
+        margin-left: rem(10px);
+      }
     }
-    .broadcast{
-        margin:0 rem(24px);
-        padding-top:rem(27px);
-        padding-bottom:rem(14px);
-        border-bottom:rem(1px) solid #E7E4E4;
+    .item {
+      img {
+        margin-bottom: rem(18px);
+        height: rem(268px);
+        width: 100%;
+        border-radius: rem(20px);
+      }
     }
-    .font-group{
-        margin-right:rem(40px);
-        i{
-            @include icon(rem(50px),rem(24px));
-            display:block;
-            &:not(:last-child){
-                margin-bottom:rem(6px);
-            }
-        }
-    }
-    .swiper-vertical{
-        height:rem(48px);
-        width:100%;
-    }
-    .icon-go{
-        @include icon(rem(30px),rem(30px))
-    }
-    .icon-car,.icon-house,.icon-card,.icon-client{
-        @include icon(rem(70px),rem(70px))
-    }
-    .cate{
-        padding-top:rem(30px);
-        text-align:center
-    }
-    .cate-name{
-        text-align:center;
-    }
-    .list{
-        padding-top:rem(270px);
-        text-align:center;
-        h3{
-            margin-top:rem(12px);
-            margin-bottom:rem(34px);
-            font-size: 15px;
-            color: #2B2B2B;
-            letter-spacing: 0.18px;
-            &::before,&::after{
-                content:"";
-                display:inline-block;
-                width:rem(32px);
-                height:rem(2px);
-                vertical-align: middle;
-                background: #2B2B2B;
-            }
-            &::before{
-                margin-right:rem(10px);
-            }
-            &::after{
-                margin-left:rem(10px);
-            }
-        }
-        .item{
-            img{
-                margin-bottom:rem(18px);
-                height:rem(268px);
-                width:100%;
-                border-radius:rem(20px);
-            }
-        }
-    }
+  }
 }
-
 </style>
 <style lang="scss">
 @import "../assets/style/common.scss";
-.index{
-    .van-swipe__indicators {
-       bottom:rem(100px);
-    }
-    .van-swipe__indicator{
-        width:rem(28px);
-        height:rem(4px);
-        background:#fff;
-        
-        border-radius:0;
-    }
-    .van-swipe__indicator--active{
-        background:#4374FF
-    }
+.index {
+  .van-swipe__indicators {
+    bottom: rem(100px);
+  }
+  .van-swipe__indicator {
+    width: rem(28px);
+    height: rem(4px);
+    background: #fff;
+
+    border-radius: 0;
+  }
+  .van-swipe__indicator--active {
+    background: #4374ff;
+  }
 }
 </style>
