@@ -67,47 +67,56 @@ export default {
 .login {
   position: relative;
   height: 100%;
-  text-align: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  .logo-horizontal {
-    margin-top: rem(89px);
-    @include icon(rem(442px), rem(156px));
-  }
-  .form {
-    position: absolute;
-    top: rem(385px);
-    left: rem(24px);
-    bottom: 0;
-    right: rem(24px);
-    .btn {
-      margin-top: rem(106px);
+  .logo {
+    margin: 0 auto;
+    width: rem(384px);
+    height: rem(284px);
+    background-image: url("../assets/logo.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    text-align: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    .logo-horizontal {
+      margin-top: rem(89px);
+      @include icon(rem(442px), rem(156px));
     }
-  }
-  .item {
-    padding-top: rem(26px);
-    padding-bottom: rem(32px);
-    color: #f8f9fe;
-    font-size: rem(30px);
-    letter-spacing: rem(-0.72px);
-    border-bottom: rem(1px) solid #EEEEEE;
-  }
-  input {
-    color: #f8f9fe;
-    border: none;
-    background: transparent;
-    width: 100%;
-    text-align: left;
-        text-indent: 5px;
-  }
-  input::-webkit-input-placeholder {
-    color: #f8f9fe;
-  }
-  .icon-eye-close{
-      position:relative;
-      top:rem(14px);
+    .form {
+      position: absolute;
+      top: rem(385px);
+      left: rem(24px);
+      bottom: 0;
+      right: rem(24px);
+      .btn {
+        margin-top: rem(106px);
+      }
+    }
+    .item {
+      padding-top: rem(26px);
+      padding-bottom: rem(32px);
+      color: #f8f9fe;
+      font-size: rem(30px);
+      letter-spacing: rem(-0.72px);
+      border-bottom: rem(1px) solid #eeeeee;
+    }
+    input {
+      color: #f8f9fe;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      text-indent: 5px;
+    }
+    input::-webkit-input-placeholder {
+      color: #f8f9fe;
+    }
+    .icon-eye-close {
+      position: relative;
+      top: rem(14px);
       vertical-align: bottom;
-      @include icon(rem(30px),rem(30px))
+      @include icon(rem(30px), rem(30px));
+    }
   }
 }
 </style>

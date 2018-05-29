@@ -1,13 +1,13 @@
 <template>
   <div class="starMoney">
     <v-header class="header">
-			<i slot="left" class="el-icon-arrow-left"></i>
+			<i slot="left" class="arrow_left"></i>
 			<p slot="title">星币</p>
 		</v-header>
     <div class="details">
         <div class="balance">
           <span>{{money}}</span>
-          <p>星币</p>
+          <p>总星币数</p>
         </div>
         <!-- 充值功能先注释掉 -->
         <div class="btn">
@@ -154,12 +154,21 @@ export default {
   background-color: #f8f8f8;
   .header {
     border-bottom: 0;
-    color: #fff;
-    background-color: #53a6ff;
+    color: #2b2b2b;
+    // background-color: #53a6ff;
+    .arrow_left {
+      background-image: url("../../assets/images/return.png");
+      background-size: contain;
+      width: rem(40px);
+      height: rem(40px);
+      display: inline-block;
+      text-align: center;
+    }
   }
   .details {
     width: 100%;
-    height: rem(300px);
+    height: rem(250px);
+    padding-top: rem(50px);
     background-color: #53a6ff;
     text-align: center;
     span {
@@ -172,7 +181,6 @@ export default {
     }
     .btn {
       margin-top: rem(50px);
-
       input {
         width: rem(160px);
         height: rem(60px);
@@ -187,6 +195,7 @@ export default {
 
   .select {
     width: 100%;
+    background: #53a6ff;
     .el-select {
       width: 100%;
     }
@@ -250,18 +259,19 @@ export default {
 @import "../../assets/style/common.scss";
 .select {
   width: 100%;
-  .el-input {
-    background-color: #fff;
-  }
   .el-input__inner {
     height: rem(98px);
     width: rem(375px);
     font-size: rem(30px);
     text-align: center;
     border: 0;
+    background-color: #53a6ff;
+    color: #fff;
   }
 }
 .el-select-dropdown {
+  width: 100%;
+  left: 0;
   .el-select-dropdown__item {
     font-size: rem(24px);
     height: rem(50px);
