@@ -1,10 +1,25 @@
 <template>
-  <div class="leave">
-      <v-header>
-          <i slot="left" class="el-icon-arrow-left" @click="clear"></i>
-          <p slot="title">日报</p>
+  <div class="dayly">
+      <v-header title="日报">
       </v-header>
       <div class="dayly_contain">
+          <ul>
+              <li>
+                  <p class="require">今日工作</p>
+                  <div>
+                      <textarea/>
+                  </div>
+              </li>
+          </ul>
+          <ul>
+              <li>
+                  <p class="require">发送至</p>
+                  <div>
+                      <span>请选择</span>
+                      <i class="icon-arrow-right"></i>
+                  </div>
+              </li>
+          </ul>
           <el-row class="leave_name gray_line">
               <el-col :span="8">今日完成工作</el-col>
               <el-col :span="16">
@@ -90,7 +105,7 @@ import { getItem, checkSys, callAddress, initMap } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 var map, point, myGeo, geolocation;
 export default {
   data() {
@@ -269,7 +284,7 @@ export default {
         approver: localStorage.daylyApproverId,
         sendTo: this.daylySendtoinfo
       };
-       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       if (!this.done.trim()) {
         this.$message("今日完成不能为空");
       } else if (!this.notDone.trim()) {
@@ -282,7 +297,7 @@ export default {
         this.$message("发送至不能为空");
       } else {
         let res = await oaDayly(enData);
-        let deData1 = strDec(res,"ZND20171030APIMM");
+        let deData1 = strDec(res, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
         if (deData.code === "0000") {
           this.$message("提交成功");
@@ -315,7 +330,18 @@ export default {
 </script>
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.leave {
+.dayly {
+  font-size: rem(30px);
+  color: #020202;
+  .item {
+    padding: rem(32px);
+  }
+  textarea {
+    width: 100%;
+    height: rem(124px);
+    border: none;
+    resize: none;
+  }
   .leave_tips {
     color: #979797;
     font-size: rem(26px);
