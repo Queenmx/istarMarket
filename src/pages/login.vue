@@ -78,7 +78,9 @@ export default {
     width: rem(384px);
     height: rem(284px);
     background-image: url("../assets/logo.png");
+    background-repeat: no-repeat;
     background-size: 100%;
+    background-position: center;
   }
   .form {
     position: absolute;

@@ -252,7 +252,7 @@ export default {
     .dialog {
       max-width: rem(480px);
       display: inline-block;
-      border-radius: 5px;
+      border-radius: 3px;
       font-size: rem(28px);
       padding: rem(20px) rem(20px);
       word-wrap: break-word;
@@ -280,11 +280,24 @@ export default {
       margin: rem(20px) 0 rem(20px) rem(30px);
       overflow: hidden;
       .dialog {
-        background-color: #53a6ff;
+        position: relative;
+        background-image: linear-gradient(-180deg, #599ffe 0%, #3158e0 100%);
         color: #fff;
         margin-left: rem(30px);
         float: right;
-        overflow: hidden;
+        // overflow: hidden;
+        &:after {
+          content: "";
+          position: absolute;
+          top: rem(30px);
+          right: -4px;
+          width: 0;
+          height: 0;
+          border-top: 4px solid transparent;
+          border-left: 4px solid #3158e0;
+          border-bottom: 4px solid transparent;
+          display: inline-block;
+        }
       }
       .faceImg {
         //s4
