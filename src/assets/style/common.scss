@@ -16,11 +16,11 @@ $images: "/src/assets/images/";
   background-size: 100%;
   background-repeat: no-repeat;
 }
-.rooterEle {
-  min-height: 100%;
-  background-color: $bgcolor;
-  box-sizing: border-box;
-}
+// .rooterEle {
+//   min-height: 100%;
+//   background-color: $bgcolor;
+//   box-sizing: border-box;
+// }
 .rooterEle2 {
   padding-bottom: rem(100px);
   min-height: 100%;
@@ -30,6 +30,7 @@ $images: "/src/assets/images/";
 .rooterEle {
   padding-top: rem(88px);
   height: 100%;
+  background-color: $bgcolor;
   box-sizing: border-box;
 }
 .wrap {
