@@ -1,7 +1,7 @@
 $blue: #53a6ff;
 $bdcolor: #eee;
 $grey: #888;
-$bgcolor: #f8f8f8;
+$bgcolor: #f1f0f0;
 $black: #323232;
 $fontcolor: #646464;
 $images: "/src/assets/images/";
@@ -25,6 +25,11 @@ $images: "/src/assets/images/";
   padding-bottom: rem(100px);
   min-height: 100%;
   background-color: $bgcolor;
+  box-sizing: border-box;
+}
+.rooterEle {
+  padding-top: rem(88px);
+  height: 100%;
   box-sizing: border-box;
 }
 .wrap {
@@ -149,5 +154,14 @@ input {
     height: rem(2px);
     vertical-align: middle;
     background: #2b2b2b;
+  }
+}
+.title-line-left {
+  &::before {
+    content: "";
+    display: inline-block;
+    width: rem(4px);
+    height: rem(30px);
+    background: #4d7bff;
   }
 }

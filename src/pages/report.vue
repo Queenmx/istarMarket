@@ -1,5 +1,5 @@
 <template>
-	<div class="report">
+	<div class="rooterEle report">
 		<v-header title="智能报表"></v-header>
 		<!-- <div class="wrap picker-wrap">
 			<timer-picker @change="getReport"></timer-picker>
@@ -68,18 +68,21 @@
             </section>
             <section>
                 <h4 class="wrap title3">日志</h4>
-                <div class="flex pannel">
+                <div class="wrap flex pannel">
                     <div class="rest">
-                        <p>提交人数</p>
+                        <p class="strong">提交人数</p>
                         <p>2018-05-12</p>
                     </div>
                     <div>
-                        <span>18</span>
+                        <span class="strong">{{reportInfo.dailyReportCommitPNum}}</span>
                         <i class="icon-arrow-right"></i>
                     </div>
                 </div>
             </section>
-			<div class="item">
+            <div class="footer">
+                <span>前一周团队平均工时{{(+reportInfo.weeklyAverageWorkingHours).toFixed(2)}}小时</span>
+            </div>
+			<!-- <div class="item">
 				<p class="title">签到</p>
 				<div class="content">
 					<p class="flex-item" @click="goHistory">
@@ -100,7 +103,7 @@
 					</p>
 				</div>
 			</div>
-			<split></split>
+			<split></split> -->
 		</div>    
 	</div>
 </template>
@@ -166,7 +169,7 @@ export default {
   },
   methods: {
     async init() {
-      await this.drawChart();
+      //   await this.drawChart();
       await this.initData();
     },
     async initData() {
@@ -195,7 +198,7 @@ export default {
       this.stauts[0][2].value = deData.absenteeismPNum;
       this.stauts[1][0].value = deData.outPNum;
       this.stauts[1][1].value = deData.missingCardPNum;
-      this.updateChart();
+      //   this.updateChart();
     },
     updateChart() {
       let self = this;
@@ -297,7 +300,6 @@ export default {
 @import "../assets/style/common.scss";
 .report {
   position: relative;
-  padding-top: rem(88px);
   background: #f1f0f0;
   .blue {
     color: #4d7bff;
@@ -393,17 +395,45 @@ export default {
   }
   .pannel {
     height: rem(103px);
+    font-size: rem(28px);
+    color: #999999;
+    letter-spacing: rem(-0.68px);
+    background: #fff;
+    .strong {
+      font-size: rem(32px);
+      color: #020202;
+      letter-spacing: rem(-0.78px);
+    }
   }
   .icon-arrow-right {
     @include icon(rem(19px), rem(28px));
+    margin-left: rem(5px);
   }
   .title3 {
-    height: rem(36px);
-    line-height: rem(36px);
+    height: rem(72px);
+    line-height: rem(72px);
     font-size: rem(24px);
     color: #999999;
     letter-spacing: rem(-0.48px);
     background: #f1f0f0;
+  }
+  .footer {
+    margin-top: rem(47px);
+    font-size: rem(28px);
+    color: #ff8626;
+    letter-spacing: rem(0.34px);
+    text-align: center;
+    span {
+      &:before {
+        content: "";
+        display: inline-block;
+        margin-right: rem(24px);
+        width: rem(12px);
+        height: rem(12px);
+        vertical-align: middle;
+        background: #ff8626;
+      }
+    }
   }
   .item {
     .title {

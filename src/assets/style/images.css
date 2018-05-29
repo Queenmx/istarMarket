@@ -130,8 +130,23 @@
 .icon-arrow-right {
   background-image: url("../images/icon-arrow-right@2x.png");
 }
+.icon-arrow-down {
+  background-image: url("../images/icon-arrow-down@2x.png");
+}
+.icon-checked {
+  background-image: url("../images/icon-checked@2x.png");
+}
 .icon-chart {
   background-image: url("../images/icon-chart@2x.png");
+}
+.icon-user-upload {
+  background-image: url("../images/icon-user-upload@2x.png");
+}
+.icon-arrow-right-black {
+  background-image: url("../images/icon-arrow-right-black@2x.png");
+}
+.icon-add {
+  background-image: url("../images/icon-add@2x.png");
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 3),
   only screen and (-moz-min-device-pixel-ratio: 3),
