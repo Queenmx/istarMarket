@@ -10,9 +10,9 @@
           <p>总星币数</p>
         </div>
         <!-- 充值功能先注释掉 -->
-        <!-- <div class="btn">
+        <div class="btn">
          <input type="button" value="充值" @click="goPay">
-        </div> -->
+        </div>
     </div>
    <div class="select flex">
       <!-- <ul>

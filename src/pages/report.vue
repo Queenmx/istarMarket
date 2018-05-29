@@ -1,20 +1,12 @@
 <template>
-	<div class="report">
-		<v-header>
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">智能报表</p>
-		</v-header>
-		<div class="wrap picker-wrap">
+	<div class="rooterEle report">
+		<v-header title="智能报表"></v-header>
+		<!-- <div class="wrap picker-wrap">
 			<timer-picker @change="getReport"></timer-picker>
-		</div>
+		</div> -->
 		<div>
-			<!-- <split></split>
-			<div class="item">
-				<p class="title">外部联系人</p>
-				<div class="content">暂不支持，建议切换至昨日查看</div>
-			</div> -->
 			<split></split>
-			<div class="item">
+			<!-- <div class="item">
 				<p class="title">人员出勤</p>
 				<div class="content flex">
 					<div class="chart-wrap">
@@ -35,9 +27,62 @@
 					<p>前一周团队平均工时{{(+reportInfo.weeklyAverageWorkingHours).toFixed(2)}}小时</p>
 					<p class="link" @click="goWeekly">查看人员出勤周报</p>
 				</div>
-			</div>
+			</div> -->
+            <section class="wrap">
+                <div class="flex title-group">
+                    <h4 class="rest title">人员出勤</h4>
+                    <div class="blue">
+                        <dropdown :dataArr="dataArr" :textArr="textArr" :title="textArr[0]"></dropdown>
+                    </div>
+                </div>
+                <div class="wrap info-group">
+                    <p class="blue">20</p>
+                    <p class="grey">出勤人数</p>
+                    <p>总人数：100人</p>
+                </div>
+                <div class="link-group">
+                    <router-link to="/oaSystem/smartWeekly" class="link">查看人员出勤周报</router-link>
+                    <i class="icon-arrow-right-active"></i>
+                </div>
+            </section>
 			<split></split>
-			<div class="item">
+            <section class="wrap">
+                <h4>
+                    <p class="title-lines title2">
+                        <i class="icon-chart"></i>
+                        <span>本日出勤</span>
+                    </p>
+                </h4>
+                <div>
+                    <van-row>
+                        <van-col span="8" v-for="index in 6" :key="index" class="item">
+                            <p class="num">3</p>
+                            <p class="hint">迟到(天)</p>
+                        </van-col>
+                    </van-row>
+                </div>
+                <div class="link-group">
+                    <router-link to="/oaSystem/history" class="link">查看签到详情</router-link>
+                    <i class="icon-arrow-right-active"></i>
+                </div>
+            </section>
+            <section>
+                <h4 class="wrap title3">日志</h4>
+                <div class="wrap flex pannel">
+                    <div class="rest">
+                        <p class="strong">提交人数</p>
+                        <p>2018-05-12</p>
+                    </div>
+                    <div>
+                        <span class="strong">{{reportInfo.dailyReportCommitPNum}}</span>
+                        <i class="icon-arrow-right"></i>
+                    </div>
+                </div>
+            </section>
+            <div class="footer">
+                <span>前一周团队平均工时{{(+reportInfo.weeklyAverageWorkingHours).toFixed(2)}}小时</span>
+            </div>
+			<!-- <div class="item">
 				<p class="title">签到</p>
 				<div class="content">
 					<p class="flex-item" @click="goHistory">
@@ -58,7 +103,7 @@
 					</p>
 				</div>
 			</div>
-			<split></split>
+			<split></split> -->
 		</div>    
 	</div>
 </template>
@@ -66,7 +111,7 @@
 import timerPicker from "../components/timePicker";
 import reporter from "./reporter";
 import { oaIReport } from "@/util/axios.js";
-import { getItem } from "@/util/util.js";
+import { getItem, formateTime } from "@/util/util.js";
 import { strEnc, strDec } from "@/util/aes.js";
 var echarts = require("echarts/lib/echarts");
 // 引入柱状图
@@ -85,6 +130,22 @@ export default {
           { text: "旷工", value: 0 }
         ],
         [{ text: "外出", value: 0 }, { text: "缺卡", value: 0 }]
+      ],
+      dataArr: [
+        { text: "今日" },
+        { text: "昨日" },
+        { text: "本周" },
+        { text: "上周" },
+        { text: "本月" },
+        { text: "上月" }
+      ],
+      textArr: [
+        `今日(${formateTime(new Date(), "yyyy-MM-dd")})`,
+        "昨日",
+        "本周",
+        "上周",
+        "本月",
+        "上月"
       ],
       dateRange: sessionStorage.getItem("dateRange") || "今日",
       reportInfo: {},
@@ -108,7 +169,7 @@ export default {
   },
   methods: {
     async init() {
-      await this.drawChart();
+      //   await this.drawChart();
       await this.initData();
     },
     async initData() {
@@ -137,7 +198,7 @@ export default {
       this.stauts[0][2].value = deData.absenteeismPNum;
       this.stauts[1][0].value = deData.outPNum;
       this.stauts[1][1].value = deData.missingCardPNum;
-      this.updateChart();
+      //   this.updateChart();
     },
     updateChart() {
       let self = this;
@@ -239,6 +300,141 @@ export default {
 @import "../assets/style/common.scss";
 .report {
   position: relative;
+  background: #f1f0f0;
+  .blue {
+    color: #4d7bff;
+  }
+  section {
+    background: #fff;
+  }
+  .title-group {
+    padding: rem(30px) 0 rem(52px) 0;
+    font-size: rem(32px);
+    line-height: 1;
+    color: #020202;
+    letter-spacing: rem(0.38px);
+    .title {
+      &:before {
+        content: "";
+        display: inline-block;
+        margin-right: rem(14px);
+        width: rem(4px);
+        height: rem(32px);
+        vertical-align: top;
+        background: #4d7bff;
+      }
+    }
+  }
+  .icon-arrow-right-active {
+    vertical-align: text-bottom;
+    @include icon(rem(19px), rem(28px));
+  }
+  .link {
+    height: rem(100px);
+    line-height: rem(100px);
+    font-size: rem(28px);
+    color: #4d7bff;
+    letter-spacing: rem(0.34px);
+  }
+  .info-group {
+    padding-bottom: rem(30px);
+    text-align: center;
+    font-size: rem(28px);
+    color: #333333;
+    letter-spacing: rem(0.34px);
+    border-bottom: rem(2px) solid #e7e4e4;
+    .blue {
+      line-height: rem(86px);
+      font-size: rem(72px);
+      color: #4d7bff;
+      letter-spacing: rem(0.86px);
+    }
+    .grey {
+      color: #666666;
+    }
+  }
+  .link-group {
+    text-align: center;
+  }
+  .icon-chart {
+    vertical-align: text-bottom;
+    @include icon(rem(30px), rem(30px));
+  }
+  .title2 {
+    height: rem(96px);
+    line-height: rem(96px);
+    font-size: rem(30px);
+    color: #020202;
+    letter-spacing: rem(-0.72px);
+    text-align: center;
+    border-bottom: rem(2px) solid #e7e4e4;
+    &::before,
+    &::after {
+      margin: 0 rem(12px);
+      background: #e7e4e4;
+    }
+  }
+  .item {
+    padding: rem(10px) 0;
+    text-align: center;
+    border-bottom: rem(2px) solid #ddd;
+    &:not(:nth-child(3n)) {
+      border-right: rem(1px) solid #ddd;
+    }
+    .num {
+      line-height: rem(42px);
+      font-size: rem(36px);
+      color: #020202;
+      letter-spacing: rem(-0.86px);
+    }
+    .hint {
+      font-size: rem(28px);
+      color: #333333;
+      letter-spacing: rem(-0.68px);
+    }
+  }
+  .pannel {
+    height: rem(103px);
+    font-size: rem(28px);
+    color: #999999;
+    letter-spacing: rem(-0.68px);
+    background: #fff;
+    .strong {
+      font-size: rem(32px);
+      color: #020202;
+      letter-spacing: rem(-0.78px);
+    }
+  }
+  .icon-arrow-right {
+    @include icon(rem(19px), rem(28px));
+    margin-left: rem(5px);
+  }
+  .title3 {
+    height: rem(72px);
+    line-height: rem(72px);
+    font-size: rem(24px);
+    color: #999999;
+    letter-spacing: rem(-0.48px);
+    background: #f1f0f0;
+  }
+  .footer {
+    margin-top: rem(47px);
+    font-size: rem(28px);
+    color: #ff8626;
+    letter-spacing: rem(0.34px);
+    text-align: center;
+    span {
+      &:before {
+        content: "";
+        display: inline-block;
+        margin-right: rem(24px);
+        width: rem(12px);
+        height: rem(12px);
+        vertical-align: middle;
+        background: #ff8626;
+      }
+    }
+  }
   .item {
     .title {
       padding: 0 rem(30px);
@@ -277,16 +473,8 @@ export default {
       line-height: rem(38px);
     }
   }
-  .flex {
-    display: flex;
-    padding: 0 rem(85px);
-  }
   .gap {
     margin: rem(20px) 0;
-  }
-  .link {
-    color: $blue;
-    line-height: rem(38px);
   }
   .flex-item {
     display: flex;

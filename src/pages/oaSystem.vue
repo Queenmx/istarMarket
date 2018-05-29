@@ -1,22 +1,23 @@
 <template>
-  <div class="oa_index">
-      <v-header>
-          <p slot="title">我的OA系统</p>
-      </v-header>
+  <div class="oaSystem">
+      <header class="header">
+          OA系统
+      </header>
       <div class="system_list">
-            <div class="system_li" v-for="(items,index) in listArr" :key="index">
-                <el-row>
-                    <el-col :span="24"><h2>{{items.title}}</h2></el-col>
-                </el-row>
-                <el-row>
-                <el-col :span="6" v-for="(item,i) in items.items" :key="i">
-                    <div class="grid-content" @click="goFunc(item.url)">
-                        <i :class="item.class"></i>
-                        <p class="name">{{item.text}}</p>
-                    </div>
-                </el-col>
-                </el-row>
-            </div>
+            <section v-for="(items,index) in listArr" :key="index">
+                <h3 class="title flex">
+                    <span>{{items.title}}</span>
+                    <span class="rest line"></span>
+                </h3>
+                <van-row>
+                    <van-col span="6" v-for="(item,i) in items.items" :key="i" class="item">
+                        <div @click="goFunc(item.url)" >
+                            <i :class="item.class"></i>
+                            <p class="name">{{item.text}}</p>
+                        </div>
+                    </van-col>
+                </van-row>
+            </section>
 	  </div>
       <v-footer :activeIndex="2"></v-footer>
   </div>
@@ -38,12 +39,12 @@ export default {
               url: "/oasystem/report"
             },
             {
-              class: "icon-peoplenum",
+              class: "icon-calendar",
               text: "出勤人数",
               url: "/oasystem/attendance"
             },
             {
-              class: "icon-checkpending",
+              class: "icon-seal",
               text: "待我审核",
               url: "/oaSystem/audit"
             }
@@ -58,7 +59,7 @@ export default {
           title: "内外勤管理",
           items: [
             {
-              class: "icon-clockin",
+              class: "icon-touch",
               text: "考勤打卡",
               url:
                 JSON.parse(getItem("userInfo")).accountType === "主账号"
@@ -66,8 +67,8 @@ export default {
                   : "/oaSystem/attendanceCard"
             },
             { class: "icon-signin", text: "签到", url: "/oaSystem/sign" },
-            { class: "icon-workoff", text: "请假", url: "/oaSystem/leave" },
-            { class: "icon-goOut", text: "外出", url: "/oaSystem/out" },
+            { class: "icon-offwork", text: "请假", url: "/oaSystem/leave" },
+            { class: "icon-out", text: "外出", url: "/oaSystem/out" },
             {
               class: "icon-overtime",
               text: "加班",
@@ -78,11 +79,11 @@ export default {
         {
           title: "业务汇报",
           items: [
-            { class: "icon-daily", text: "日报", url: "/oaSystem/dayly" },
+            { class: "icon-dayly", text: "日报", url: "/oaSystem/dayly" },
             { class: "icon-weekly", text: "周报", url: "/oaSystem/weekly" },
             { class: "icon-monthly", text: "月报", url: "/oaSystem/monthly" },
             {
-              class: "icon-performence",
+              class: "icon-evaluation",
               text: "绩效自评",
               url: "/oaSystem/performence"
             }
@@ -129,10 +130,11 @@ export default {
       localStorage.removeItem("performenceSendTo");
     },
     goFunc(url) {
+      this.$toast.clear();
       if (url) {
         this.$router.push({ path: url });
       } else {
-        this.$message({ message: "正在升级中", duration: 1000 });
+        this.$toast("正在升级中");
       }
     }
   }
@@ -140,79 +142,56 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/common.scss";
-.system_list {
+.oaSystem {
   padding-bottom: rem(100px);
-  h2 {
+  header {
+    height: rem(88px);
+    line-height: rem(88px);
+    font-size: rem(34px);
+    color: #fefefe;
+    text-align: center;
+    background-image: linear-gradient(
+      135deg,
+      rgba(89, 159, 254, 0.9) 0%,
+      rgba(49, 88, 224, 0.9) 100%
+    );
+  }
+  .title {
+    position: relative;
+    padding: rem(28px) 0 rem(16px) rem(24px);
     font-size: rem(32px);
-    color: #323232;
-    // padding-bottom: rem(40px);
+    color: #444444;
+    letter-spacing: rem(0.38px);
+    .line {
+      margin-left: rem(28px);
+      height: rem(2px);
+      background: #e7e4e4;
+    }
   }
-  .system_li {
-    margin: rem(50px) rem(30px) rem(30px);
-    border-bottom: 1px solid #eee;
-  }
-}
-
-.grid-content {
-  text-align: center;
-  padding: rem(40px) 0 rem(30px);
-  .name {
-    margin-top: rem(20px);
+  .item {
+    margin: rem(40px) 0;
     font-size: rem(28px);
-    color: #656565;
+    color: #020202;
+    letter-spacing: rem(0.34px);
+    text-align: center;
   }
-}
-.icon-report {
-  @include icon(rem(58px),rem(68px));
-  background-image: url("../assets/images/report.png");
-}
-.icon-peoplenum {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/peoplenum.png");
-}
-.icon-checkpending {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/checkpending.png");
-}
-.icon-usermanage {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/usermanage.png");
-}
-.icon-clockin {
-  @include icon(rem(53px),rem(68px));
-  background-image: url("../assets/images/clockin.png");
-}
-.icon-signin {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/signin.png");
-}
-.icon-workoff {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/workoff.png");
-}
-.icon-goOut {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/go-out.png");
-}
-.icon-overtime {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/overtime.png");
-}
-.icon-daily {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/daily.png");
-}
-.icon-weekly {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/weekly.png");
-}
-.icon-monthly {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/monthly.png");
-}
-.icon-performence {
-  @include icon(rem(64px),rem(68px));
-  background-image: url("../assets/images/performence.png");
+  .system_list {
+    padding-top: rem(18px);
+  }
+  .icon-report,
+  .icon-calendar,
+  .icon-seal,
+  .icon-touch,
+  .icon-signin,
+  .icon-offwork,
+  .icon-out,
+  .icon-overtime,
+  .icon-dayly,
+  .icon-weekly,
+  .icon-monthly,
+  .icon-evaluation {
+    @include icon(rem(84px), rem(84px));
+  }
 }
 </style>
 

@@ -1,26 +1,21 @@
 <template>
-	<div class="login">
-        <div class="logo"></div>
+	<div class="login login-bg">
+        <div class="logo-horizontal"></div>
         <form class="form">
             <ul class="loginBox">
-                <li class="item flex">
-                    <div>
-                        <label>登录账号</label>
-                    </div>
-                    <div class="rest input-wrap">
-                        <input type="text" placeholder="请输入登录账号" v-model="userName">
-                    </div>
+                <li class="item">
+                    <input type="text" placeholder="请输入登录账号" v-model="userName">
                 </li>
                 <li class="item flex">
-                    <div>
-                        <label>密码</label>
-                    </div>
-                    <div class="rest input-wrap">
+                    <div class="rest">
                         <input type="password" placeholder="请输入密码" v-model="pwd">
+                    </div>
+                    <div>
+                        <i class="icon-eye-close"></i>
                     </div>
                 </li>
             </ul>
-            <div class="btn" @click="login"><span>登录</span></div>
+            <div class="btn btn-blue-lg" @click="login"><span>登录</span></div>
         </form>
 	</div>
 </template>
@@ -44,7 +39,6 @@ export default {
         deviceno: ""
       };
       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      // console.log(this);
       if (!this.userName.trim()) {
         this.$message("账号不能为空");
       } else if (!this.pwd.trim()) {
@@ -69,7 +63,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../assets/style/common.scss";
+@import "~@/assets/style/common.scss";
 .login {
   position: relative;
   height: 100%;
@@ -81,45 +75,53 @@ export default {
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center;
-  }
-  .form {
-    position: absolute;
-    padding: rem(30px) rem(48px) rem(74px) rem(53px);
-    left: 50%;
-    top: rem(218px);
-    transform: translateX(-50%);
-    width: rem(610px);
-    font-size: rem(26px);
-    color: $black;
-    box-shadow: 0 rem(14px) rem(29px) rgba($color: #ddd, $alpha: 0.75);
-    border-radius: rem(10px);
-    box-sizing: border-box;
-    .btn {
-      margin-top: rem(74px);
-      height: rem(82px);
-      line-height: rem(82px);
-      text-align: center;
-      font-size: rem(32px);
-      color: #fff;
-      background: $blue;
-      border-radius: rem(10px);
+    text-align: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    .logo-horizontal {
+      margin-top: rem(89px);
+      @include icon(rem(442px), rem(156px));
     }
-  }
-  .item {
-    height: rem(100px);
-    border-bottom: 1px solid $bdcolor;
-  }
-  label {
-    display: inline-block;
-    width: rem(150px);
-  }
-  input {
-    border: none;
+    .form {
+      position: absolute;
+      top: rem(385px);
+      left: rem(24px);
+      bottom: 0;
+      right: rem(24px);
+      .btn {
+        margin-top: rem(106px);
+      }
+    }
+    .item {
+      padding-top: rem(26px);
+      padding-bottom: rem(32px);
+      color: #f8f9fe;
+      font-size: rem(30px);
+      letter-spacing: rem(-0.72px);
+      border-bottom: rem(1px) solid #eeeeee;
+    }
+    input {
+      color: #f8f9fe;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      text-indent: 5px;
+    }
+    input::-webkit-input-placeholder {
+      color: #f8f9fe;
+    }
+    .icon-eye-close {
+      position: relative;
+      top: rem(14px);
+      vertical-align: bottom;
+      @include icon(rem(30px), rem(30px));
+    }
   }
 }
 </style>
 <style lang="scss">
-@import "../assets/style/common.scss";
+@import "~@/assets/style/common.scss";
 .login {
   .el-input__inner {
     border: 0;

@@ -1,20 +1,24 @@
 <template>
-	<div class="rooterEle creditAuthorize">
-		<v-header @rightEvent="history">
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">授权</p>
-			<p slot="right" class="link">历史记录</p>
+	<div class="creditAuthorize">
+		<v-header title="授权">
+			<p slot="right"><router-link to="/search/creditHistory" class="header-right">历史记录</router-link></p>
 		</v-header>
-        <split></split>
-		<div class="wrap input">
-			<span class="lable">信用查询费用</span>
-			<span class="price">20星币</span>
+        <section class="main">
+            <div><span class="title">信用查询费用</span></div>
+            <div class="circle-wrap">
+            <div class="circle">
+                <div class="content">
+                    <strong class="strong">20</strong>
+                    <p>总费用(星币)</p>
+                </div>
+            </div>
+            </div>
+        </section>
+		<div class="info-wrap">
+			<span class="info">当前剩余星币 {{xb}}，请不要重复确认</span>
 		</div>
-		<div class="info wrap">
-			<span>当前剩余星币 {{xb}}，请不要重复确认</span>
-		</div>
-		<div class="wrap btn-wrap">
-			<button  class="btn" @click="sure" >确认</button>
+		<div class="wrap">
+			<p class="btn-blue-lg" @click="sure" >确认</p>
 		</div>
 	</div>
 </template>
@@ -35,17 +39,17 @@ export default {
   },
   methods: {
     async initData() {
-      console.log(localStorage)
+      console.log(localStorage);
       //   await checkMoney();
       var data = {
         userId: this.userId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await queryMoney(enData);
-     
+
       if (res.code === "0000") {
-      let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         this.xb = deData.xb;
         data = {};
       }
@@ -55,12 +59,12 @@ export default {
         userId: this.userId,
         xb: costXb
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await checkMoney(enData);
-      
+
       if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
         if (deData.status == 1) {
           this.$router.push({ path: "/search/credit" });
         } else {
@@ -77,40 +81,79 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
 .creditAuthorize {
+  padding-top: rem(88px);
   height: 100%;
-  .link {
-    color: $blue;
+  text-align: center;
+  box-sizing: border-box;
+  .header-right {
+    font-size: rem(28px);
+    color: #333333;
+    letter-spacing: rem(0.34px);
   }
-  .input {
-    height: rem(98px);
-    line-height: rem(98px);
-    font-size: rem(26px);
-    color: #646464;
-    border: 1px solid $bdcolor;
-    background: #fff;
-    .price {
-      margin-left: rem(30px);
-      color: #f94b4b;
+  .main {
+    margin-top: rem(38px);
+  }
+  .title {
+    position: relative;
+    padding-bottom: rem(10px);
+    font-size: rem(32px);
+    color: #4d7bff;
+    letter-spacing: rem(0.38px);
+    &:after {
+      content: "";
+      position: absolute;
+      margin-left: rem(-20px);
+      bottom: 0;
+      left: 50%;
+      height: rem(4px);
+      width: rem(40px);
+      background-color: #4d7bff;
+    }
+  }
+  .circle-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: rem(142px) auto rem(226px) auto;
+    width: rem(304px);
+    height: rem(304px);
+    border-radius: 50%;
+    background-image: linear-gradient(-180deg, #f6ba59 0%, #f8913e 100%);
+    .circle {
+      position: relative;
+      width: rem(252px);
+      height: rem(252px);
+      border-radius: 50%;
+      background: #fff;
+    }
+    .strong {
+      font-size: rem(72px);
+      color: #020202;
+      letter-spacing: rem(0.86px);
+    }
+    .content {
+      position: absolute;
+      margin-top: rem(-56px);
+      top: 50%;
+      width: 100%;
     }
   }
   .info {
-    margin-top: rem(18px);
-    margin-bottom: rem(68px);
-    color: $grey;
-    font-size: rem(24px);
-    line-height: 1;
-    // span {
-    //   font-size: rem(20px);
-    // }
-  }
-  .btn {
-    width: 100%;
-    height: rem(80px);
-    background-color: $blue;
-    border: 0;
-    border-radius: 5px;
-    color: #fff;
     font-size: rem(32px);
+    color: #666666;
+    letter-spacing: rem(0.38px);
+    &::before {
+      content: "";
+      display: inline-block;
+      margin-right: rem(24px);
+      width: rem(12px);
+      height: rem(12px);
+      vertical-align: middle;
+      background: #4d7bff;
+    }
+  }
+  .info-wrap {
+    margin-bottom: rem(96px);
   }
 }
 </style>

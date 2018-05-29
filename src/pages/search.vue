@@ -1,9 +1,9 @@
 <template>
 	<div class="search">
-		<v-header>
-			<p slot="title">查询工具</p>
-		</v-header>
-		<div class="search_list">
+        <header class="header">
+          查询工具
+        </header>
+		<div class="wrap search_list">
 			<el-row v-for="(items,index) in listArr" :key="index">
 			  <el-col :span="8" v-for="(item,i) in items" :key="i">
 			  	<div class="grid-content" @click="goFunc(item.url)">
@@ -12,6 +12,20 @@
 			  	</div>
 			  </el-col>
 			</el-row>
+            <section v-for="(items,index) in listArr" :key="index" class="part">
+                <h3 class="title">{{items.title}}</h3>
+                <van-row>
+                    <van-col span="12" v-for="(item,i) in items.items" :key="i" class="item">
+                        <div @click="goFunc(item.url)" class="flex">
+                            <i :class="item.class"></i>
+                            <div class="rest content">
+                                <p class="name">{{item.text}}</p>
+                                <small class="hint">{{item.hint}}</small>
+                            </div>
+                        </div>
+                    </van-col>
+                </van-row>
+            </section>
 		</div>
 		<v-footer :activeIndex="1"></v-footer>
 	</div>
@@ -21,30 +35,70 @@ export default {
   data() {
     return {
       listArr: [
-        [
-          { class: "icon-card", text: "信用查询", url: "/search/creditAuthorize" },
-          { class: "icon-illegal", text: "违章查询", url: "" },
-          { class: "icon-car", text: "车险查询", url: "" }
-        ],
-        [
-          { class: "icon-bank", text: "公积金查询", url: "" },
-          { class: "icon-insurance", text: "社保查询", url: "" },
-          { class: "icon-phone", text: "手机充值", url: "" }
-        ],
-        [
-          { class: "icon-lightning", text: "电费", url: "" },
-          { class: "icon-fire", text: "燃气费", url: "" },
-          { class: "icon-water", text: "水费", url: "" }
-        ]
+        {
+          title: "查询管理",
+          items: [
+            {
+              class: "icon-creditcard",
+              text: "信用查询",
+              url: "/search/creditAuthorize",
+              hint: "人性化查询"
+            },
+            {
+              class: "icon-illegal",
+              text: "违章查询",
+              url: "",
+              hint: "人性化查询"
+            },
+            {
+              class: "icon-insurance-car",
+              text: "车险查询",
+              url: "",
+              hint: "人性化查询"
+            },
+            {
+              class: "icon-housing-fund",
+              text: "公积金查询",
+              url: "",
+              hint: "人性化查询"
+            },
+            {
+              class: "icon-insurance",
+              text: "社保查询",
+              url: "",
+              hint: "人性化查询"
+            }
+          ]
+        },
+        {
+          title: "费用管理",
+          items: [
+            {
+              class: "icon-electric",
+              text: "电费",
+              url: "",
+              hint: "电费查询"
+            },
+            { class: "icon-fire", text: "燃气费", url: "", hint: "燃气查询" },
+            { class: "icon-water", text: "水费", url: "", hint: "水费查询" },
+            {
+              class: "icon-recharge",
+              text: "手机充值",
+              url: "",
+              hint: "手机查询"
+            }
+          ]
+        }
       ]
     };
   },
   methods: {
     goFunc(url) {
+      this.$toast.clear();
       if (url) {
         this.$router.push({ path: url });
       } else {
-        this.$message({ message: "正在升级中", duration: 1000 });
+        this.$toast("正在升级中");
       }
     }
   }
@@ -56,62 +110,58 @@ export default {
   height: 100%;
   padding-bottom: rem(98px);
   box-sizing: border-box;
-  .grid-content {
+  header {
+    height: rem(88px);
+    line-height: rem(88px);
+    font-size: rem(34px);
+    color: #fefefe;
     text-align: center;
-    padding-top: rem(70px);
-   
+    background-image: linear-gradient(
+      135deg,
+      rgba(89, 159, 254, 0.9) 0%,
+      rgba(49, 88, 224, 0.9) 100%
+    );
+  }
+  .search_list {
+    padding-top: rem(4px);
+  }
+  .item {
+    padding: rem(38px) 0;
     .name {
-      margin-top: rem(35px);
-      margin-bottom: rem(51px);
-      font-size: rem(28px)
+      font-size: rem(28px);
+      color: #020202;
+      letter-spacing: rem(0.34px);
+    }
+    .hint {
+      font-size: rem(24px);
+      color: #666666;
+      letter-spacing: rem(0.28px);
+    }
+    .content {
+      margin-left: rem(20px);
     }
   }
-  .el-col {
-    border-bottom: 1px solid #eee;
-    border-right: 1px solid #eee;
-    &:nth-last-child() {
-      border-right: none;
+  .title {
+    font-size: rem(32px);
+    color: #666666;
+    letter-spacing: rem(0.38px);
+  }
+  .part {
+    padding-top: rem(30px);
+    &:not(:last-child) {
+      border-bottom: rem(2px) solid #e7e4e4;
     }
   }
-  .icon-illegal + .name {
-    margin-top: rem(28px);
-  }
-  .icon-car {
-    @include icon(rem(68px),rem(60px));
-    background-image: url("../assets/images/car.png");
-  }
-  .icon-illegal {
-    @include icon(rem(68px),rem(68px));
-    background-image: url("../assets/images/illegal.png");
-  }
-  .icon-card {
-    @include icon(rem(68px),rem(52px));
-    background-image: url("../assets/images/card.png");
-    margin-top: rem(8px);
-  }
-  .icon-bank {
-    @include icon(rem(70px),rem(68px));
-    background-image: url("../assets/images/bank.png");
-  }
-  .icon-insurance {
-    @include icon(rem(60px),rem(68px));
-    background-image: url("../assets/images/insurance.png");
-  }
-  .icon-phone {
-    @include icon(rem(54px),rem(68px));
-    background-image: url("../assets/images/phone.png");
-  }
-  .icon-lightning {
-    @include icon(rem(68px),rem(68px));
-    background-image: url("../assets/images/lightning.png");
-  }
-  .icon-fire {
-    @include icon(rem(56px),rem(68px));
-    background-image: url("../assets/images/fire.png");
-  }
-  .icon-water {
-    @include icon(rem(46px),rem(68px));
-    background-image: url("../assets/images/water.png");
+  .icon-creditcard,
+  .icon-illegal,
+  .icon-insurance-car,
+  .icon-housing-fund,
+  .icon-insurance,
+  .icon-electric,
+  .icon-fire,
+  .icon-water,
+  .icon-recharge {
+    @include icon(rem(84px), rem(84px));
   }
 }
 </style>

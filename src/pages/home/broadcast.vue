@@ -1,9 +1,6 @@
 <template>
 	<div class="broadcast">
-		<v-header class="wrap">
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">广播信息</p>
-		</v-header>
+		<v-header title="广播信息"></v-header>
 		<!-- <ul class="wrap">
 			<li class="item" v-for="(item, index) in list">
 				<p class="title">{{item.title}}</p>
@@ -27,6 +24,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
 .broadcast {
+  padding-top: rem(88px);
   .item {
     padding-top: rem(36px);
     .title {

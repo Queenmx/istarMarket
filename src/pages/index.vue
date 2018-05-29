@@ -1,62 +1,44 @@
 <template>
-  <div class="contain_index">
-      <v-header>
-        <p slot="title">星融金服</p>
-      </v-header>
-      <div class="index_banner">
-          <dl @click="jumpRouter('product')">
-              <dt><img src="../assets/images/daili.png" /></dt>
-              <dd>代理进件</dd>
-          </dl>
-          <dl @click="jumpRouter('client')">
-              <dt><img src="../assets/images/yixiang.png" /></dt>
-              <dd>意向客户</dd>
-          </dl>
-      </div>
-      <div class="newsmsg">
-          <div v-if="!adMes">
-          <el-carousel indicator-position="none" arrow="never" height='100px' id="message">
-            <div class="tipImg">
-                <img  src="../assets/images/tip.png" />
-            </div>
-            <el-carousel-item v-for="item in ad" :key="item.adId">
-                <h3 @click="broadcast(item)">{{ item.title }}</h3>
-            </el-carousel-item>
-          </el-carousel>
+  <div class="index">
+      <section class="banner">
+        <van-swipe :autoplay="3000">
+            <van-swipe-item><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064268552&di=7f40e2c4e7aa7313294920c4ef20a878&imgtype=0&src=http%3A%2F%2Fs9.rr.itc.cn%2Fr%2FwapChange%2F20172_9_17%2Fa226fp5761270330555.jpeg"></van-swipe-item>
+            <van-swipe-item><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336167&di=73127305316ef8dffbebf8ff4ee1d2dd&imgtype=0&src=http%3A%2F%2Fuploads.oh100.com%2Fallimg%2F1707%2F125-1FG5121113.png"></van-swipe-item>
+            <van-swipe-item><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336165&di=d1e1969d5dea698209e72f6574800760&imgtype=0&src=http%3A%2F%2Fimg.smzy.com%2Fimges%2F2017%2F0614%2F20170614103919460.png"></van-swipe-item>
+        </van-swipe>
+      </section>
+      <div class="wrap main-container">
+          <div class="header">
+          <div class="flex broadcast">
+                <div class="font-group">
+                  <i class="font-jinrong"></i>
+                  <i class="font-xiaotiao"></i>
+                </div>
+                <div class="rest banner-content">
+                    <van-swipe :autoplay="3000"  @change="changeBroadcast" :show-indicators="false" vertical class="swiper-vertical">
+                        <van-swipe-item v-for="item in this.ad" :key="item.adId">
+                            <span class="text" @click="broadcast">{{item.title}}</span>
+                        </van-swipe-item>
+                    </van-swipe>
+                </div>
+              <div @click="broadcast"><i class="icon-go"></i></div>
           </div>
-          <div v-else class="flex adBox">
-              <div class="img-wrap">
-                <img  src="../assets/images/tip.png" />
-            </div>
-             <h3 class="rest"> {{adMes}}</h3>
+          <div class="cate">
+              <van-row>
+                <van-col span="6" v-for="(item,index) in cateArr" :key="index">
+                    <i :class="item.class"></i>
+                    <p class="cate-name">{{item.text}}</p>
+                </van-col>
+              </van-row>
           </div>
-      </div>
-      <div class="product_list">
-          <ul class="product_contain">
-              <el-row>
-                  <el-col :span="24">
-                    <li class="product_info" v-for="item in list" :key="item.loanId" @click="applyLoan(item.loanId,item.loanName)">
-                        <h3 class="list_title">
-                            <img :src="item.logo" />
-                            <span>{{item.loanName}}</span>
-                        </h3>
-                        <div class="list_body">
-                            <div class="list_price">
-                                <h4>{{item.moneyMin}}~{{item.moneyMax}}</h4>
-                                <p>额度范围（{{item.moneyUnit}}）</p>
-                            </div>
-                            <ul class="list_ad">
-                                <li v-html="item.spread"></li>
-                                <!-- <li>{{item.loanTime}}</li>
-                                <li>{{item.rateType}}{{(item.rate*1).toFixed(2) + '%'}}</li>
-                                <li>贷款期限{{item.limitMin}}~{{item.limitMax}}{{item.limitType}}</li> -->
-                            </ul>
-                            <button @click="applyLoan(item.loanId,item.loanName)" class="apply_btn">申请贷款</button>
-                        </div>
-                    </li>
-                  </el-col>
-              </el-row>
-          </ul>
+          </div>
+          <div class="list">
+              <h3>热门产品</h3>
+              <ul>
+                  <li class="item"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336165&di=d1e1969d5dea698209e72f6574800760&imgtype=0&src=http%3A%2F%2Fimg.smzy.com%2Fimges%2F2017%2F0614%2F20170614103919460.png"></li>
+                  <li class="item"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336165&di=d1e1969d5dea698209e72f6574800760&imgtype=0&src=http%3A%2F%2Fimg.smzy.com%2Fimges%2F2017%2F0614%2F20170614103919460.png"></li>
+              </ul>
+          </div>
       </div>
       <v-footer></v-footer>
   </div>
@@ -71,51 +53,22 @@ export default {
       ad: "",
       adMes: "",
       list: "",
+      activeIndex: 0,
+      cateArr: [
+        { class: "icon-car", text: "车贷", url: "" },
+        { class: "icon-house", text: "房贷", url: "" },
+        { class: "icon-card", text: "信贷", url: "" },
+        { class: "icon-client", text: "意向客户", url: "" }
+      ],
       userInfo: JSON.parse(getItem("userInfo"))
     };
   },
   mounted() {
     // 初始化数据
     this.msg_list();
-    this.initData();
+    // this.initData();
   },
   methods: {
-    async msg_list() {
-      let res = await getAd();
-
-      if (res.code === "0000") {
-        let deData1 = strDec(res.data, "ZND20171030APIMM");
-        let deData = JSON.parse(deData1);
-        // console.log(res.data.adList);
-        this.ad = deData.adList;
-      } else {
-        this.adMes = res.msg;
-      }
-    },
-    broadcast(item) {
-      this.$router.push({
-        name: "broadcast",
-        params: { content: item.content }
-      });
-    },
-    applyLoan(loanId, loanName) {
-      this.$router.push({
-        path: "/product",
-        query: { loanId: loanId, loanName: loanName }
-      });
-    },
-    jumpRouter(str) {
-      if (str === "product") {
-        this.$router.push({ path: "/index/agencyProduct" });
-      } else if (str === "client") {
-        this.$router.push({ path: "/home/interestedClient" });
-      } else if (str === "productCenter") {
-        this.$router.push({
-          path: "/product",
-          query: { loanId: loanId, loanName: loanName }
-        });
-      }
-    },
     async initData() {
       var data = {
         pageNum: 1,
@@ -132,150 +85,146 @@ export default {
       } else {
         this.list = res.msg;
       }
+    },
+    async msg_list() {
+      let res = await getAd();
+      if (res.code === "0000") {
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
+        let deData = JSON.parse(deData1);
+        this.ad = deData.adList;
+      } else {
+        this.adMes = res.msg;
+      }
+    },
+    broadcast() {
+      let item = this.ad[this.activeIndex];
+      this.$router.push({
+        name: "broadcast",
+        params: { content: item.content }
+      });
+    },
+    applyLoan(loanId, loanName) {
+      this.$router.push({
+        path: "/product",
+        query: { loanId: loanId, loanName: loanName }
+      });
+    },
+    changeBroadcast(index) {
+      this.activeIndex = index;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/common.scss";
-.index_banner {
-  padding: rem(44px) 0;
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid #dedede;
-  color: #666;
-  text-align: center;
-  dl {
-    flex: 2;
-    dt {
-      img {
-        width: rem(122px);
-        height: rem(122px);
-      }
-    }
-    dd {
-      font-size: rem(32px);
-      padding-top: rem(20px);
-    }
-  }
-}
-.newsmsg {
-  border-bottom: rem(20px) solid #f8f8f8;
-  height: rem(90px);
-  //   padding-bottom: rem(10px);
-  img {
-    width: rem(125px);
-    height: rem(32px);
-  }
-  .tipImg {
-    background-color: #fff;
-    // height: 38px;
-    width: rem(150px);
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: rem(30px) 0 0 rem(30px);
-    z-index: 99;
-    text-align: center;
-  }
-  .el-carousel {
-    right: rem(30px);
-    overflow: hidden;
-  }
-  .el-carousel__item {
-    text-align: left;
-    left: rem(200px);
-    padding-top: rem(30px);
-    h3 {
-      color: #969696;
-      font-size: rem(28px);
-      line-height: rem(38px);
-      margin: 0;
-      span {
-        font-size: rem(20px);
-      }
-    }
-  }
-  .el-carousel__indicators {
-    display: none;
-  }
-}
-.product_list {
-  border-bottom: rem(20px) solid #f8f8f8;
+.index {
   padding-bottom: rem(100px);
-  .product_contain {
-    .product_info {
-      border-bottom: rem(20px) solid #f8f8f8;
-      .list_title {
-        padding: 0 rem(30px);
-        line-height: rem(78px);
+  .banner {
+    img {
+      height: rem(400px);
+      width: 100%;
+    }
+  }
+  .main-container {
+    position: relative;
+    margin-top: rem(-90px);
+  }
+  .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: rem(270px);
+    border-radius: rem(40px) rem(40px) 0 0;
+    background: #fff;
+  }
+  .broadcast {
+    margin: 0 rem(24px);
+    padding-top: rem(27px);
+    padding-bottom: rem(14px);
+    border-bottom: rem(1px) solid #e7e4e4;
+  }
+  .font-group {
+    margin-right: rem(40px);
+    i {
+      @include icon(rem(50px), rem(24px));
+      display: block;
+      &:not(:last-child) {
+        margin-bottom: rem(6px);
+      }
+    }
+  }
+  .swiper-vertical {
+    height: rem(48px);
+    width: 100%;
+  }
+  .icon-go {
+    @include icon(rem(30px), rem(30px));
+  }
+  .icon-car,
+  .icon-house,
+  .icon-card,
+  .icon-client {
+    @include icon(rem(70px), rem(70px));
+  }
+  .cate {
+    padding-top: rem(30px);
+    text-align: center;
+  }
+  .cate-name {
+    text-align: center;
+  }
+  .list {
+    padding-top: rem(270px);
+    text-align: center;
+    h3 {
+      margin-top: rem(12px);
+      margin-bottom: rem(34px);
+      font-size: rem(30px);
+      color: #2b2b2b;
+      letter-spacing: rem(0.36px);
+      &::before,
+      &::after {
+        content: "";
+        display: inline-block;
+        width: rem(32px);
+        height: rem(2px);
         vertical-align: middle;
-        text-align: left;
-        img {
-          width: rem(41px);
-          height: rem(41px);
-          display: inline;
-          vertical-align: middle;
-        }
-        span {
-          font-size: rem(28px);
-          padding-left: rem(10px);
-        }
+        background: #2b2b2b;
       }
-      .list_body {
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        flex: 3;
-        justify-content: space-between;
-        align-items: center;
-        padding: rem(50px) rem(30px);
-        color: #adadad;
+      &::before {
+        margin-right: rem(10px);
       }
-      .list_price {
-        text-align: left;
-        border-right: 1px solid #eee;
-        padding-right: rem(70px);
-        height: rem(100px);
-        h4 {
-          color: #f94b4b;
-          font-size: rem(32px);
-          font-weight: 600;
-        }
-        p {
-          font-size: rem(18px);
-        }
+      &::after {
+        margin-left: rem(10px);
       }
-      .list_ad {
-        width: 36%;
-        text-align: left;
-        line-height: rem(40px);
-        li {
-          font-size: rem(24px);
-        }
-      }
-      .apply_btn {
-        background-color: #f94b4b;
-        box-shadow: 0 rem(5px) rem(15px) rgba(249, 75, 75, 0.54);
-        border: none;
-        border-radius: rem(8px);
-        color: #fff;
-        font-size: rem(28px);
-        width: rem(152px);
-        height: rem(65px);
+    }
+    .item {
+      img {
+        margin-bottom: rem(18px);
+        height: rem(268px);
+        width: 100%;
+        border-radius: rem(20px);
       }
     }
   }
 }
-.el-dialog {
-  width: 80%;
-}
-.adBox {
-  height: rem(100px);
-  .img-wrap {
-    padding-right: rem(30px);
-    width: rem(150px);
-    text-align: center;
+</style>
+<style lang="scss">
+@import "../assets/style/common.scss";
+.index {
+  .van-swipe__indicators {
+    bottom: rem(100px);
+  }
+  .van-swipe__indicator {
+    width: rem(28px);
+    height: rem(4px);
+    background: #fff;
+
+    border-radius: 0;
+  }
+  .van-swipe__indicator--active {
+    background: #4374ff;
   }
 }
 </style>

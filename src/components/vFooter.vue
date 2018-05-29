@@ -1,13 +1,15 @@
 <template>
 	<div class="footer">
-		<el-row class="row">
-		  <el-col :span="6" v-for="(item,index) in footerData" :key="index">
-		  	<div class="grid-content" @click="go(index)">
-		  		<i :class="[{active:activeIndex==index},item.class]"></i>
-		  		<p :class="[{active:activeIndex==index},'name']">{{item.text}}</p>
-		  	</div>
-		  </el-col>
-		</el-row>
+		<van-row class="list">
+            <van-col span="6" v-for="(item,index) in footerData" :key="index">
+                <router-link class="item" :to="item.url">
+                    <div class="icon-wrap">
+                    <i :class="[activeIndex==index?item.class+'-active':item.class]"></i>
+                    </div>
+                    <p :class="[{'active':activeIndex==index},'title']">{{item.text}}</p>
+                </router-link>
+            </van-col>
+        </van-row>
 	</div>
 </template>
 <script>
@@ -22,7 +24,7 @@ export default {
     return {
       footerData: [
         { class: "icon-home", text: "首页", url: "/" },
-        { class: "icon-bag", text: "查询工具", url: "/search" },
+        { class: "icon-search", text: "查询工具", url: "/search" },
         { class: "icon-system", text: "OA系统", url: "/oaSystem" },
         { class: "icon-user", text: "个人中心", url: "/user" }
       ]
@@ -42,60 +44,33 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  padding-top:rem(12px);
   height: rem(100px);
+  text-align:center;
   border-top: 1px solid #dedede;
   box-sizing: border-box;
   background-color: #fff;
-  .row {
-    top: 50%;
-    transform: translateY(-50%);
-    p{
+  .icon-wrap{
+      margin:0 auto;
+      width:rem(50px);
+      height:rem(50px);
+      line-height:rem(50px);
+  }
+  .icon-home,.icon-search,.icon-system,.icon-user{
+      @include icon(rem(32px),rem(30px))
+          vertical-align: middle;
+  }
+  .icon-home-active,.icon-search-active,.icon-system-active,.icon-user-active{
+      @include icon(rem(50px),rem(50px))
+      vertical-align: middle;
+  }
+  .title{
       font-size: rem(20px);
-    }
+        color: #444444;
+        letter-spacing: rem(0.24px);
   }
-  .grid-content {
-    text-align: center;
-  }
-  .icon-home {
-    @include icon(rem(44px),rem(44px));
-    background-image: url("../assets/images/home-grey.png");
-    &.active {
-      background-image: url("../assets/images/home-blue.png");
-    }
-  }
-  .icon-system {
-    @include icon(rem(43px),rem(45px));
-    background-image: url("../assets/images/system-grey.png");
-    &.active {
-      background-image: url("../assets/images/system-blue.png");
-    }
-  }
-  .icon-system {
-    @include icon(rem(43px),rem(45px));
-    background-image: url("../assets/images/system-grey.png");
-    &.active {
-      background-image: url("../assets/images/system-blue.png");
-    }
-  }
-  .icon-bag {
-    @include icon(rem(40px),rem(41px));
-    background-image: url("../assets/images/bag-grey.png");
-    &.active {
-      background-image: url("../assets/images/bag-blue.png");
-    }
-  }
-  .icon-user {
-    @include icon(rem(42px),rem(42px));
-    background-image: url("../assets/images/user-grey.png");
-    &.active {
-      background-image: url("../assets/images/user-blue.png");
-    }
-  }
-  .name {
-    color: #969696;
-    &.active {
-      color: #53a6ff;
-    }
+  .active{
+       color:#4D7BFF;
   }
 }
 </style>

@@ -171,7 +171,9 @@ export default {
       this.saveSubActiveName(this.activeName, categoryId);
       let data = {
         categoryId: categoryId,
-        userId: JSON.parse(getItem("userInfo")).userId
+        userId: JSON.parse(getItem("userInfo")).userId,
+        pageSize: 500,
+        pageNum: 1
       };
       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await typeProduct(enData);

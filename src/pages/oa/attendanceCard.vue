@@ -1,15 +1,15 @@
 <template>
     <div class="rooterEle attendanceCard">
-        <v-header class="wrap">
-            <i slot="left" class="el-icon-arrow-left"></i>
-            <p slot="title">{{companyName}}</p>
-            <!-- <p slot="right" class="link" @click="setting">设置考勤</p> -->
+        <v-header title="打卡">
         </v-header>
-        <attendance-card-list @getData="getData" :groupName="groupName"></attendance-card-list>
-        <!-- <div class="blank">
-            <p class="bg"></p>
-            <p class="hit">管理员当天未给你排版</p>
-        </div> -->
+        <div>
+            <div>
+                <attendance-card-list @getData="getData" :groupName="groupName"></attendance-card-list>
+            </div>
+            <div>
+                <div class="address-group"></div>
+            </div>
+        </div>
         <div>
             <p class="wrap title">打卡记录时间和位置</p>
             <div class="wrap main">
@@ -61,7 +61,7 @@ import attendanceCardList from "../../components/attendanceCardList";
 import localPosition from "@/components/localPosition";
 import cardAlert from "../../components/cardAlert";
 import { getItem, formateTime, callAddress, checkSys } from "@/util/util";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 import {
   oaAttendanceInfo,
   oaAttendanceSign,
@@ -140,7 +140,7 @@ export default {
         userId: this.userId,
         date: formateTime(this.timeStamp, "yyyy-MM-dd") + " 00:00:00"
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       console.log(data.date);
       await this.getCompany();
       await this.getAttendance(data);
@@ -150,9 +150,9 @@ export default {
       let data = {
         companyId: JSON.parse(getItem("userInfo")).companyId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaGetCompany(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.companyName = deData.data.name;
@@ -163,9 +163,9 @@ export default {
         userId: this.userId,
         deptId: this.deptId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaGroupCheck(enData);
-       let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.groupName = deData.data.groupName;
@@ -180,9 +180,9 @@ export default {
         time: this.date,
         location: this.address
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaUpdateTime(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.$message("更新时间成功");
@@ -193,9 +193,9 @@ export default {
       }
     },
     async getAttendance(data) {
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await oaAttendanceInfo(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.flag = [];
@@ -235,9 +235,9 @@ export default {
         time: this.date,
         location: this.address
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await oaAttendanceSign(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.$refs.alert.open();

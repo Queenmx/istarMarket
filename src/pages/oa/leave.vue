@@ -1,12 +1,68 @@
 <template>
-<div class="leaver">
-    <v-header>
-        <i slot="left" class="el-icon-arrow-left" @click="clear"></i>
-        <p slot="title">请假</p>
+<div class="rooterEle leaver">
+    <v-header title="请假">
     </v-header>
     <div class="leave">
-        <!-- <p class="leave_tips">这里本月第2次提交请假</p> -->
-        <el-row class="leave_name">
+        <section class="wrap">
+            <ul>
+                <li class="flex item">
+                    <p class="rest require strong">请假类型</p>
+                    <div @click="isShowLeaveType=!isShowLeaveType" class="flex">
+                        <div class="rest"><input placeholder="请选择"></div>
+                    <i class="icon-arrow-right-black"></i></div>
+                    <van-popup v-show="isShowLeaveType" @change="onChange" position="bottom">
+                        <van-picker show-toolbar :columns="leaveType"/>
+                    </van-popup>
+                </li>
+            </ul>
+        </section>
+        <section class="wrap">
+            <ul>
+                <li class="flex item">
+                    <p class="rest require strong">开始时间</p>
+                    <div @click="isShowStartTime=!isShowStartTime" class="flex">
+                        <div class="rest"><input placeholder="请选择"></div>
+                    <i class="icon-arrow-right-black"></i></div>
+                    <van-popup v-show="isShowStartTime" @change="onChange" position="bottom">
+                        <van-datetime-picker v-model="startTime" type="datetime"/>
+                    </van-popup>
+                </li>
+                <li class="flex item">
+                    <p class="rest require strong">结束时间</p>
+                    <div @click="isShowEndTime=!isShowEndTime" class="flex">
+                        <div class="rest"><input placeholder="请选择"></div>
+                    <i class="icon-arrow-right-black"></i></div>
+                    <van-popup v-show="isShowEndTime" @change="onChange" position="bottom">
+                        <van-datetime-picker v-model="endTime" type="datetime"/>
+                    </van-popup>
+                </li>
+                <li class="flex item">
+                    <p class="rest require strong">请假时长</p>
+                    <div><input  v-model="input" placeholder="请输入时长"></div>
+                </li>
+            </ul>
+        </section>
+        <section class="wrap">
+            <ul>
+                <li class="item2">
+                    <p class="require strong">请假事由</p>
+                    <div>
+                        <textarea placeholder="请填写请假事宜"/>
+                    </div>
+                </li>
+            </ul>
+        </section>
+        <section class="wrap">
+            <ul>
+                <li class="item2">
+                    <p class="require strong">审批人</p>
+                    <div>
+                        <i class="icon-add" @click="goApprover"></i>
+                    </div>
+                </li>
+            </ul>
+        </section>
+        <!-- <el-row class="leave_name">
             <el-col :span="7" class="leave_label"><i class="red_must">*</i>请假类型</el-col>
             <el-col :span="17" class="leave_value">
                 <el-select v-model="value" placeholder="请选择">
@@ -14,7 +70,6 @@
                 </el-select>
             </el-col>
         </el-row>
-        <!-- <p class="leave_tips">年假/调休余额可设置，并支持自动扣减</p> -->
         <el-row class="leave_name">
             <el-col :span="6" class="leave_label"><i class="red_must">*</i>开始时间</el-col>
             <el-col :span="18" class="leave_value">
@@ -46,27 +101,6 @@
             </el-col>
         </el-row>
         <p class="leave_tips">时长将自动计入考勤</p>
-        <el-row class="leave_name">
-            <el-col :span="24" class="leave_label"><i class="red_must">*</i>请假事由</el-col>
-            <el-col :span="24" class="textarea">
-                <el-input type="textarea" :rows="4" placeholder="请填写请假事宜" v-model="textarea"></el-input>
-            </el-col>
-        </el-row>
-        <!-- <el-row class="leave_name gray_line">
-            <el-col :span="24" class="leave_label">图片</el-col>
-            <el-col :span="24" class="textarea">
-                <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove">
-                    <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible" size="tiny">
-                    <img width="100%" :src="dialogImageUrl" alt="">
-                </el-dialog>
-            </el-col>
-        </el-row> -->
         <el-row class="leave_name gray_line">
             <el-col :span="24" class="leave_label"><i class="red_must">*</i>审批人</el-col>
             <el-col :span="24" class="textarea">
@@ -75,17 +109,11 @@
                 </ul>
                 <el-button type="text" @click="goApprover"  class="adduser"><i class="el-icon-plus"></i></el-button>
             </el-col>
-        </el-row>
-        <!-- <el-row class="leave_name gray_line">
-            <el-col :span="24" class="leave_label"><i class="red_must">*</i>抄送人</el-col>
-            <el-col :span="24" class="textarea">
-                <ul class="nameList" id="NameList">
-                    <li class="userName"><span v-for="(item,i) in sendtoinfo" :key="i">{{item}}</span></li>
-                </ul>
-                <el-button type="text"   class="adduser" @click="sendTo"><i class="el-icon-plus"></i></el-button>
-            </el-col>
         </el-row> -->
-        <el-button class="submit_btn" type="primary" @click="submit">提交</el-button>
+        <!-- <el-button class="submit_btn" type="primary" @click="submit">提交</el-button> -->
+        <div class="wrap btn-wrap">
+            <p class="btn-blue-lg" @click="goApprover">提交</p>
+        </div>
         
     </div>
 </div>  
@@ -113,6 +141,12 @@ export default {
       approver: getItem("approver"),
       input: "",
       textarea: "",
+      leaveType: ["事假", "病假", "产假", "陪产假", "调休", "婚假"],
+      startTime: "",
+      endTime: "",
+      isShowLeaveType: false,
+      isShowStartTime: false,
+      isShowEndTime: false,
       //请假类型
       options: [
         {
@@ -151,7 +185,7 @@ export default {
   },
   mounted() {
     this.initDate();
-    console.log(this.sendtoinfo);
+    console.log(this.test);
     // console.log(this.$route.query.userId)
   },
   methods: {
@@ -170,6 +204,9 @@ export default {
         this.input = leaveInfo.lengthTime;
         this.textarea = leaveInfo.reason;
       }
+    },
+    onChange(index) {
+      console.log(index);
     },
     handleNodeClick(data) {
       //树形图
@@ -259,6 +296,48 @@ export default {
 <style lang="scss">
 @import "../../assets/style/common.scss";
 .leaver {
+  font-size: rem(30px);
+  color: #545454;
+  section {
+    margin-top: rem(32px);
+    background: #fff;
+  }
+  .item {
+    height: rem(102px);
+    &:not(:last-child) {
+      border-bottom: rem(1px) solid #eeeeee;
+    }
+  }
+  .item2 {
+    padding-top: rem(32px);
+    padding-bottom: rem(52px);
+    .strong {
+      margin-bottom: rem(10px);
+    }
+  }
+  .strong {
+    color: #020202;
+  }
+  input {
+    text-align: right;
+  }
+  textarea {
+    width: 100%;
+    height: rem(111px);
+    resize: none;
+    border: none;
+  }
+  .icon-arrow-right-black {
+    margin-left: rem(12px);
+    @include icon(rem(19px), rem(28px));
+  }
+  .icon-add {
+    margin-top: rem(12px);
+    @include icon(rem(84px), rem(84px));
+  }
+  .btn-wrap {
+    margin-top: rem(54px);
+  }
   .leave_tips {
     color: #979797;
     font-size: rem(26px);

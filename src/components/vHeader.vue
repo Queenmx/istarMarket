@@ -1,33 +1,31 @@
 <template>
-	<div class="v-header">
-		<div class="content">
-			<div class="left"  @click="back">
-				<slot name="left"></slot>
+	<div class="wrap flex v-header">
+			<div class="left">
+				<slot name="left">
+                    <i class="icon-back" @click="back"></i>
+                </slot>
 			</div>
-			<div class="middle">
-				<slot name="title"></slot>
+			<div class="rest middle">
+				<slot name="title">
+                    <span>{{title}}</span>
+                </slot>
 			</div>
-			<div class="right" @click="rightEvent">
+			<div class="right">
 				<slot name="right"></slot>
 			</div>
-		</div>
 	</div>
 </template>
 <script>
 export default {
   props: {
-    isBack: {
-      type: Boolean,
-      default: true
+    title: {
+      type: String,
+      default: "星融金服"
     }
   },
   methods: {
     back() {
-      if (this.isBack) {
-        this.$router.go(-1);
-      } else {
-        this.$emit("leftEvent");
-      }
+      this.$router.go(-1);
     },
     rightEvent() {
       this.$emit("rightEvent");
@@ -37,17 +35,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/common.scss";
-.el-icon-arrow-left {
-  font-size: rem(48px);
-}
 .v-header {
-  padding: rem(26px) rem(30px);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: rem(88px);
   background-color: #fff;
-  border-bottom: 1px solid #dedede;
-  .content {
-    display: flex;
-    align-items: center;
-  }
+  z-index: 5;
   .left,
   .right {
     font-size: rem(26px);
@@ -58,7 +53,6 @@ export default {
   }
   .middle {
     font-size: rem(35px);
-    flex: 1;
     text-align: center;
     p {
       width: rem(280px);
@@ -67,6 +61,10 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+  }
+  .icon-back {
+    vertical-align: bottom;
+    @include icon(rem(42px), rem(42px));
   }
 }
 </style>
