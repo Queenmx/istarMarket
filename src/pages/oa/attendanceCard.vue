@@ -2,7 +2,14 @@
     <div class="rooterEle attendanceCard">
         <v-header title="打卡">
         </v-header>
-        <attendance-card-list @getData="getData" :groupName="groupName"></attendance-card-list>
+        <div>
+            <div>
+                <attendance-card-list @getData="getData" :groupName="groupName"></attendance-card-list>
+            </div>
+            <div>
+                <div class="address-group"></div>
+            </div>
+        </div>
         <div>
             <p class="wrap title">打卡记录时间和位置</p>
             <div class="wrap main">
