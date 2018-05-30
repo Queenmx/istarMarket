@@ -1,9 +1,6 @@
 <template>
 	<div class="audit">
-		<v-header class="wrap">
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">申请记录</p>
-		</v-header>
+		<v-header title="申请记录"></v-header>
 				<ul v-if="list && list.length">
 					<li class="wrap flex item" @click="goAudit(item)"  v-for="(item,index) in list" :key="index" >
 						<div class="rest">
@@ -44,7 +41,7 @@
 import Bus from "../../util/Bus.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { oaAuditHistory } from "@/util/axios.js";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -61,9 +58,9 @@ export default {
       let data = {
         userId: this.userId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAuditHistory(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.list = deData.data;

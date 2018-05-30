@@ -1,29 +1,23 @@
 <template>
   <div class="rooterEle selectApartment">
-      <v-header class="wrap">
-            <i slot="left" class="el-icon-arrow-left"></i>
-            <p slot="title">选择审批人</p>
+      <v-header title="选择审批人">
         </v-header>
-      <ul>
+      <ul class="list-wrap">
           <li class="wrap flex item" v-for="(ite,index) in list1" :key="index" @change="change(ite.userName)">
-             
-                  <!-- <! <i :class="[{'active':isAll},'el-icon-circle-check']" @click="isAll=!isAll"></i> --> 
-                  <el-radio-group v-model="radioType" >
+                  <!-- <el-radio-group v-model="radioType" >
                       <el-radio :label="ite.userId">{{ite.userName}}
                       </el-radio>
-                  </el-radio-group> 
-                  <!-- <el-checkbox-group v-model="checkList">
-                    <el-checkbox :label="ite.userId">{{ite.userName}}</el-checkbox>
-                    <! <el-checkbox label="复选框 B"></el-checkbox>
-                    <el-checkbox label="复选框 C"></el-checkbox> -->
-                  <!-- </el-checkbox-group> --> 
-
-             
-          
-          </li>
+                  </el-radio-group> -->
+                  <span class="rest">{{ite.userName}}</span>
+                  <i class="icon-checked"></i>
+            </li>
       </ul> 
       <!-- <footer2 :backUrl="backUrl"></footer2> -->
-       <div class="footer-btn2" @click="go">确定</div>
+       <!-- <div class="footer-btn2" @click="go">确定</div> -->
+       <div class="wrap flex footer">
+           <div class="rest">王大翠</div>
+           <div class="btn-sm">确定(1)</div>
+       </div>
   </div>
 </template>
 <script>
@@ -31,7 +25,7 @@
 import { oaQueryCompany } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 import footer2 from "../../components/footer2";
 export default {
   data() {
@@ -68,9 +62,9 @@ export default {
       var data = {
         companyId: userinfo.companyId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res1 = await oaQueryCompany(enData);
-      let deData1 = strDec(res1,"ZND20171030APIMM");
+      let deData1 = strDec(res1, "ZND20171030APIMM");
       // console.log(deData1);
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
@@ -103,13 +97,45 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
-ul {
-  width: 100%;
-  height: 100%;
+.selectApartment {
   padding-bottom: rem(100px);
-  box-sizing: border-box;
-  //   margin-bottom: rem(100px);
+  font-size: rem(30px);
+  color: #020202;
+  .item {
+    height: rem(112px);
+    border-bottom: rem(1px) solid #eee;
+  }
+  .icon-checked {
+    @include icon(rem(32px), rem(28px));
+  }
+  .list-wrap {
+    height: 100%;
+    overflow: auto;
+  }
+  .footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: rem(100px);
+    color: #333;
+    border-top: rem(1px) solid #f1f0f0;
+    box-sizing: border-box;
+    background: #fcfafa;
+  }
+  .btn-sm {
+    width: rem(160px);
+    text-align: right;
+    color: #4d7bff;
+  }
 }
+// ul {
+//   width: 100%;
+//   height: 100%;
+//   padding-bottom: rem(100px);
+//   box-sizing: border-box;
+//   //   margin-bottom: rem(100px);
+// }
 .selectApartment {
   .el-icon-circle-check {
     font-size: rem(42px);
