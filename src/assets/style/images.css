@@ -129,6 +129,8 @@
 }
 .icon-arrow-right {
   background-image: url("../images/icon-arrow-right@3x.png");
+  background-size:contain;
+  background-repeat: no-repeat;
 }
 .icon-arrow-down {
   background-image: url("../images/icon-arrow-down@3x.png");
