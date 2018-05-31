@@ -53,7 +53,7 @@ export default {
       phone: "",
       companyName: "",
       userName: "",
-      accountType: JSON.parse(getItem("userInfo")).accountType,
+      accountType: getItem("userInfo").accountType,
       data: []
     };
   },
@@ -98,15 +98,13 @@ export default {
         userId: userinfo.userId
       };
       let res = await getUserinfo(data);
-      //   let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(res.data);
-      console.log(deData);
+      console.log(res.data);
       if (res.code === "0000") {
-        this.phone = deData.phone;
-        this.companyName = deData.companyName;
-        this.headPic = deData.headPic;
-        this.userName = deData.userName;
-        this.accountType = deData.accountType;
+        this.phone = res.data.phone;
+        this.companyName = res.data.companyName;
+        this.headPic = res.data.headPic;
+        this.userName = res.data.userName;
+        this.accountType = res.data.accountType;
       }
     },
 

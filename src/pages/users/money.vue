@@ -84,7 +84,7 @@ export default {
       // list: [{ des: "全部" }, { des: "18年1月" }],
       items: "",
       money: "",
-      userInfo: JSON.parse(getItem("userInfo"))
+      userInfo: getItem("userInfo")
     };
   },
   mounted() {
@@ -104,11 +104,10 @@ export default {
       };
 
       let res = await getMoney(data);
-      let deData = JSON.parse(res.data);
       if (res.code === "0000") {
         // console.log(res.data.xbConsumeList)
         // this.data.desc=res.data.xbConsumeList[0].consume_type
-        this.items = deData.xbConsumeList;
+        this.items = res.data.xbConsumeList;
       }
     },
     async queryMoney() {
@@ -116,9 +115,8 @@ export default {
         userId: this.userInfo.userId
       };
       let res = await queryMoney(data);
-      let deData = JSON.parse(res.data);
       if (res.code === "0000") {
-        this.money = deData.xb;
+        this.money = res.data.xb;
       } else {
         // this.$message(res.msg);
       }

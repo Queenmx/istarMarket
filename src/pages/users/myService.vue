@@ -1,5 +1,5 @@
 <template>
-  <div class="myService">
+  <div class="rooterEle myService">
     <v-header title="在线客服"></v-header>
     <div class="open" v-show="openService">
       <div  class="openBox">
@@ -29,9 +29,9 @@
     <ul class="footer">
         <!-- <li class="img1"><img src="../../assets/images/face.png" alt=""></li> -->
         <li class="in1"><input type="text" class="customerMsg" id="msg" placeholder="请输入你想要咨询的问题" /></li>
-        <li class="btn" @click="sendMessage()">
+        <!-- <li class="btn" @click="sendMessage()">
             <input type="button" value="发送">
-        </li>
+        </li> -->
     </ul>
   </div>
 </template>
@@ -49,13 +49,14 @@ export default {
       messageList: [],
       selected: "xiaoxiao",
       Emoji: WebIM.Emoji,
-      userInfo: JSON.parse(getItem("userInfo")),
+      userInfo: getItem("userInfo"),
       tokenkey: "",
       show: false
     };
   },
   mounted() {
     this.init();
+    this.consoleCode();
   },
   watch: {
     messageList: function() {
@@ -218,7 +219,17 @@ export default {
       var goBottomDiv = document.getElementsByClassName("chat")[0];
       goBottomDiv.scrollTop = goBottomDiv.scrollHeight;
     },
-    consoleCode() {}
+    consoleCode() {
+      var self = this;
+      document.onkeydown = function(event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) {
+          // enter 键
+          //   alert("xsdchsdbcnsd");
+          self.sendMessage();
+        }
+      };
+    }
   }
 };
 </script>
@@ -317,13 +328,9 @@ export default {
     background-color: #fff;
     position: fixed;
     bottom: 0;
-    li:nth-child(1) {
+    li {
       float: left;
       margin-left: rem(30px);
-      //   margin-top: rem(20px);
-    }
-    li:last-child {
-      float: right;
     }
     .img1 {
       width: 13%;
@@ -340,7 +347,7 @@ export default {
       }
     }
     .in1 {
-      width: 67%;
+      width: 89%;
       height: rem(100px);
       margin-top: rem(22px);
       .customerMsg {
