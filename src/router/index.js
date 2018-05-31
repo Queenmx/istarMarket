@@ -132,6 +132,8 @@ const auditDetail = resolve => require(["@/pages/oa/auditDetail"], resolve);
 const departmentperformence = resolve =>
   require(["@/pages/oa/departmentperformence"], resolve);
 const productList = resolve => require(["@/pages/home/productList"], resolve);
+const attendanceCardSuccess = resolve =>
+  require(["@/pages/oa/attendanceCardSuccess"], resolve);
 Vue.use(Router);
 
 const router = new Router({
@@ -361,6 +363,10 @@ const router = new Router({
     {
       path: "/oaSystem/addApartment",
       component: addApartment
+    },
+    {
+      path: "/oaSystem/attendanceCardSuccess",
+      component: attendanceCardSuccess
     },
     {
       path: "/oaSystem/selectApprover",

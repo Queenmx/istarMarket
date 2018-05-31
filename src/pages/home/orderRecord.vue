@@ -1,10 +1,8 @@
 <template>
-	<div class="orderRecord">
-		<v-header>
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">抢单记录</p>
+	<div class="rooterEle orderRecord">
+		<v-header title="抢单记录">
 		</v-header>
-		<ul>
+		<!-- <ul>
 			<li v-for="item in customerList" :key="item.customerId">
 				<split></split>
 				<div class="flex wrap item" @click="goDetail(item.customerId)">
@@ -20,7 +18,26 @@
 					</div>
 				</div>
 			</li>
-		</ul>
+		</ul> -->
+        <div>
+            <p class="wrap title">2012-12-12</p>
+            <ul class="wrap list-wrap">
+                <li class="flex item">
+                    <div class="rest">
+                        <p class="strong name">小胖</p>
+                        <p><span>贷款期限：</span><span>24期</span></p>
+                    </div>
+                    <div class="strong red">10000元</div>
+                </li>
+                <li class="flex item">
+                    <div class="rest">
+                        <p class="strong name">小胖</p>
+                        <p><span>贷款期限：</span><span>24期</span></p>
+                    </div>
+                    <div class="strong red">10000元</div>
+                </li>
+            </ul>
+        </div>
 	</div>
 </template>
 <script>
@@ -44,9 +61,9 @@ export default {
         pageSize: 10,
         pageNum: 1
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await grabRecord(enData);
-      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         this.customerList = deData.customerList;
@@ -67,13 +84,32 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
 .orderRecord {
-  min-height: 100%;
   background-color: $bgcolor;
+  .list-wrap {
+    background: #fff;
+  }
+  .title {
+    height: rem(72px);
+    line-height: rem(72px);
+    font-size: rem(24px);
+    color: #999999;
+  }
   .item {
     align-items: center;
-    height: rem(200px);
-    font-size: rem(30px);
-    background-color: #fff;
+    height: rem(100px);
+    font-size: rem(28px);
+    &:not(:last-child) {
+      border-bottom: rem(1px) solid #eee;
+    }
+    .name {
+      color: #020202;
+    }
+  }
+  .strong {
+    font-size: rem(32px);
+  }
+  .red {
+    color: #ff3f5e;
   }
   .orange {
     color: #f3693b;

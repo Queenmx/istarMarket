@@ -1,36 +1,32 @@
 <template>
-  <div class="signIn addAddress" ref="addAddress">
-      <v-header>
-          <i slot="left" class="el-icon-arrow-left"></i>
-          <p slot="title">签到</p>
+  <div class="rooterEle signIn">
+      <v-header title="签到">
       </v-header>
-      <el-row class="sign_base">
-          <el-col :span="10" class="sign_msg"><img src="../../assets/images/icon-time.png" />{{date}}</el-col>
-          <el-col :span="14" class="sign_msg"><img src="../../assets/images/tree.png" />当前企业：{{companyName}}</el-col>
-      </el-row>
-      <el-row class="location_msg">
-          <el-col :span="24" class="sign_msg">
-              <!-- <input v-model="address" class="address-input" style="border:none;width:100%"> -->
-              <span class="address-input" style="border:none;width:100%">{{address}}</span>
-        </el-col>
-          <!-- <el-col :span="8" class="fr sign_msg"><span>地址微调</span></el-col> -->
-      </el-row>
-      <div class="wrap">
+        <div class="bm-wrap">
             <div id="container" class="bm-view"></div>
+            <div class="address-wrap">
+                <div class="address">
+                    <p>{{address}}</p>
+                </div>
+            </div>
         </div>
-      <el-row class="sign_base">
-          <el-col class="base_label" :span="6">拜访对象</el-col>
-          <el-col class="base_input" :span="18"><input v-model="visitor" placeholder="请输入拜访对象" /></el-col>
-      </el-row>
-      <div class="sign_time">
-          <div class="time_bg" @click="submit">
-            <p>签到<br><span class="time_num">{{time}}</span></p>
-          </div>
-      </div>
+        <div class="container">
+            <div class="wrap flex item">
+                <div class="rest">拜访对象</div>
+                <div><input v-model="visitor" placeholder="请输入拜访对象"></div>
+            </div>
+            <div class="wrap textarea-wrap">
+                <textarea placeholder="请简单描述一下"/>
+                <p class="hint">0/500字</p>
+            </div>
+        </div>
+        <div class="wrap btn-wrap">
+            <p class="btn-blue-lg"  @click="submit">立即签到</p>
+        </div>
   </div>
 </template>
 <script>
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 import { oaSignIn, oaGetCompany } from "@/util/axios.js";
 import {
   getItem,
@@ -83,8 +79,6 @@ export default {
     // setTimeout(function() {
     //   console.log("========", x, y);
     // }, 3000);
-    this.$refs.addAddress.style.height =
-      this.$refs.addAddress.clientHeight + "px";
     // this.initMap();
     // this.getPosition();
     // this.initData();
@@ -114,9 +108,9 @@ export default {
       let data = {
         companyId: JSON.parse(getItem("userInfo")).companyId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaGetCompany(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       this.companyName = deData.data.name;
     },
@@ -162,9 +156,9 @@ export default {
     async submit() {
       console.log("submit");
       let data = this.signData;
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaSignIn(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
+      let deData1 = strDec(res, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (deData.code === "0000") {
         this.$message("提交成功");
@@ -178,84 +172,145 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
-.location_msg {
-  padding: rem(40px) rem(30px) rem(20px);
-  font-size: rem(32px);
-  .fr {
-    text-align: right;
-    color: #53a6ff;
-  }
-}
 .signIn {
+  font-size: rem(30px);
   .address-input {
     width: 100%;
     border: none;
   }
-}
-.sign_base {
-  padding: rem(25px) rem(30px) rem(30px);
-  font-size: rem(26px);
-  color: #959595;
-  //   vertical-align: middle;
-  border-bottom: 1px solid #eee;
-  display: block;
-  align-items: center;
-  .base_label {
-    color: #313131;
-    font-size: rem(30px);
-  }
-  input {
-    width: 100%;
-    background: none;
-    border: none;
-    font-size: rem(30px);
-    vertical-align: middle;
-  }
-}
-.sign_time {
-  text-align: center;
-  background-color: #f8f8f8;
-  padding: rem(60px) 0 rem(150px);
-  .time_bg {
-    width: rem(400px);
-    height: rem(400px);
-    border-radius: 50%;
-    background-color: #53a6ff;
-    box-shadow: 0 rem(12px) rem(27px) rgba(118, 184, 255, 0.75);
-    font-size: rem(50px);
-    line-height: rem(80px);
-    color: #fff;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .time_num {
-      font-size: rem(62px);
-    }
-  }
-}
-.sign_msg {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  img {
-    width: rem(29px);
-    height: rem(28px);
-    padding-right: rem(10px);
-  }
-}
-.addAddress {
-  position: relative;
   .bm-view {
     width: 100%;
-    height: rem(200px);
+    height: rem(352px);
+    box-sizing: border-box;
   }
-  .address {
-    height: rem(99px);
-    font-size: rem(32px);
-    color: #646464;
+  .item {
+    height: rem(100px);
+    line-height: rem(100px);
+    font-size: rem(30px);
+    color: #333333;
     background: #fff;
-    border-bottom: 1px solid $bdcolor;
+    border-bottom: rem(1px) solid #eee;
   }
+  textarea {
+    padding-top: rem(36px);
+    width: 100%;
+    height: rem(166px);
+    resize: none;
+    border: none;
+  }
+  .container {
+    padding-top: rem(36px);
+
+    .hint {
+      text-align: right;
+      color: #666666;
+    }
+  }
+  .textarea-wrap {
+    padding-bottom: rem(32px);
+    background: #fff;
+  }
+  .btn-wrap {
+    padding-top: rem(94px);
+  }
+  .location_msg {
+    padding: rem(40px) rem(30px) rem(20px);
+    font-size: rem(32px);
+    .fr {
+      text-align: right;
+      color: #53a6ff;
+    }
+  }
+  .sign_base {
+    padding: rem(25px) rem(30px) rem(30px);
+    font-size: rem(26px);
+    color: #959595;
+    //   vertical-align: middle;
+    border-bottom: 1px solid #eee;
+    display: block;
+    align-items: center;
+    .base_label {
+      color: #313131;
+      font-size: rem(30px);
+    }
+    input {
+      width: 100%;
+      background: none;
+      border: none;
+      font-size: rem(30px);
+      vertical-align: middle;
+    }
+  }
+  .sign_time {
+    text-align: center;
+    background-color: #f8f8f8;
+    padding: rem(60px) 0 rem(150px);
+    .time_bg {
+      width: rem(400px);
+      height: rem(400px);
+      border-radius: 50%;
+      background-color: #53a6ff;
+      box-shadow: 0 rem(12px) rem(27px) rgba(118, 184, 255, 0.75);
+      font-size: rem(50px);
+      line-height: rem(80px);
+      color: #fff;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .time_num {
+        font-size: rem(62px);
+      }
+    }
+  }
+  .sign_msg {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    img {
+      width: rem(29px);
+      height: rem(28px);
+      padding-right: rem(10px);
+    }
+  }
+  .bm-wrap {
+    position: relative;
+    .address-wrap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      text-align: center;
+      background-image: linear-gradient(
+        -180deg,
+        rgba(255, 255, 255, 0) 0%,
+        #ffffff 100%
+      );
+    }
+    .address {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      font-size: rem(28px);
+      color: #020202;
+      p {
+        padding-top: rem(20px);
+        padding-bottom: rem(24px);
+      }
+    }
+  }
+  //   .address {
+  //     height: rem(99px);
+  //     font-size: rem(32px);
+  //     color: #646464;
+  //     background: #fff;
+  //     border-bottom: 1px solid $bdcolor;
+  //   }
+}
+
+.addAddress {
+  position: relative;
 }
 </style>

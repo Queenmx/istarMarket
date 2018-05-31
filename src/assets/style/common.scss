@@ -166,3 +166,36 @@ input {
     background: #4d7bff;
   }
 }
+.notepaper {
+  position: relative;
+  margin-top: rem(20px);
+  background: #fff;
+  .title {
+    font-size: rem(32px);
+    color: #020202;
+    height: rem(90px);
+    line-height: rem(90px);
+    text-align: center;
+    border-bottom: rem(1px) solid #eee;
+  }
+  &::before,
+  &::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: rem(80px);
+    width: rem(20px);
+    height: rem(20px);
+    border-radius: 50%;
+    background: $bgcolor;
+  }
+  &::before {
+    left: rem(-10px);
+  }
+  &::after {
+    right: rem(-10px);
+  }
+  .blue {
+    color: #4d7bff;
+  }
+}

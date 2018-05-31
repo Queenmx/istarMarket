@@ -1,11 +1,41 @@
 <template>
-  <div class="leave">
-      <v-header>
-          <i slot="left" class="el-icon-arrow-left" @click="clear"></i>
-          <p slot="title">日报</p>
+  <div class="rooterEle dayly">
+      <v-header title="日报">
       </v-header>
       <div class="dayly_contain">
-          <el-row class="leave_name gray_line">
+          <ul>
+              <li class="wrap item">
+                  <p class="require">今日完成工作</p>
+                  <div>
+                      <textarea/>
+                  </div>
+              </li>
+              <li class="wrap item">
+                  <p class="require">未完成工作</p>
+                  <div>
+                      <textarea/>
+                  </div>
+              </li>
+              <li class="wrap item">
+                  <p class="require">需协调工作</p>
+                  <div>
+                      <textarea/>
+                  </div>
+              </li>
+          </ul>
+          <ul>
+              <li class="wrap item flex">
+                  <p class="rest require">发送至</p>
+                  <div>
+                      <span class="hint">请选择</span>
+                      <i class="icon-arrow-right"></i>
+                  </div>
+              </li>
+          </ul>
+          <div class="wrap btn-wrap">
+              <p class="btn-blue-lg">提交</p>
+          </div>
+          <!-- <el-row class="leave_name gray_line">
               <el-col :span="8">今日完成工作</el-col>
               <el-col :span="16">
                   <input type="text" class="edit_input" placeholder="请填写今日完成工作" v-model="done"/>
@@ -30,7 +60,7 @@
           <p class="leave_tips">备注信息</p>
           <el-row class="leave_name">
               <textarea class="edit_textarea" rows="5" placeholder="请填写备注信息…" v-model="remark "></textarea>
-          </el-row>
+          </el-row> -->
           <!-- <el-row class="leave_name gray_line">
             <el-col :span="24" class="leave_label">图片</el-col>
             <el-col :span="24" class="textarea">
@@ -61,7 +91,7 @@
                 </el-dialog>
             </el-col>
           </el-row> -->
-          <p class="leave_tips leave_location"><i class="el-icon-location" v-html="address"></i></p>
+          <!-- <p class="leave_tips leave_location"><i class="el-icon-location" v-html="address"></i></p>
           <el-row class="leave_name gray_line">
             <el-col :span="24" class="leave_label"><i class="red_must">*</i>发送至</el-col>
             <el-col :span="24" class="textarea">
@@ -69,7 +99,7 @@
                     <li class="userName"><span>{{daylyApprover}}</span></li>
                 </ul>
                 <el-button type="text" @click="goApprover"  class="adduser"><i class="el-icon-plus"></i></el-button>
-            </el-col>
+            </el-col> -->
             <!-- <el-col :span="24" class="leave_label"><i class="red_must">*</i>抄送人</el-col>
             <el-col :span="24" class="textarea">
                <ul class="nameList">
@@ -77,10 +107,10 @@
                 </ul>
                 <el-button type="text"   class="adduser" @click="sendTo"><i class="el-icon-plus"></i></el-button>
             </el-col> -->
-          </el-row>
+          <!-- </el-row>
           <el-row class="leave_name gray_line">
               <el-button class="submit_btn" type="primary" @click="submit">提交</el-button>
-          </el-row>
+          </el-row> -->
       </div>
   </div>  
 </template>
@@ -90,7 +120,7 @@ import { getItem, checkSys, callAddress, initMap } from "@/util/util.js";
 import { setItem } from "@/util/util.js";
 import { MessageBox } from "element-ui";
 import { BaiduMap, BmGeolocation } from "vue-baidu-map";
-import { strEnc, strDec } from '@/util/aes.js'
+import { strEnc, strDec } from "@/util/aes.js";
 var map, point, myGeo, geolocation;
 export default {
   data() {
@@ -115,20 +145,7 @@ export default {
       dialogVisible: false,
       centerDialogVisible: false,
       //附件上传
-      fileList3: [
-        // {
-        //   name: "food.jpeg",
-        //   url:
-        //     "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-        //   status: "finished"
-        // },
-        // {
-        //   name: "food2.jpeg",
-        //   url:
-        //     "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-        //   status: "finished"
-        // }
-      ]
+      fileList3: []
     };
   },
   mounted() {
@@ -137,18 +154,18 @@ export default {
     var res = checkSys();
     var self = this;
     this.initData();
-    if (res === "ios") {
-      setTimeout(function() {
-        self.initMap();
-        self.getPosition();
-      }, 1000);
-    } else {
-      callAddress();
-      setTimeout(function() {
-        self.address = getItem("location");
-        initMap(self.address);
-      }, 1000);
-    }
+    // if (res === "ios") {
+    //   setTimeout(function() {
+    //     self.initMap();
+    //     self.getPosition();
+    //   }, 1000);
+    // } else {
+    //   callAddress();
+    //   setTimeout(function() {
+    //     self.address = getItem("location");
+    //     initMap(self.address);
+    //   }, 1000);
+    // }
   },
   components: {
     BaiduMap,
@@ -269,7 +286,7 @@ export default {
         approver: localStorage.daylyApproverId,
         sendTo: this.daylySendtoinfo
       };
-       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       if (!this.done.trim()) {
         this.$message("今日完成不能为空");
       } else if (!this.notDone.trim()) {
@@ -282,7 +299,7 @@ export default {
         this.$message("发送至不能为空");
       } else {
         let res = await oaDayly(enData);
-        let deData1 = strDec(res,"ZND20171030APIMM");
+        let deData1 = strDec(res, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
         if (deData.code === "0000") {
           this.$message("提交成功");
@@ -315,7 +332,31 @@ export default {
 </script>
 <style lang="scss">
 @import "../../assets/style/common.scss";
-.leave {
+.dayly {
+  font-size: rem(30px);
+  color: #020202;
+  .item {
+    margin: rem(20px) 0;
+    padding: rem(32px);
+    background: #fff;
+    .hint {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  textarea {
+    width: 100%;
+    height: rem(124px);
+    border: none;
+    resize: none;
+  }
+  .icon-arrow-right {
+    vertical-align: middle;
+    @include icon(rem(18px), rem(28px));
+  }
+  .btn-wrap {
+    padding-top: rem(56px);
+  }
   .leave_tips {
     color: #979797;
     font-size: rem(26px);

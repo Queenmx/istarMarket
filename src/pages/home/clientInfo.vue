@@ -1,10 +1,8 @@
 <template>
-	<div class="clientInfo">
-		<v-header>
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">客户信息</p>
+	<div class="rooterEle clientInfo">
+		<v-header title="客户信息">
 		</v-header>
-		<div class="header">
+		<!-- <div class="header">
 			<p class="name">{{cusInfo.name}}</p>
 			<p class="phone">{{cusInfo.phone}}</p>
 			<div class="detail">
@@ -40,7 +38,60 @@
 			<p class="main" v-if="isEnough">抢单</p>
             <p class="main" v-else>星币不足</p>
 			<p class="sub">抢单{{xbCost}}星币，剩余{{money}}星币</p>
-		</div>
+		</div> -->
+        <section>
+            <h3 class="wrap title">贷款信息</h3>
+            <div class="main">
+                <div>
+                    <p class="name">张小胖</p>
+                    <p>
+                        <i class="icon-phone"></i>
+                        <span class="lightBlack">15422222222</span>
+                    </p>
+                </div>
+                <van-row class="loanInfo">
+                    <van-col span="8" class="col-item" v-for="index in 3" :key="index">
+                        <p class="data">1000元</p>
+                        <p>
+                            <i class="icon-money"></i>
+                            <small>申请金额</small>
+                        </p>
+                    </van-col>
+                </van-row>
+            </div>
+        </section>
+        <section>
+            <h3 class="wrap title">基本信息</h3>
+                <van-row class="wrap baseInfo">
+                    <van-col span="6" class="item" v-for="index in 4" :key="index">
+                        <span>车</span>
+                        <i class="icon-tick"></i>
+                    </van-col>
+                </van-row>
+                <van-row class="wrap baseInfo">
+                    <van-col span="6" class="item" v-for="index in 4" :key="index">
+                        <span>车</span>
+                        <i class="icon-tick"></i>
+                    </van-col>
+                </van-row>
+        </section>
+        <section>
+            <h3 class="wrap title">资产信息</h3>
+            <ul class="propertyInfo">
+                <li class="wrap flex item">
+                    <span class="rest point-title">征信情况</span>
+                    <span class="lightBlack">好</span>
+                </li>
+                <li class="wrap flex item">
+                    <span class="rest point-title">征信情况</span>
+                    <span class="lightBlack">好</span>
+                </li>
+            </ul>
+        </section>
+        <div class="wrap btn-wrap">
+            <!-- <p class="btn-blue-lg">抢单</p> -->
+            <i class="icon-phone2"></i>
+        </div>
 	</div>
 </template>
 <script>
@@ -58,7 +109,7 @@ export default {
       money: 0,
       xbCost: costXb,
       isGrab: this.$route.params.isGrab || false,
-      isEnough: true,
+      isEnough: true
       // customer:''
     };
   },
@@ -77,22 +128,22 @@ export default {
       var data = {
         customerId: this.customerId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await customerInfo(enData);
       if (res.code === "0000") {
-        let deData1 = strDec(res.data,"ZND20171030APIMM");
+        let deData1 = strDec(res.data, "ZND20171030APIMM");
         let deData = JSON.parse(deData1);
         this.cusInfo = deData.customer;
         let data2 = {
           userId: this.userInfo.userId
         };
-        console.log(res.data)
-        var enData1 = strEnc(JSON.stringify(data2), "ZND20171030APIMM" );
+        console.log(res.data);
+        var enData1 = strEnc(JSON.stringify(data2), "ZND20171030APIMM");
         let moneyres = await queryMoney(enData1);
-        let deData2 = strDec(moneyres.data,"ZND20171030APIMM");
+        let deData2 = strDec(moneyres.data, "ZND20171030APIMM");
         let deData3 = JSON.parse(deData2);
         console.log(deData3);
-        console.log(moneyres)
+        console.log(moneyres);
         if (moneyres.code === "0000") {
           this.money = deData3.xb;
           if (this.money >= this.xbCost) {
@@ -211,9 +262,9 @@ export default {
         companyId: this.userInfo.companyId,
         xbCost: this.xbCost
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
+      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       var res = await grabCustomer(enData);
-      let deData1 = strDec(res.data,"ZND20171030APIMM");
+      let deData1 = strDec(res.data, "ZND20171030APIMM");
       let deData = JSON.parse(deData1);
       if (res.code === "0000") {
         this.isGrab = true;
@@ -230,9 +281,90 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/common.scss";
 .clientInfo {
-  padding-bottom: rem(120px);
-  min-height: 100%;
-  box-sizing: border-box;
+  font-size: rem(28px);
+  color: #020202;
+  .title {
+    height: rem(80px);
+    line-height: rem(80px);
+    color: #333333;
+  }
+  .main {
+    padding-top: rem(42px);
+    padding-bottom: rem(48px);
+    text-align: center;
+    background: #fff;
+    .name {
+      margin-bottom: rem(14px);
+      font-size: rem(32px);
+    }
+    .data {
+      margin-bottom: rem(16px);
+    }
+    .loanInfo {
+      margin-top: rem(64px);
+    }
+  }
+  .col-item {
+    &:not(:nth-child(3)) {
+      border-right: rem(1px) solid #eee;
+    }
+  }
+  .icon-phone {
+    vertical-align: middle;
+    @include icon(rem(32px), rem(32px));
+  }
+  .icon-money {
+    vertical-align: middle;
+    @include icon(rem(32px), rem(36px));
+  }
+  .icon-tick {
+    vertical-align: middle;
+    @include icon(rem(28px), rem(30px));
+  }
+  .icon-phone2 {
+    @include icon(rem(120px), rem(120px));
+  }
+  .lightBlack {
+    color: #333333;
+  }
+  .baseInfo {
+    background: #fff;
+    &:not(:last-child) {
+      border-bottom: rem(1px) solid #eee;
+    }
+  }
+  .item {
+    // padding: 0;
+    height: rem(100px);
+    line-height: rem(100px);
+    text-align: center;
+  }
+  .point-title {
+    text-align: left;
+    color: #020202;
+    &::before {
+      content: "";
+      display: inline-block;
+      margin-right: rem(12px);
+      width: rem(12px);
+      height: rem(12px);
+      background-image: linear-gradient(-180deg, #599ffe 0%, #3158e0 100%);
+      border-radius: 50%;
+    }
+  }
+  .propertyInfo {
+    background: #fff;
+    .item {
+      &:not(:last-child) {
+        border-bottom: rem(1px) solid #eee;
+      }
+    }
+  }
+  .btn-wrap {
+    margin-top: rem(62px);
+    text-align: center;
+  }
+  ////////////////
   .header {
     position: relative;
     padding: rem(56px) 0 0;
@@ -265,8 +397,8 @@ export default {
     }
   }
   .item {
-    padding-top: rem(39px);
-    padding-bottom: rem(26px);
+    // padding-top: rem(39px);
+    // padding-bottom: rem(26px);
     color: #636363;
     .title {
       margin-bottom: rem(28px);
