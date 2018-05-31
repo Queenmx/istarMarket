@@ -1,11 +1,11 @@
-export const centerTabs = () => {
-  var tabs = document.getElementsByClassName("el-tabs__nav")[0];
-  tabs.style.left = "50%";
-  tabs.style.transform = "translateX(-50%)";
-};
 export const getItem = name => {
   if (!name) return;
-  return localStorage.getItem(name);
+  let str = localStorage.getItem(name);
+  try {
+    return JSON.parse(str);
+  } catch (error) {
+    return str;
+  }
 };
 export const setItem = (name, content) => {
   if (!name) return;

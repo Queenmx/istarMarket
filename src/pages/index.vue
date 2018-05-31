@@ -44,9 +44,8 @@
   </div>
 </template>
 <script>
-import { getAd, product } from "@/util/axios.js";
+import { getAd, product, cateAndPro } from "@/util/axios.js";
 import { setItem, getItem } from "../util/util";
-import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -55,17 +54,33 @@ export default {
       list: "",
       activeIndex: 0,
       cateArr: [
-        { class: "icon-car", text: "车贷", url: "" },
-        { class: "icon-house", text: "房贷", url: "" },
-        { class: "icon-card", text: "信贷", url: "" },
+        {
+          class: "icon-car",
+          text: "车贷",
+          url: "/home/productList/",
+          categoryId: ""
+        },
+        {
+          class: "icon-house",
+          text: "房贷",
+          url: "/home/productList/",
+          categoryId: ""
+        },
+        {
+          class: "icon-card",
+          text: "信贷",
+          url: "/home/productList/",
+          categoryId: ""
+        },
         { class: "icon-client", text: "意向客户", url: "" }
       ],
-      userInfo: JSON.parse(getItem("userInfo"))
+      userInfo: getItem("userInfo")
     };
   },
   mounted() {
     // 初始化数据
     this.msg_list();
+    this.getCate();
     // this.initData();
   },
   methods: {
@@ -75,23 +90,30 @@ export default {
         pageSize: 500,
         userId: this.userInfo.userId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await product(enData);
-      let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
-      console.log(deData);
+      let res = await product(data);
       if (res.code === "0000") {
-        this.list = deData.loansList;
+        this.list = res.data.loansList;
       } else {
         this.list = res.msg;
+      }
+    },
+    //获取分类
+    async getCate() {
+      let data = { userId: this.userInfo.userId };
+      let res = await cateAndPro(data);
+      let cateObj = {};
+      if (res.code === "0000") {
+        // console.log(res.data.categoryList);
+        // this.cateArr.sort(function() {
+        //     res.data.categoryList.map(item => {return item.});
+        // });
+        // res.data.categoryList.map(item => {});
       }
     },
     async msg_list() {
       let res = await getAd();
       if (res.code === "0000") {
-        let deData1 = strDec(res.data, "ZND20171030APIMM");
-        let deData = JSON.parse(deData1);
-        this.ad = deData.adList;
+        this.ad = res.data.adList;
       } else {
         this.adMes = res.msg;
       }
@@ -165,7 +187,7 @@ export default {
   .icon-house,
   .icon-card,
   .icon-client {
-    @include icon(rem(70px), rem(70px));
+    @include icon(rem(76px), rem(76px));
   }
   .cate {
     padding-top: rem(30px);
@@ -207,24 +229,6 @@ export default {
         border-radius: rem(20px);
       }
     }
-  }
-}
-</style>
-<style lang="scss">
-@import "../assets/style/common.scss";
-.index {
-  .van-swipe__indicators {
-    bottom: rem(100px);
-  }
-  .van-swipe__indicator {
-    width: rem(28px);
-    height: rem(4px);
-    background: #fff;
-
-    border-radius: 0;
-  }
-  .van-swipe__indicator--active {
-    background: #4374ff;
   }
 }
 </style>
