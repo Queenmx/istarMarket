@@ -1,10 +1,6 @@
 <template>
-  <div class="myService">
-    <v-header class="header">
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">在线客服</p>
-      <!-- <i slot="right"><img src="../../assets/images/service.png" alt="" @click="pop"></i> -->
-		</v-header>
+  <div class="rooterEle myService">
+    <v-header title="在线客服"></v-header>
     <div class="open" v-show="openService">
       <div  class="openBox">
       <div class="imgWrap"><img src="../../assets/images/pop.png" alt=""></div>
@@ -32,13 +28,10 @@
     </ul>
     <ul class="footer">
         <!-- <li class="img1"><img src="../../assets/images/face.png" alt=""></li> -->
-        <li class="in1"><textarea type="text" id="msg"></textarea></li>
-        <li class="btn" @click="sendMessage()">
-            <el-tooltip :disabled="disabled" content="不能发送空白信息" placement="bottom" effect="light">
-                <el-button @click="disabled = !disabled">发送</el-button>
-                <input type="button" value="发送">
-            </el-tooltip>
-        </li>
+        <li class="in1"><input type="text" class="customerMsg" id="msg" placeholder="请输入你想要咨询的问题" /></li>
+        <!-- <li class="btn" @click="sendMessage()">
+            <input type="button" value="发送">
+        </li> -->
     </ul>
   </div>
 </template>
@@ -56,12 +49,14 @@ export default {
       messageList: [],
       selected: "xiaoxiao",
       Emoji: WebIM.Emoji,
-      userInfo: JSON.parse(getItem("userInfo")),
-      tokenkey: ""
+      userInfo: getItem("userInfo"),
+      tokenkey: "",
+      show: false
     };
   },
   mounted() {
     this.init();
+    this.consoleCode();
   },
   watch: {
     messageList: function() {
@@ -131,9 +126,9 @@ export default {
       var data = {
         userId: this.userInfo.userId
       };
-      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
+      //   data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await getToken(data);
-      res.data = JSON.parse(strDec(res.data, "ZND20171030APIMM"));
+      //   res.data = JSON.parse(strDec(res.data, "ZND20171030APIMM"));
       if (res.code === "0000") {
         this.tokenkey = res.data.access_token;
         // console.log("aaaa", this.tokenkey, res.data.access_token);
@@ -223,6 +218,17 @@ export default {
     goBottom() {
       var goBottomDiv = document.getElementsByClassName("chat")[0];
       goBottomDiv.scrollTop = goBottomDiv.scrollHeight;
+    },
+    consoleCode() {
+      var self = this;
+      document.onkeydown = function(event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) {
+          // enter 键
+          //   alert("xsdchsdbcnsd");
+          self.sendMessage();
+        }
+      };
     }
   }
 };
@@ -318,17 +324,13 @@ export default {
 
   .footer {
     width: 100%;
-    background-color: #f8f8f8;
+    height: rem(120px);
+    background-color: #fff;
     position: fixed;
-    bottom: rem(20px);
-    height: rem(100px);
-    li:nth-child(1) {
+    bottom: 0;
+    li {
       float: left;
       margin-left: rem(30px);
-      //   margin-top: rem(20px);
-    }
-    li:last-child {
-      float: right;
     }
     .img1 {
       width: 13%;
@@ -345,25 +347,23 @@ export default {
       }
     }
     .in1 {
-      width: 67%;
-      height: rem(70px);
-      margin-top: rem(14px);
-      textarea {
-        // width: rem(450px);
+      width: 89%;
+      height: rem(100px);
+      margin-top: rem(22px);
+      .customerMsg {
         width: 100%;
-        // height: rem(70px);
-        // border: 0;
-        background-color: #fff;
-        border-radius: 5px;
+        height: rem(80px);
+        // border: 1px solid #000;
+        background-color: #fcfafa;
+        border-radius: rem(40px);
         font-size: rem(30px);
-        line-height: rem(24px);
-        padding: rem(15px);
+        padding-left: rem(30px);
       }
     }
     .btn {
       width: 21%;
       height: rem(68px);
-      margin-top: rem(16px);
+      margin-top: rem(25px);
 
       //  margin-right: rem(30px);
       input {

@@ -1,9 +1,6 @@
 <template>
   <div class="starMoney">
-    <v-header class="header">
-			<i slot="left" class="arrow_left"></i>
-			<p slot="title">星币</p>
-		</v-header>
+    <v-header title="星币"></v-header>
     <div class="details">
         <div class="balance">
           <span>{{money}}</span>
@@ -56,6 +53,7 @@
         </li>
       </ul>
     </div>
+    <v-footer :activeIndex="3"></v-footer>
   </div>
 </template>
 <script>
@@ -86,7 +84,7 @@ export default {
       // list: [{ des: "全部" }, { des: "18年1月" }],
       items: "",
       money: "",
-      userInfo: JSON.parse(getItem("userInfo"))
+      userInfo: getItem("userInfo")
     };
   },
   mounted() {
@@ -98,38 +96,27 @@ export default {
       await this.queryMoney();
     },
     async bill() {
-      //   getItem("userinfo");
-      //   let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
         userId: this.userInfo.userId,
         time: this.value2,
         pageNum: 1,
         pageSize: 100
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      // console.log(this.value2);
 
-      let res = await getMoney(enData);
-      let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+      let res = await getMoney(data);
       if (res.code === "0000") {
         // console.log(res.data.xbConsumeList)
         // this.data.desc=res.data.xbConsumeList[0].consume_type
-        this.items = deData.xbConsumeList;
+        this.items = res.data.xbConsumeList;
       }
     },
     async queryMoney() {
-      //   getItem("userInfo");
-      //   let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
         userId: this.userInfo.userId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await queryMoney(enData);
-      let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+      let res = await queryMoney(data);
       if (res.code === "0000") {
-        this.money = deData.xb;
+        this.money = res.data.xb;
       } else {
         // this.$message(res.msg);
       }
@@ -141,7 +128,7 @@ export default {
       this.bill();
     },
     disable() {
-      // console.log("aaa");
+      //   console.log("aaa");
     }
   }
 };
@@ -168,7 +155,7 @@ export default {
   .details {
     width: 100%;
     height: rem(250px);
-    padding-top: rem(50px);
+    padding-top: rem(150px);
     background-color: #53a6ff;
     text-align: center;
     span {
@@ -180,7 +167,7 @@ export default {
       color: #fff;
     }
     .btn {
-      margin-top: rem(50px);
+      margin-top: rem(20px);
       input {
         width: rem(160px);
         height: rem(60px);
@@ -199,23 +186,10 @@ export default {
     .el-select {
       width: 100%;
     }
-    //   ul{display: flex;
-    //   .item{
-    //     flex:1;
-    //     font-size: rem(32px);
-    //     justify-content: center;
-    //     height:rem(100px);
-    //     color: #656565;
-    //     background-color: #fff;
-    //     i{
-    //       margin-left: rem(20px);
-    //     }
-    // }
-
-    // }
   }
   .list {
     background-color: #f8f8f8;
+    padding-bottom: rem(100px);
     ul {
       .wrap {
         border-bottom: 1px solid #eee;

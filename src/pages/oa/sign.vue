@@ -62,7 +62,7 @@ export default {
     }
     .icon-sign {
       margin-top: rem(10px);
-      @include icon(rem(33px),rem(45px));
+      @include icon(rem(33px), rem(45px));
       background-image: url("../../assets/images/sign.png");
       &.active {
         background-image: url("../../assets/images/sign-active.png");
@@ -70,7 +70,7 @@ export default {
     }
     .icon-history {
       margin-top: rem(10px);
-      @include icon(rem(33px),rem(45px));
+      @include icon(rem(33px), rem(45px));
       background-image: url("../../assets/images/history.png");
       &.active {
         background-image: url("../../assets/images/history-active.png");
