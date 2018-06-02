@@ -12,30 +12,8 @@
         </div>
     </div>
    <div class="select flex">
-      <!-- <ul>
-      <li class="wrap flex item" v-for="(item,i) in list" :key="i">
-        <div class="des">{{item.des}}</div>
-        <i class="el-icon-caret-bottom"></i>
-      </li>
-    </ul> -->
-    <el-select v-model="value1" placeholder="选择"  @change="changeType">
-    <el-option
-      v-for="item in options1"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-  <!-- <div class="over">xx</div> -->
-  <el-select v-model="value2" placeholder="选择" @change="changeType" @focus="disable()">
-   
-    <el-option
-      v-for="item in options2"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
+        <dropdown :dataArr="dataArr" :title="dataArr[0].label" @selectedEvent="changeType"></dropdown>
+        <dropdown :dataArr="textArr" col="24" :title="textArr[0].text" @selectedEvent="changeType"></dropdown>
    </div>
     <div class="list">
       <split></split>
@@ -64,19 +42,19 @@ export default {
   data() {
     var date = new Date();
     return {
-      options1: [{ value: "", label: "全部" }],
-      options2: [
+      dataArr: [{ value: "", label: "全部" }],
+      textArr: [
         {
-          value: date.getFullYear() + "-" + (date.getMonth() + 1),
-          label: date.getFullYear() + "-0" + (date.getMonth() + 1)
+          text: date.getFullYear() + "-" + (date.getMonth() + 1)
         },
         {
-          value: date.getFullYear() + "-" + date.getMonth(),
-          label: date.getFullYear() + "-0" + date.getMonth()
+          //   value: date.getFullYear() + "-" + date.getMonth(),
+          //   label: date.getFullYear() + "-0" + date.getMonth()
+          text: date.getFullYear() + "-" + date.getMonth()
         },
         {
-          value: date.getFullYear() + "-" + (date.getMonth() - 1),
-          label: date.getFullYear() + "-0" + (date.getMonth() - 1)
+          text: date.getFullYear() + "-" + (date.getMonth() - 1)
+          //   label: date.getFullYear() + "-0" + (date.getMonth() - 1)
         }
       ],
       value1: "",
