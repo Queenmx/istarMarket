@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { centerTabs } from "../../util/util.js";
+import {  } from "../../util/util.js";
 export default {
   data(){
     return{

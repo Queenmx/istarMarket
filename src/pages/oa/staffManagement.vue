@@ -40,7 +40,6 @@
     </div>
 </template>
 <script>
-import { centerTabs } from "../../util/util.js";
 import { oaQuery } from "@/util/axios.js";
 import { oaQueryCompany } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
@@ -53,7 +52,6 @@ export default {
     };
   },
   mounted() {
-    centerTabs();
     this.initData();
     this.initData1();
   },

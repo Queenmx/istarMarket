@@ -1,44 +1,19 @@
 <template>
 	<div class="rooterEle report">
 		<v-header title="智能报表"></v-header>
-		<!-- <div class="wrap picker-wrap">
-			<timer-picker @change="getReport"></timer-picker>
-		</div> -->
 		<div>
 			<split></split>
-			<!-- <div class="item">
-				<p class="title">人员出勤</p>
-				<div class="content flex">
-					<div class="chart-wrap">
-			            <div id="canvas" class="chart"></div>
-			        </div>
-					<div class="chart-msg">
-						<el-row :gutter="20" v-for="(items,index) in stauts" :key="index" class="gap">
-						  <el-col :span="8" v-for="(item,i) in items" :key="i">
-						  	<div class="grid-content bg-purple">
-							  	<p class="num">{{item.value}}</p>
-							  	<p class="mes">{{item.text}}</p>
-						  	</div>
-						  </el-col>
-						</el-row>
-					</div>
-				</div>
-				<div class="content">
-					<p>前一周团队平均工时{{(+reportInfo.weeklyAverageWorkingHours).toFixed(2)}}小时</p>
-					<p class="link" @click="goWeekly">查看人员出勤周报</p>
-				</div>
-			</div> -->
             <section class="wrap">
                 <div class="flex title-group">
                     <h4 class="rest title">人员出勤</h4>
                     <div class="blue">
-                        <dropdown :dataArr="dataArr" :textArr="textArr" :title="textArr[0]"></dropdown>
+                        <dropdown :dataArr="dataArr" :textArr="textArr" :title="textArr[0]" @selectedEvent="setDate"></dropdown>
                     </div>
                 </div>
                 <div class="wrap info-group">
-                    <p class="blue">20</p>
+                    <p class="blue">{{reportInfo.actualAttendancePNum}}</p>
                     <p class="grey">出勤人数</p>
-                    <p>总人数：100人</p>
+                    <p>总人数：{{reportInfo.shouldAttendancePNum}}人</p>
                 </div>
                 <div class="link-group">
                     <router-link to="/oaSystem/smartWeekly" class="link">查看人员出勤周报</router-link>
@@ -55,9 +30,9 @@
                 </h4>
                 <div>
                     <van-row>
-                        <van-col span="8" v-for="index in 6" :key="index" class="item">
-                            <p class="num">3</p>
-                            <p class="hint">迟到(天)</p>
+                        <van-col span="8" v-for="(value,key) in stauts" :key="key" class="item">
+                            <p class="num">{{reportInfo[key]}}</p>
+                            <p class="hint">{{value}}</p>
                         </van-col>
                     </van-row>
                 </div>
@@ -82,55 +57,23 @@
             <div class="footer">
                 <span>前一周团队平均工时{{(+reportInfo.weeklyAverageWorkingHours).toFixed(2)}}小时</span>
             </div>
-			<!-- <div class="item">
-				<p class="title">签到</p>
-				<div class="content">
-					<p class="flex-item" @click="goHistory">
-						<span class="left">签到人数</span>
-						<span class="middle">{{reportInfo.signPNum}}</span>
-						<i class="right el-icon-arrow-right"></i>
-					</p>
-				</div>
-			</div>
-			<split></split>
-			<div class="item">
-				<p class="title">日志</p>
-				<div class="content">
-					<p class="flex-item" @click="goReporter">
-						<span class="left">提交人数</span>
-						<span class="middle">{{reportInfo.dailyReportCommitPNum}}</span>
-						<i class="right el-icon-arrow-right"></i>
-					</p>
-				</div>
-			</div>
-			<split></split> -->
 		</div>    
 	</div>
 </template>
 <script>
-import timerPicker from "../components/timePicker";
-import reporter from "./reporter";
 import { oaIReport } from "@/util/axios.js";
 import { getItem, formateTime } from "@/util/util.js";
-import { strEnc, strDec } from "@/util/aes.js";
-var echarts = require("echarts/lib/echarts");
-// 引入柱状图
-require("echarts/lib/chart/pie");
-require("echarts/lib/component/tooltip");
-require("echarts/lib/component/title");
-require("echarts/lib/component/legendScroll");
-var myChart;
 export default {
   data() {
     return {
-      stauts: [
-        [
-          { text: "迟到", value: 0 },
-          { text: "早退", value: 0 },
-          { text: "旷工", value: 0 }
-        ],
-        [{ text: "外出", value: 0 }, { text: "缺卡", value: 0 }]
-      ],
+      stauts: {
+        isLatePNum: "迟到(天)",
+        leaveEarlyPNum: "早退(天)",
+        absenteeismPNum: "旷工(天)",
+        outPNum: "外出(天)",
+        missingCardPNum: "缺卡(天)",
+        signPNum: "签到人数"
+      },
       dataArr: [
         { text: "今日" },
         { text: "昨日" },
@@ -147,131 +90,39 @@ export default {
         "本月",
         "上月"
       ],
-      dateRange: sessionStorage.getItem("dateRange") || "今日",
+      dateRange: this.$route.query.dateRange || "今日",
       reportInfo: {},
-      attendanceNum: 0,
-      reporterFlag: false,
       reporterList: [],
-      userInfo: JSON.parse(getItem("userInfo")),
-      shouldAttendancePNum: 0
+      userInfo: getItem("userInfo")
     };
-  },
-  beforeRouteLeave(to, from, next) {
-    sessionStorage.removeItem("dateRange");
-    next();
-  },
-  components: {
-    timerPicker,
-    reporter
   },
   mounted() {
     this.init();
   },
+  watch: {
+    dateRange: function() {
+      this.getReport();
+    }
+  },
   methods: {
     async init() {
-      //   await this.drawChart();
       await this.initData();
     },
     async initData() {
-      await this.getReport("今日");
+      await this.getReport();
     },
-    async getReport(item) {
-      this.dateRange = item;
+    //获取智能报表
+    async getReport() {
       let data = {
-        dateRange: item,
+        dateRange: this.dateRange,
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await oaIReport(enData);
-      let deData1 = strDec(res, "ZND20171030APIMM");
-      //   console.log(deData1);
-      let deData = JSON.parse(deData1);
-      console.log(deData);
-      // console.log(deData.code)
-      this.reportInfo = deData;
-      this.reporterList = deData.dailyReportCommitList;
-      this.attendanceNum = deData.actualAttendancePNum;
-      this.shouldAttendancePNum = deData.shouldAttendancePNum;
-      this.stauts[0][0].value = deData.isLatePNum;
-      this.stauts[0][1].value = deData.leaveEarlyPNum;
-      this.stauts[0][2].value = deData.absenteeismPNum;
-      this.stauts[1][0].value = deData.outPNum;
-      this.stauts[1][1].value = deData.missingCardPNum;
-      //   this.updateChart();
+      let res = await oaIReport(data);
+      this.reportInfo = res;
     },
-    updateChart() {
-      let self = this;
-      myChart.setOption({
-        title: {
-          text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`
-        },
-        series: [
-          {
-            data: [
-              { value: self.attendanceNum },
-              { value: self.shouldAttendancePNum }
-            ]
-          }
-        ]
-      });
-    },
-    drawChart() {
-      // 基于准备好的dom，初始化echarts实例
-      myChart = echarts.init(document.getElementById("canvas"));
-      // 绘制图表
-      var self = this;
-
-      console.log(self.attendanceNum, self.shouldAttendancePNum);
-      myChart.setOption({
-        title: {
-          text: `${self.attendanceNum}\/${self.shouldAttendancePNum}`,
-          subtext: "出勤人数",
-          textAlign: "center",
-          x: "47%",
-          y: "25%",
-          textStyle: {
-            fontWeight: "normal",
-            fontSize: 18
-          },
-          subtextStyle: {
-            fontSize: 16
-          }
-        },
-        color: ["#53a6ff", "#e4e4e4"],
-        series: [
-          {
-            name: "访问来源",
-            type: "pie",
-            silent: true,
-            radius: ["80%", "100%"],
-            center: ["50%", "50%"],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: false,
-                position: "center"
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: "30",
-                  fontWeight: "bold"
-                }
-              }
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data: [
-              { value: self.attendanceNum },
-              { value: self.shouldAttendancePNum }
-            ]
-          }
-        ]
-      });
+    setDate(val) {
+      this.dateRange = val;
     },
     showReproter() {
       this.$refs.reporter.show();

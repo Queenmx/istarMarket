@@ -2,9 +2,8 @@
   <div class="index">
       <section class="banner">
         <van-swipe :autoplay="3000">
-            <van-swipe-item><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064268552&di=7f40e2c4e7aa7313294920c4ef20a878&imgtype=0&src=http%3A%2F%2Fs9.rr.itc.cn%2Fr%2FwapChange%2F20172_9_17%2Fa226fp5761270330555.jpeg"></van-swipe-item>
-            <van-swipe-item><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336167&di=73127305316ef8dffbebf8ff4ee1d2dd&imgtype=0&src=http%3A%2F%2Fuploads.oh100.com%2Fallimg%2F1707%2F125-1FG5121113.png"></van-swipe-item>
-            <van-swipe-item><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336165&di=d1e1969d5dea698209e72f6574800760&imgtype=0&src=http%3A%2F%2Fimg.smzy.com%2Fimges%2F2017%2F0614%2F20170614103919460.png"></van-swipe-item>
+            <van-swipe-item v-for="item in bannerList" :key="item.id">
+                <router-link :to="item.url"><img :src="item.src"></router-link></van-swipe-item>
         </van-swipe>
       </section>
       <div class="wrap main-container">
@@ -25,90 +24,123 @@
           </div>
           <div class="cate">
               <van-row>
-                <van-col span="6" v-for="(item,index) in cateArr" :key="index">
-                    <i :class="item.class"></i>
-                    <p class="cate-name">{{item.text}}</p>
+                <van-col span="6" v-for="item in cateArr" :key="item.categoryId" >
+                    <div @click="goProductList(item.categoryName,item.categoryId)">
+                        <i :class="item.class"></i>
+                        <p class="cate-name">{{item.categoryName}}</p>
+                    </div>
+                </van-col>
+                <van-col span="6">
+                    <router-link to="home/interestedClient">
+                        <i class="icon-client"></i>
+                        <p class="cate-name">意向客户</p>
+                    </router-link>
                 </van-col>
               </van-row>
           </div>
           </div>
           <div class="list">
               <h3>热门产品</h3>
+              <van-list  v-model="loading" :finished="finished" @load="onLoad">
               <ul>
-                  <li class="item"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336165&di=d1e1969d5dea698209e72f6574800760&imgtype=0&src=http%3A%2F%2Fimg.smzy.com%2Fimges%2F2017%2F0614%2F20170614103919460.png"></li>
-                  <li class="item"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527064336165&di=d1e1969d5dea698209e72f6574800760&imgtype=0&src=http%3A%2F%2Fimg.smzy.com%2Fimges%2F2017%2F0614%2F20170614103919460.png"></li>
+                  <li class="item" v-for="item in productList" :key="item.loanId" @click="applyLoan(item.loanName,item.loanId)"><img :src="item.logo"></li>
               </ul>
+              </van-list>
+              <p v-if="finished" class="nomore">到底啦</p>
           </div>
       </div>
       <v-footer></v-footer>
   </div>
 </template>
 <script>
-import { getAd, product, cateAndPro } from "@/util/axios.js";
+import { getAd, cateAndPro, hotProduct, bannerList } from "@/util/axios.js";
 import { setItem, getItem } from "../util/util";
 export default {
   data() {
     return {
       ad: "",
       adMes: "",
-      list: "",
+      productList: [],
       activeIndex: 0,
-      cateArr: [
-        {
-          class: "icon-car",
-          text: "车贷",
-          url: "/home/productList/",
-          categoryId: ""
-        },
-        {
-          class: "icon-house",
-          text: "房贷",
-          url: "/home/productList/",
-          categoryId: ""
-        },
-        {
-          class: "icon-card",
-          text: "信贷",
-          url: "/home/productList/",
-          categoryId: ""
-        },
-        { class: "icon-client", text: "意向客户", url: "" }
-      ],
-      userInfo: getItem("userInfo")
+      cateArr: [],
+      bannerList: [],
+      userInfo: getItem("userInfo"),
+      loading: false,
+      finished: false,
+      pageSize: 10,
+      pageNum: 1,
+      totalPage: ""
     };
   },
   mounted() {
-    // 初始化数据
-    this.msg_list();
-    this.getCate();
-    // this.initData();
+    this.init();
   },
   methods: {
-    async initData() {
-      var data = {
-        pageNum: 1,
-        pageSize: 500,
-        userId: this.userInfo.userId
-      };
-      let res = await product(data);
-      if (res.code === "0000") {
-        this.list = res.data.loansList;
-      } else {
-        this.list = res.msg;
-      }
+    init() {
+      this.msg_list();
+      this.getCate();
+      this.getBannerList();
     },
     //获取分类
     async getCate() {
       let data = { userId: this.userInfo.userId };
       let res = await cateAndPro(data);
-      let cateObj = {};
+      let cateObj = {
+        车贷: {
+          class: "icon-car"
+        },
+        房贷: {
+          class: "icon-house"
+        },
+        信贷: {
+          class: "icon-card"
+        }
+      };
       if (res.code === "0000") {
-        // console.log(res.data.categoryList);
-        // this.cateArr.sort(function() {
-        //     res.data.categoryList.map(item => {return item.});
-        // });
-        // res.data.categoryList.map(item => {});
+        this.cateArr = res.data.categoryList.map(item => {
+          return Object.assign(item, cateObj[item.categoryName]);
+        });
       }
+    },
+    //获取热门产品
+    async getHotProduct(fn) {
+      let data = {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        userId: this.userInfo.userId
+      };
+      let res = await hotProduct(data);
+      if (res.code === "0000") {
+        this.productList = this.productList.concat(res.data.loansList);
+        this.totalPage = res.data.totalPage;
+        this.pageNum++;
+        fn && fn();
+      } else {
+        this.$toast(res.msg);
+      }
+    },
+    //获取轮播图
+    async getBannerList() {
+      let res = await bannerList();
+      if (res.code === "0000") {
+        this.bannerList = res.data.bannerList.map(item => {
+          return {
+            url: item.objUrl,
+            src: item.imgUrl,
+            id: item.objId
+          };
+        });
+      }
+    },
+    //产品列表跳转
+    goProductList(name, id) {
+      this.$router.push({
+        path: "/home/productList",
+        query: { title: name, categoryId: id }
+      });
+    },
+    applyLoan(loanName, loanId) {
+      this.$router.push({ path: "/home/product", query: { loanName, loanId } });
     },
     async msg_list() {
       let res = await getAd();
@@ -125,27 +157,34 @@ export default {
         params: { content: item.content }
       });
     },
-    applyLoan(loanId, loanName) {
-      this.$router.push({
-        path: "/product",
-        query: { loanId: loanId, loanName: loanName }
-      });
-    },
     changeBroadcast(index) {
       this.activeIndex = index;
+    },
+    //加载更多
+    onLoad() {
+      this.getHotProduct(() => {
+        this.loading = false;
+        if (this.totalPage < this.pageNum) {
+          this.finished = true;
+        }
+      });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-@import "../assets/style/common.scss";
+@import "~@/assets/style/common.scss";
 .index {
   padding-bottom: rem(100px);
+  color: #020202;
   .banner {
     img {
       height: rem(400px);
       width: 100%;
     }
+  }
+  a {
+    color: #020202;
   }
   .main-container {
     position: relative;
@@ -229,6 +268,24 @@ export default {
         border-radius: rem(20px);
       }
     }
+  }
+}
+</style>
+<style lang="scss">
+@import "../assets/style/common.scss";
+.index {
+  .van-swipe__indicators {
+    bottom: rem(100px);
+  }
+  .van-swipe__indicator {
+    width: rem(28px);
+    height: rem(4px);
+    background: #fff;
+
+    border-radius: 0;
+  }
+  .van-swipe__indicator--active {
+    background: #4374ff;
   }
 }
 </style>

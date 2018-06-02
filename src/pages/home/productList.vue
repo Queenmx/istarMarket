@@ -1,27 +1,68 @@
 <template>
-    <div class="productList">
-        <v-header title="车贷"></v-header>
+    <div class="rooterEle productList">
+        <v-header :title="title"></v-header>
         <div class="container">
             <ul class="list">
-                <li class="item" v-for="index in 5" :key="index">
+                <li class="item" v-for="item in productList" :key="item.loanId">
                     <div class="img-wrap">
-                        <img src="http://img95.699pic.com/photo/50059/4805.jpg_wh300.jpg!/fh/300//quality/90">
+                        <img :src="item.logo">
                     </div>
                     <div class="wrap flex">
                         <div class="rest">
-                            <p class="title">车贷1</p>
-                            <p class="introduct">fsfsdfadfad</p>
+                            <p class="title">{{item.loanName}}</p>
+                            <p class="introduct">{{item|formatInfo}}</p>
                             <p class="price-group">
                                 <span class="symbol">￥</span>
-                                <span class="price">sdfsdfs</span><small class="unit">fsdfsdf</small></p>
+                                <span class="price">{{item.moneyMin}}~{{item.moneyMax}}</span><small class="unit">额度范围（{{item.moneyUnit}}）</small></p>
                         </div>
-                        <div><i class="icon-edit"></i></div>
+                        <div><router-link :to="{path:'/home/product',query:{loanId:item.loanId,loanName:item.loanName}}" class="icon-edit"></router-link></div>
                     </div>
                 </li>
             </ul>
         </div>
     </div>
 </template>
+<script>
+import { typeProduct } from "@/util/axios.js";
+import { setItem, getItem } from "@/util/util";
+export default {
+  data() {
+    return {
+      title: this.$route.query.title,
+      categoryId: this.$route.query.categoryId,
+      userId: getItem("userInfo").userId,
+      productList: []
+    };
+  },
+  mounted() {
+    this.getProducts();
+  },
+  methods: {
+    async getProducts() {
+      let data = {
+        categoryId: this.categoryId,
+        userId: this.userId
+      };
+      let res = await typeProduct(data);
+      if (res.code === "0000") {
+        this.productList = res.data.Products;
+      } else {
+        this.$toast(res.msg);
+      }
+    }
+  },
+  filters: {
+    formatInfo(item) {
+      let dateType = { D: "日", M: "月", Y: "年" };
+      let str = `${item.loanTime},${dateType[item.rateType]}利率${
+        item.rate
+      }%,贷款期限${item.limitMin}-${item.limitMax}${dateType[item.limitType]}`;
+      return str;
+    }
+  }
+};
+</script>
+
 <style lang="scss" scoped>
 @import "~@/assets/style/common.scss";
 .productList {
@@ -74,7 +115,7 @@
     }
   }
   .icon-edit {
-    @include icon(rem(84px), rem(84px));
+    @include icon(rem(84px), rem(90px));
   }
 }
 </style>

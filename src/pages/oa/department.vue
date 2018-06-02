@@ -30,7 +30,7 @@
     </div>
 </template>
 <script>
-import { centerTabs } from "../../util/util.js";
+import {  } from "../../util/util.js";
 import { oaQuery } from "@/util/axios.js";
 import { getItem, checkSys } from "@/util/util.js";
 export default {

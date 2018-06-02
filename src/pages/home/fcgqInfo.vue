@@ -1,7 +1,6 @@
 <template>
 	<div class="carInfo" ref="carInfo">
-		<v-header @leftEvent="back" :isBack="isBack">
-			<i slot="left" class="el-icon-arrow-left"></i>
+		<v-header>
             <p slot="title"  v-if="isThird">贷款主体信息</p>
 			<p slot="title" v-else>{{title[curPage]}}</p>
 		</v-header>
@@ -51,8 +50,7 @@
                     <div>花费20星币，剩余{{money}}星币</div>
                 </div>
             </div>
-            
-		</div>
+        </div>
 	</div>
 </template>
 <script>
@@ -64,7 +62,6 @@ import {
   setThirdOrder
 } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
-import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
@@ -73,7 +70,7 @@ export default {
       curPage: 0, //当前页面
       totalPage: 0,
       temple: [],
-      userId: JSON.parse(getItem("userInfo")).userId,
+      userId: getItem("userInfo"),
       categoryId: this.$route.query.loanId,
       loanName: this.$route.query.loanName,
       data: {},
@@ -98,6 +95,7 @@ export default {
         this.isBack = false;
       }
     },
+    //判断是否有配偶
     data: function() {
       if (
         this.data[1].marriage === "7" ||
@@ -112,8 +110,6 @@ export default {
   },
   mounted() {
     this.init();
-    // this.initDate();
-    // this.getJump();
     this.fixedFooter();
   },
   methods: {
@@ -130,35 +126,29 @@ export default {
       let data = {
         loanId: this.categoryId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await getJumpWay(enData);
+      let res = await getJumpWay(data);
+      let resData = res.data;
       if (res.code === "0000") {
-        let deData1 = strDec(res.data, "ZND20171030APIMM");
-        let deData = JSON.parse(deData1);
-        console.log(deData);
-        if (deData.type == 1) {
+        if (res.data.type == 1) {
           this.isThird = false;
         } else {
           this.isThird = true;
-          this.thirdUrl = deData.url;
-          this.$set(this.thirdData, "companyName", deData.companyName);
-          this.$set(this.thirdData, "loanName", deData.loanName);
+          this.thirdUrl = resData.url;
+          this.$set(this.thirdData, "companyName", resData.companyName);
+          this.$set(this.thirdData, "loanName", resData.loanName);
         }
       } else {
         this.$message(res.msg);
       }
     },
     async initDate() {
-      let temdata = {
+      let data = {
         loanId: this.categoryId
       };
-      var enData = strEnc(JSON.stringify(temdata), "ZND20171030APIMM");
       await this.queryMoney();
-      let res = await getInfoTemple(enData);
+      let res = await getInfoTemple(data);
       if (res.code === "0000") {
-        let deData1 = strDec(res.data, "ZND20171030APIMM");
-        let deData = JSON.parse(deData1);
-        let data = deData[0]["data"],
+        let data = res.data[0]["data"],
           obj = {},
           requiredObj = {};
         this.temple = data;

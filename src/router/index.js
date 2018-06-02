@@ -13,7 +13,8 @@ const creditResult = resolve =>
   require(["@/pages/search/creditResult"], resolve);
 const creditDetails = resolve =>
   require(["@/pages/search/creditDetails"], resolve);
-const creditHistory = resolve => require(["@/pages/creditHistory"], resolve);
+const creditHistory = resolve =>
+  require(["@/pages/search/creditHistory"], resolve);
 const report = resolve => require(["@/pages/report"], resolve);
 const smartWeekly = resolve => require(["@/pages/oa/smartWeekly"], resolve);
 const reporter = resolve => require(["@/pages/reporter"], resolve);
@@ -40,6 +41,9 @@ const fcgqInfo = resolve => require(["@/pages/home/fcgqInfo"], resolve);
 const interestedClient = resolve =>
   require(["@/pages/home/interestedClient"], resolve);
 const clientInfo = resolve => require(["@/pages/home/clientInfo"], resolve);
+const thirdApplyInfo = resolve =>
+  require(["@/pages/home/thirdApplyInfo"], resolve);
+const applyInfo = resolve => require(["@/pages/home/applyInfo"], resolve);
 const orderRecord = resolve => require(["@/pages/home/orderRecord"], resolve);
 const clientDetail = resolve => require(["@/pages/home/clientDetail"], resolve);
 const broadcast = resolve => require(["@/pages/home/broadcast"], resolve);
@@ -152,7 +156,7 @@ const router = new Router({
       component: resetPassword
     },
     {
-      path: "/product",
+      path: "/home/product",
       component: product,
       name: "product"
     },
@@ -401,6 +405,14 @@ const router = new Router({
       path: "/home/clientInfo",
       component: clientInfo,
       name: "clientInfo"
+    },
+    {
+      path: "/home/thirdApplyInfo",
+      component: thirdApplyInfo
+    },
+    {
+      path: "/home/applyInfo",
+      component: applyInfo
     },
     {
       path: "/home/orderRecord",

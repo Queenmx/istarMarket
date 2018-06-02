@@ -5,88 +5,89 @@
                 <router-link to="/home/orderRecord" class="icon-pannel"></router-link>
             </p>
 		</v-header>
-		<ul>
-			<li v-for="item in customerList" :key="item.customerId">
-				<split></split>
-				<div class="flex wrap item">
-					<div class="rest">
-						<!-- <div class="avatar-wrap">
-							<img class="avatar" :src="item.headPic" >
-              <div v-show="item.userId" class="done">已抢单</div>
-						</div>
-            
-						<div class="inblock">
-							<p>{{item.name}}</p>
-							<p class="orange">{{item.applyMoney}}</p>
-							<p class="grey">贷款期限：{{item.limitDay}}</p>
-						</div>
-					</div>
-          
-					<div class="btn" @click="grabOrder(item.customerId,item.userId)"><span>抢单</span></div> -->
-                    <div class="title">
-                        <i class="icon-dashboard"></i>
-                        <span>贷款期限</span>
-                        <p class="period">
-                            <span class="blue">12</span>
-                            <span>期</span>
-                        </p>
-                        <van-tag class="tag">已抢单</van-tag>
+         <van-list  v-model="loading" :finished="finished" @load="onLoad">
+            <ul>
+                <li v-for="item in customerList" :key="item.customerId">
+                    <split></split>
+                    <div class="flex wrap item">
+                        <div class="rest">
+                            <div class="title">
+                                <i class="icon-dashboard"></i>
+                                <span>贷款期限</span>
+                                <p class="period">
+                                    <span class="blue">{{item.limitDay}}</span>
+                                    <span>期</span>
+                                </p>
+                                <van-tag class="tag" v-if="item.userId">已抢单</van-tag>
+                            </div>
+                            <div class="flex main">
+                                <span class="name">{{item.name}}</span>
+                                <p class="rest red price-group">
+                                    <small>￥</small>
+                                    <span class="price">{{item.applyMoney}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="icon-wrap">
+                            <i class="font-qiang" @click="grabOrder(item.customerId,item.userId)"></i>
+                        </div>
                     </div>
-                    <div class="flex main">
-                        <span class="name">张三胖</span>
-                        <p class="rest red price-group">
-                            <small>￥</small>
-                            <span class="price">2323</span>
-                        </p>
-                    </div>
-				</div>
-                <div class="icon-wrap">
-                    <i class="font-qiang"></i>
-                </div>
-				</div>
-			</li>
-		</ul>
+                </li>
+            </ul>
+         </van-list>
 	</div>
 </template>
 <script>
 import { customerList } from "@/util/axios";
 import { getItem } from "@/util/util";
-import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
-      companyId: JSON.parse(getItem("userInfo")).companyId,
-      customerList: []
+      companyId: getItem("userInfo").companyId,
+      customerList: [],
+      pageNum: 1,
+      pageSize: 10,
+      totalPage: "",
+      loading: false,
+      finished: false
     };
   },
-  mounted() {
-    this.initData();
-  },
   methods: {
-    async initData() {
+    //获取意向客户
+    async getCustomerList(fn) {
       var data = {
         companyId: this.companyId,
-        pageNum: 1,
-        pageSize: 20
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      var res = await customerList(enData);
-      let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+      var res = await customerList(data);
       if (res.code === "0000") {
-        this.customerList = deData.customerList;
-        // console.log(res.data.customerList);
+        this.customerList = this.customerList.concat(res.data.customerList);
+        this.totalPage = res.data.totalPage;
+        this.pageNum++;
+        fn && fn();
+      } else {
+        this.$toast(res.msg);
       }
     },
     grabOrder(customerId, userId) {
       if (userId) {
-        this.$message("已抢单，请勿重复抢单");
+        this.$toast("已抢单，请勿重复抢单");
       } else {
         this.$router.push({
-          name: "clientInfo",
-          params: { customerId }
+          path: "/home/clientInfo",
+          query: { customerId }
         });
       }
+    },
+    //加载更多
+    onLoad() {
+      this.getCustomerList(() => {
+        this.loading = false;
+        if (this.totalPage < this.pageNum) {
+          this.finished = true;
+        }
+      });
     },
     goRecord() {
       this.$router.push({ path: "/home/orderRecord" });

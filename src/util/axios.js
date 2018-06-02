@@ -9,10 +9,10 @@ function fetch(url, params, isOa) {
     baseurl = baseUrl2;
   }
   return new Promise((resolve, reject) => {
-    //这里做加密
-    // var params1 = strEnc(JSON.stringify(params), KEY)
-    // params
-    // console.log(params1)
+    if (params.params) {
+      params.params = strEnc(params.params, KEY);
+    }
+
     axios
       .post(baseurl + url, Qs.stringify(params), {
         headers: {
@@ -20,16 +20,15 @@ function fetch(url, params, isOa) {
         }
       })
       .then(function(response) {
-        //这里做解密
-        // console.log(response.data)
-        // var deData = strDec(response.data, KEY);
-        // console.log(deData)
-        // console.log(response.data);
+        if (!isOa && response.data.code === "0000") {
+          response.data.data = JSON.parse(strDec(response.data.data, KEY));
+        } else {
+          response.data = JSON.parse(strDec(response.data, KEY));
+        }
         resolve(response.data);
       })
       .catch(function(error) {
         reject(error);
-        // console.log("失败")
       });
   });
 }
@@ -158,6 +157,11 @@ export const getInfoTemple = params => {
 export const bannerList = params => {
   params = JSON.stringify(params);
   return fetch("/jrcs/banner/list", { params });
+};
+//热门产品
+export const hotProduct = params => {
+  params = JSON.stringify(params);
+  return fetch("/jrcs/loan/hotProduct", { params });
 };
 /**
  * 更新打卡

@@ -23,12 +23,10 @@
   </div>
 </template>
 <script>
-import { getItem } from "@/util/util.js";
+import { getItem, removeItem } from "@/util/util.js";
 export default {
   data() {
     return {
-      //   accountType:
-      //     JSON.parse(getItem("userInfo")).accountType === "主账号" ? 1 : 0, //1是主账号0是子账号
       listArr: [
         {
           title: "经营统计",
@@ -48,11 +46,6 @@ export default {
               text: "待我审核",
               url: "/oaSystem/audit"
             }
-            // {
-            //   class: "icon-usermanage",
-            //   text: "员工管理",
-            //   url: "/oaSystem/staffManagement"
-            // }
           ]
         },
         {
@@ -62,7 +55,7 @@ export default {
               class: "icon-touch",
               text: "考勤打卡",
               url:
-                JSON.parse(getItem("userInfo")).accountType === "主账号"
+                getItem("userInfo").accountType === "主账号"
                   ? "/oaSystem/attendanceGroup"
                   : "/oaSystem/attendanceCard"
             },
@@ -87,48 +80,13 @@ export default {
               text: "绩效自评",
               url: "/oaSystem/performence"
             }
-            // {
-            //   class: "icon-performence",
-            //   text: "绩效自评",
-            //   url: ""
-            // }
           ]
         }
       ]
     };
   },
-  mounted() {
-    this.initDate();
-    // let accountType =
-    //   JSON.parse(getItem("userInfo")).accountType == "主账号" ? 1 : 0;
-    // this.listArr[1].item[0].url = accountType
-    //   ? "/oaSystem/attendanceGroup"
-    //   : "/oaSystem/attendanceCard";
-  },
+  mounted() {},
   methods: {
-    initDate() {
-      localStorage.removeItem("leave");
-      localStorage.removeItem("out");
-      localStorage.removeItem("overtime");
-      localStorage.removeItem("dayly");
-      localStorage.removeItem("weekly");
-      localStorage.removeItem("monthly");
-      localStorage.removeItem("performence");
-      localStorage.removeItem("approver");
-      localStorage.removeItem("sendTo");
-      localStorage.removeItem("approverOut");
-      localStorage.removeItem("sendToOut");
-      localStorage.removeItem("approverOvertimeWork");
-      localStorage.removeItem("sendToOvertimeWork");
-      localStorage.removeItem("daylyApprover");
-      localStorage.removeItem("daylySendTo");
-      localStorage.removeItem("weeklyApprover");
-      localStorage.removeItem("weeklySendTo");
-      localStorage.removeItem("monthlyApprover");
-      localStorage.removeItem("monthlySendTo");
-      localStorage.removeItem("performenceApprover");
-      localStorage.removeItem("performenceSendTo");
-    },
     goFunc(url) {
       this.$toast.clear();
       if (url) {

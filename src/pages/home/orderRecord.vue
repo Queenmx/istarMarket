@@ -19,7 +19,7 @@
 				</div>
 			</li>
 		</ul> -->
-        <div>
+        <van-list  v-model="loading" :finished="finished" @load="onLoad">
             <p class="wrap title">2012-12-12</p>
             <ul class="wrap list-wrap">
                 <li class="flex item">
@@ -37,45 +37,56 @@
                     <div class="strong red">10000元</div>
                 </li>
             </ul>
-        </div>
+        </van-list>
 	</div>
 </template>
 <script>
 import { grabRecord } from "@/util/axios";
 import { getItem } from "@/util/util";
-import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
-      userId: JSON.parse(getItem("userInfo")).userId,
-      customerList: []
+      userId: getItem("userInfo").userId,
+      customerList: [],
+      pageSize: 10,
+      pageNum: 1,
+      totalPage: "",
+      loading: false,
+      finished: false
     };
   },
-  mounted() {
-    this.initData();
-  },
   methods: {
-    async initData() {
+    //获取抢单记录
+    async getGrabRecord(fn) {
       var data = {
         userId: this.userId,
-        pageSize: 10,
-        pageNum: 1
+        pageSize: this.pageSize,
+        pageNum: this.pageNum
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      var res = await grabRecord(enData);
-      let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+      var res = await grabRecord(data);
       if (res.code === "0000") {
-        this.customerList = deData.customerList;
+        this.customerList = this.customerList.concat(res.data.customerList);
+        this.totalPage = res.data.totalPage;
+        this.pageNum++;
+        fn && fn();
+      } else {
+        this.$toast(res.msg);
       }
-    },
-    grabOrder(customerId) {
-      this.$router.push({ path: "/home/clientInfo" });
     },
     goDetail(customerId) {
       this.$router.push({
-        name: "clientInfo",
-        params: { customerId: customerId, isGrab: true }
+        path: "/home/clientInfo",
+        query: { customerId: customerId, isGrab: true }
+      });
+    },
+    //加载更多
+    onLoad() {
+      this.getGrabRecord(() => {
+        this.loading = false;
+        this.finished = true;
+        if (this.totalPage < this.pageNum) {
+          this.finished = true;
+        }
       });
     }
   }

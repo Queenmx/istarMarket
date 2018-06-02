@@ -47,7 +47,7 @@
 </template>
 <script>
 import { cateAndPro, typeProduct } from "@/util/axios";
-import { centerTabs, getItem } from "@/util/util";
+import { getItem } from "@/util/util";
 import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
@@ -66,7 +66,7 @@ export default {
     // 初始化数据
     // this.initData();
     // this.$nextTick(() => { this.$refs.tabs.$forceUpdate(); })
-    // centerTabs();
+    // ();
     this.init();
   },
   watch: {
@@ -82,9 +82,6 @@ export default {
       let navWidth = nav.offsetWidth;
       let headerWidth = headerNav.offsetWidth;
       //   console.log(navWidth, headerWidth);
-      if (headerWidth > 0 && navWidth < headerWidth) {
-        centerTabs();
-      }
       this.calSubmenu();
     },
     async initData() {
