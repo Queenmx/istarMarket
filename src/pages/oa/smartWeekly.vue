@@ -43,7 +43,6 @@
 <script>
 import { oaIReport } from "@/util/axios.js";
 import { getItem } from "@/util/util.js";
-import { strEnc, strDec } from "@/util/aes.js";
 var echarts = require("echarts/lib/echarts");
 // 引入柱状图
 require("echarts/lib/chart/bar");
@@ -56,7 +55,7 @@ export default {
       info: [],
       rate: 0, //出勤率
       detailRate: [], //每周详细出勤记录
-      userInfo: JSON.parse(getItem("userInfo"))
+      userInfo: getItem("userInfo")
     };
   },
   mounted() {
@@ -74,25 +73,20 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await oaIReport(enData);
-      let deData1 = strDec(res, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
-      this.info.push((+deData.weeklyAverageWorkingHours).toFixed(2));
-      this.info.push(+deData.absenteeismPNum);
-      this.info.push(+deData.leaveEarlyPNum);
-      this.info.push(+deData.isLatePNum);
-      let attendceNum = deData.shouldAttendancePNum;
+      let res = await oaIReport(data);
+      this.info.push((+res.data.weeklyAverageWorkingHours).toFixed(2));
+      this.info.push(+res.data.absenteeismPNum);
+      this.info.push(+res.data.leaveEarlyPNum);
+      this.info.push(+res.data.isLatePNum);
+      let attendceNum = res.data.shouldAttendancePNum;
       this.info.forEach(val => {
         attendceNum -= val;
       });
-      this.rate = (deData.weelyAttRate * 1).toFixed(2);
-      console.log("=======", this.rate, deData.weelyAttRate);
-      let weeklyAttendanceRate = deData.weeklyAttendanceRate;
+      this.rate = (res.data.weelyAttRate * 1).toFixed(2);
+      let weeklyAttendanceRate = res.data.weeklyAttendanceRate;
       arrWeek.forEach(item => {
         this.detailRate.push(weeklyAttendanceRate[item].split("%")[0]);
       });
-      console.log(this.detailRate);
     },
     setColor(val) {
       var colorList = {};
