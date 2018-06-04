@@ -43,7 +43,7 @@
             </section>
             <section>
                 <h4 class="wrap title3">日志</h4>
-                <div class="wrap flex pannel">
+                <div class="wrap flex pannel" @click="goReporter">
                     <div class="rest">
                         <p class="strong">提交人数</p>
                         <p>2018-05-12</p>
@@ -57,7 +57,7 @@
             <div class="footer">
                 <span>前一周团队平均工时{{(+reportInfo.weeklyAverageWorkingHours).toFixed(2)}}小时</span>
             </div>
-		</div>    
+		</div> 
 	</div>
 </template>
 <script>
@@ -90,7 +90,7 @@ export default {
         "本月",
         "上月"
       ],
-      dateRange: this.$route.query.dateRange || "今日",
+      dateRange: "今日",
       reportInfo: {},
       reporterList: [],
       userInfo: getItem("userInfo")
@@ -103,6 +103,28 @@ export default {
     dateRange: function() {
       this.getReport();
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    let path = [
+      "/oaSystem/smartWeekly",
+      "/oaSystem/history",
+      "/oasystem/reporter"
+    ];
+    let res = path.some(item => {
+      return item == from.path;
+    });
+    if (res) {
+      to.meta.isBack = true;
+    }
+    next();
+  },
+  activated() {
+    if (!this.$route.meta.isBack) {
+      // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+      this.dateRange = "今日";
+    }
+    // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
+    this.$route.meta.isBack = false;
   },
   methods: {
     async init() {

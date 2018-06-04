@@ -54,7 +54,7 @@ export default {
       arr: { name: "王昭君", date: "2018-1-12" },
       list: [],
       dateRange: this.$route.query.dateRange,
-      userInfo: JSON.parse(getItem("userInfo"))
+      userInfo: getItem("userInfo")
     };
   },
   mounted() {
@@ -67,12 +67,8 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
-      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaIReport(data);
-      res = JSON.parse(strDec(res, "ZND20171030APIMM"));
-      console.log(res);
       this.list = res.dailyReportCommitList;
-      sessionStorage.setItem("dateRange", this.dateRange);
     }
   }
 };
@@ -80,15 +76,6 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/style/common.scss";
 .report {
-  //   .item {
-  //     display: flex;
-  //     align-items: center;
-  //     height: rem(100px);
-  //     color: $grey;
-  //     .item-main {
-  //       flex: 1;
-  //     }
-  //   }
   .title {
     padding: 0 rem(44px);
     height: rem(76px);

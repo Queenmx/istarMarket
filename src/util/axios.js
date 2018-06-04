@@ -10,7 +10,7 @@ function fetch(url, params, isOa) {
   }
   return new Promise((resolve, reject) => {
     if (params.params) {
-      params.params = strEnc(params.params, KEY);
+      //   params.params = strEnc(params.params, KEY);
     }
 
     axios
@@ -21,9 +21,9 @@ function fetch(url, params, isOa) {
       })
       .then(function(response) {
         if (!isOa && response.data.code === "0000") {
-          response.data.data = JSON.parse(strDec(response.data.data, KEY));
+          //   response.data.data = JSON.parse(strDec(response.data.data, KEY));
         } else {
-          response.data = JSON.parse(strDec(response.data, KEY));
+          //   response.data = JSON.parse(strDec(response.data, KEY));
         }
         resolve(response.data);
       })

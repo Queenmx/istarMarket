@@ -1,8 +1,6 @@
 <template>
   <div class="history">
-      <v-header>
-          <i slot="left" class="el-icon-arrow-left"></i>
-          <p slot="title">足迹</p>
+      <v-header title="足迹">
       </v-header>
       <el-row class="sign_base">
           <el-col :span="24">
@@ -54,7 +52,7 @@ export default {
       zoom: 16,
       value2: "",
       activeName: "first",
-      companyId: JSON.parse(getItem("userInfo")).companyId,
+      companyId: getItem("userInfo").companyId,
       date: new Date(),
       signList: [],
       unSignList: [],
@@ -128,13 +126,10 @@ export default {
         companyId: this.companyId,
         date: this.date
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await oaTrack(enData);
-      let deData1 = strDec(res, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
-      if (deData.code === "0000") {
-        this.signList = deData.data.done;
-        this.unSignList = deData.data.unDone;
+      let res = await oaTrack(data);
+      if (res.code === "0000") {
+        this.signList = res.data.done;
+        this.unSignList = res.data.unDone;
       }
     },
     handleClick(tab, event) {

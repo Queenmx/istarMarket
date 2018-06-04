@@ -4,34 +4,34 @@
 		</v-header>
         <div class="wrap">
             <div class="notepaper">
-                <h3 class="title">2017-12-12</h3>
+                <h3 class="title">{{applyInfo.addTime}}</h3>
                 <div class="content">
                     <div class="base">
-                        <p class="small">张三胖</p>
-                        <p class="strong">2.5</p>
+                        <p class="small">{{applyInfo.userName}}</p>
+                        <p class="strong">{{applyInfo.lengthTime}}</p>
                         <p class="hint">
-                            <span>加班</span>
+                            <span>{{type}}</span>
                             <span>时长(小时)</span>
                         </p>
                     </div>
                     <ul class="detail">
                         <li class="flex item">
                             <span class="item-title">审核编号</span>
-                            <span class="rest black">12222222222</span>
+                            <span class="rest black">{{serialNo}}</span>
                         </li>
                         <li class="flex item">
                             <span class="item-title">所在部门</span>
-                            <span class="rest black">12222222222</span>
+                            <span class="rest black">{{applyInfo.deptName}}</span>
                         </li>
                         <li class="flex item">
                             <span class="item-title">类型</span>
-                            <span class="rest black">12222222222</span>
+                            <span class="rest black">{{type}}</span>
                         </li>
                         <li class="item small">
                             <div>
-                                <p>开始时间：2012-12-12</p>
-                                <p>结束时间：2012-12-12</p>
-                                <p>事由：2012-12-12</p>
+                                <p>开始时间：{{applyInfo.beginTime}}</p>
+                                <p>结束时间：{{applyInfo.endTime}}</p>
+                                <p>事由：{{applyInfo.reason}}</p>
                             </div>
                             <div class="history">
                                 <router-link to="/">
@@ -41,9 +41,12 @@
                             </div>
                         </li>
                     </ul>
-                    <van-row class="btn-group">
-                        <van-col span="12" class="btn">拒绝</van-col>
-                        <van-col span="12" class="btn blue">同意</van-col>
+                    <van-row class="btn-group" v-if="applyInfo.status==0">
+                        <van-col span="12" class="btn">
+                            <div @click="deal(1)">拒绝</div>
+                        </van-col>
+                        <van-col span="12" class="btn blue">
+                            <div @click="deal(0)">同意</div></van-col>
                     </van-row>
                 </div>
             </div>
@@ -147,8 +150,7 @@
 	</div>
 </template>
 <script>
-import { oaFlowInfo } from "@/util/axios.js";
-import { strEnc, strDec } from "@/util/aes.js";
+import { oaFlowInfo, oaAuditSuggestion } from "@/util/axios.js";
 export default {
   data() {
     return {
@@ -156,35 +158,38 @@ export default {
       mainId: this.$route.query.mainId,
       type: this.$route.query.type,
       serialNo: this.$route.query.serialNo,
-      status: this.$route.params.status == "auditing" ? 1 : 0,
       listPlan: [],
       listType: ["事假", "病假", "产假", "陪产假", "调休", "婚假"],
       labelList: ["通过", "拒绝", "发起审批", "进行中"],
-      list: [],
+      applyInfo: {},
       remarks: ""
     };
   },
   mounted() {
-    this.initData();
+    this.init();
   },
   methods: {
-    async initData() {
+    async init() {
       var data = {
         type: this.type,
         mainId: this.mainId,
         applyId: this.applyId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      console.log(this.type);
-      let res = await oaFlowInfo(enData);
-      let deData1 = strDec(res, "ZND20171030APIMM");
-      // console.log(deData1);
-      let deData = JSON.parse(deData1);
-      if (deData.code === "0000") {
-        this.list = deData.data.info;
-        this.remarks = deData.data.operateList[1].remarks;
-        this.listPlan = deData.data.operateList;
+      let res = await oaFlowInfo(data);
+      if (res.code === "0000") {
+        this.applyInfo = res.data.info;
+        console.log(res.data);
+      } else {
+        this.$toast(res.msg);
       }
+    },
+    async deal(flag) {
+      let data = {
+        mainId: this.mainId,
+        flag: flag
+      };
+      let res = await oaAuditSuggestion(data);
+      this.$toast(res.msg);
     }
   }
 };
