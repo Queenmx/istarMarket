@@ -9,8 +9,11 @@
         <div v-show="isShowDropdown" ref="down" class="dropdown-body">
             <van-row>
                 <van-col :span="col" v-for="(item,index) in dataArr" :key="index" class="item">
-                    <span @click="selectData(item,index)" :class="[{'active':activeIndex==index}]">{{item.text}}
+                    <div @click="selectData(item,index)">
+                        <span :class="[{'active':activeIndex==index}]">{{item.text}}
                     </span>
+                    </div>
+                    
                 </van-col>
             </van-row>
         </div>
@@ -67,6 +70,7 @@ export default {
 @import "../assets/style/common.scss";
 .dropdown {
   text-align: center;
+  flex: 1;
   .activeItem {
     .item {
       color: $blue;
@@ -92,18 +96,22 @@ export default {
     vertical-align: middle;
   }
   .item {
+    position: relative;
     height: rem(100px);
     line-height: rem(100px);
     font-size: rem(32px);
     color: #666666;
+    div {
+      height: 100%;
+    }
   }
   .active {
-    position: relative;
     color: #4d7bff;
     &::after {
       content: "";
       position: absolute;
-      bottom: 2px;
+      bottom: rem(36px);
+      right: rem(30px);
       margin-left: rem(18px);
       @include icon(rem(32px), rem(28px));
       background-image: url("../assets/images/icon-checked@3x.png");
