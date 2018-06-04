@@ -12,8 +12,8 @@
         </div>
     </div>
    <div class="select flex">
-        <dropdown :dataArr="dataArr" :title="dataArr[0].label" @selectedEvent="changeType"></dropdown>
-        <dropdown :dataArr="textArr" col="24" :title="textArr[0].text" @selectedEvent="changeType"></dropdown>
+        <dropdown :dataArr="dataArr" col="24" :title="dataArr[0].text" @selectedEvent="changeType" iconImg="icon-all" iconClass="icon-arrow-white"></dropdown>
+        <dropdown :dataArr="textArr" col="24" :title="textArr[0].text" @selectedEvent="changeType" iconImg="icon-chosetime" iconClass="icon-arrow-white"></dropdown>
    </div>
     <div class="list">
       <split></split>
@@ -42,24 +42,30 @@ export default {
   data() {
     var date = new Date();
     return {
-      dataArr: [{ value: "", label: "全部" }],
+      dataArr: [
+        { id: "", text: "全部" },
+        {
+          id: date.getFullYear() + "-" + date.getMonth(),
+          text: "可能其他分类"
+        }
+      ],
       textArr: [
+        {
+          id: "",
+          text: "选择"
+        },
         {
           text: date.getFullYear() + "-" + (date.getMonth() + 1)
         },
         {
-          //   value: date.getFullYear() + "-" + date.getMonth(),
-          //   label: date.getFullYear() + "-0" + date.getMonth()
           text: date.getFullYear() + "-" + date.getMonth()
         },
         {
           text: date.getFullYear() + "-" + (date.getMonth() - 1)
-          //   label: date.getFullYear() + "-0" + (date.getMonth() - 1)
         }
       ],
-      value1: "",
-      value2: "",
-      // list: [{ des: "全部" }, { des: "18年1月" }],
+      // list: [{ des: "全部" }, { des: "18年1月" }],\
+      dataRange: "",
       items: "",
       money: "",
       userInfo: getItem("userInfo")
@@ -76,12 +82,13 @@ export default {
     async bill() {
       var data = {
         userId: this.userInfo.userId,
-        time: this.value2,
+        time: this.dataRange,
         pageNum: 1,
         pageSize: 100
       };
-
+      console.log(data);
       let res = await getMoney(data);
+      console.log(res);
       if (res.code === "0000") {
         // console.log(res.data.xbConsumeList)
         // this.data.desc=res.data.xbConsumeList[0].consume_type
@@ -102,7 +109,8 @@ export default {
     goPay: function() {
       this.$router.push("/users/pay");
     },
-    changeType() {
+    changeType(val) {
+      this.dataRange = val;
       this.bill();
     },
     disable() {
@@ -160,10 +168,10 @@ export default {
 
   .select {
     width: 100%;
+    line-height: rem(98px);
+    color: #fff;
+    font-size: rem(32px);
     background: #53a6ff;
-    .el-select {
-      width: 100%;
-    }
   }
   .list {
     background-color: #f8f8f8;

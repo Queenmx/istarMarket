@@ -118,6 +118,7 @@ export default {
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
+      console.log(data);
       let res = await oaIReport(data);
       this.reportInfo = res;
     },

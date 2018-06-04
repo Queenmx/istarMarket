@@ -135,6 +135,11 @@
 .icon-arrow-down {
   background-image: url("../images/icon-arrow-down@3x.png");
 }
+.icon-arrow-white{
+  background-image: url("../images/icon-arrow-white.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 .icon-checked {
   background-image: url("../images/icon-checked@3x.png");
 }
@@ -194,4 +199,10 @@
 }
 .icon-pen {
   background-image: url("../images/icon-pen@3x.png");
+}
+.icon-all {
+  background-image: url("../../assets/images/all.png");
+}
+.icon-chosetime{
+  background-image: url("../../assets/images/chosetime.png");
 }

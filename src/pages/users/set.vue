@@ -1,9 +1,6 @@
 <template>
   <div class="set">
-    <v-header class="header">
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">个人信息</p>
-		</v-header>
+    <v-header title="个人信息"></v-header>
     <split></split>
     <div>
       <div class="wrap flex item">
@@ -18,44 +15,35 @@
       <split></split>
       <div >
 			<!-- <split></split> -->
-			<ul>
-				<li class="wrap flex item">
-					<div class="news">所属公司</div>
+            <ul>
+                <li class="wrap flex item" v-for="(item,index) in mainData" :key="index">
+                    <div class="news">{{item.lable}}</div>
 					<div class="news1">
-              {{companyName}}  
-          </div>
-				</li>
-        <li class="wrap flex item">
-					<div class="news">账号</div>
+                        {{userData[item.key]}}
+                    </div>
+                </li>
+            </ul>
+            <split></split>
+            <ul>
+                <li class="wrap flex item" v-for="(item,index) in phone" :key="index">
+                    <div class="news">{{item.lable}}</div>
 					<div class="news1">
-              {{userName}}
-          </div>
-		</li>
-        <li class="wrap flex item">
-					<div class="news">账号类型</div>
-					<div class="news1">
-              {{accountType}}
-          </div>
-		</li>
-        <li class="wrap flex item" @click="changeContact" >
-					<div class="news">联系人</div>
-					<div class="news1">{{realName}}
-            <i class="el-icon-arrow-right" ></i>
-          </div>
-				</li>
-        <li class="wrap flex item" @click="changePhone">
-					<div class="news">联系人手机</div>
-					<div class="news1">{{phone}}
-            <i class="el-icon-arrow-right" ></i>
-          </div>
-				</li>
-        <li class="wrap flex item" @click="changepwd">
-					<div class="news">修改密码</div>
-					<div class="news1">
-            <i class="el-icon-arrow-right" ></i>
-          </div>
-				</li>
-			</ul>
+                        {{userData[item.key]}}
+                    </div>
+                </li>
+            </ul>
+            <split></split>
+            <ul>
+                <li class="wrap flex item">
+                    <div class="news">修改密码</div>
+					<div class="news1"></div>
+                </li>
+                <split></split>
+                <li class="wrap flex item">
+                    <div class="news">关于星融</div>
+					<div class="news1"></div>
+                </li>
+            </ul>
 		</div>
     </div>
    <div class="btn-wrap">
@@ -75,7 +63,18 @@ export default {
       realName: "",
       phone: "",
       userName: "",
-      accountType: ""
+      accountType: "",
+      mainData: [
+        { lable: "所属公司", key: "companyName" },
+        { lable: "账号", key: "userName" },
+        { lable: "账号类型", key: "accountType" }
+      ],
+      phone: [
+        { lable: "联系人", key: "realName" },
+        { lable: "联系人手机", key: "phone" }
+      ],
+      userInfo: getItem("userInfo"),
+      userData: {}
     };
   },
   mounted() {
@@ -83,24 +82,19 @@ export default {
   },
   methods: {
     async initData() {
-      getItem("userInfo");
-      let userinfo = JSON.parse(localStorage.userInfo);
-      console.log(userinfo);
       var data = {
-        userId: userinfo.userId,
-        userName: userinfo.userName
+        userId: this.userInfo.userId,
+        userName: this.userInfo.userName
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await getSet(enData);
-      let deData1 = strDec(res.data, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
+      let res = await getSet(data);
       if (res.code === "0000") {
-        this.companyName = deData.companyName;
-        this.realName = deData.realName;
-        this.phone = deData.phone;
-        this.userName = deData.userName;
-        this.headPic = deData.headPic;
-        this.accountType = deData.accountType;
+        this.userData = res.data;
+        // this.companyName = res.data.companyName;
+        // this.realName = res.data.realName;
+        // this.phone = res.data.phone;
+        // this.userName = res.data.userName;
+        // this.headPic = res.data.headPic;
+        // this.accountType = res.data.accountType;
       }
     },
     changepwd() {
@@ -162,15 +156,14 @@ export default {
     }
   }
   .btn {
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
     margin-top: rem(82px);
-    background-color: $blue;
+    background-color: #fff;
     border: 0;
     border-radius: 5px;
-    color: #fff;
-    font-size: rem(26px);
-    height: rem(81px);
+    color: #000;
+    font-size: rem(30px);
+    height: rem(100px);
   }
 }
 </style>
