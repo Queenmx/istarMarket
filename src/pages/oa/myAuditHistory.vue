@@ -35,30 +35,31 @@
 					</li>
 				</ul>
                 <p v-else class="none">暂无数据</p> -->
-                <div class="wrap">
+                <div class="wrap container">
                     <div class="notepaper">
                         <h3 class="title">
                             <div class="flex">
-                                <i class="icon-arrow-left-black"></i>
-                                <span class="rest">2012-12</span>
-                                <i class="icon-more"></i>
+                                <i class="icon-arrow-left-black" @click="preMonth"></i>
+                                <span class="rest">{{currentDate.getFullYear()}}年{{currentDate.getMonth()+1}}月</span>
+                                <i class="icon-more" @click="isShowDate=!isShowDate"></i>
                             </div>
                         </h3>
                         <div class="content">
                             <ul>
-                                <li class="flex item">
+                                <li class="flex item" v-for="item in list" :key="item.applyId">
                                     <div class="date-wrap">
-                                        <span class="date active">22日</span>
+                                        <span class="date active">{{item.addTime|getDate}}日</span>
                                     </div>
                                     <div class="rest">
-                                        <div class="subItem">
+                                        <div class="subItem" @click="goAudit(item)">
                                             <div class="flex value">
-                                                <span class="rest">小胖</span>
-                                                <span>加班</span>
+                                                <span class="rest">{{item.userName}}</span>
+                                                <span>{{item.type}}</span>
                                             </div>
                                             <div class="flex small">
-                                                <van-tag>同意</van-tag>
-                                                <span class="rest time"> 2012-12-12</span>
+                                                <van-tag :class="statusText[item.status].class">{{statusText[item.status].text}}</van-tag>
+                                                <div class="rest time">
+                                                    <p>{{item.beginTime}}</p> <p>{{item.endTime}}</p></div>
                                             </div>
                                         </div>
                                         <div class="subItem">
@@ -94,35 +95,58 @@
                         </div>
                     </div>
                 </div>
+                <van-popup v-model="isShowDate" position="bottom">
+                    <van-datetime-picker type="year-month" :max-date="maxDate" @cancel="isShowDate=false" @confirm="changeDate"/>
+                </van-popup>
 	</div>
 </template>
 <script>
-import Bus from "../../util/Bus.js";
-import { getItem, checkSys } from "@/util/util.js";
+import { getItem } from "@/util/util.js";
 import { oaAuditHistory } from "@/util/axios.js";
-import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
+    let date = new Date();
     return {
+      isShowDate: false,
+      maxDate: date,
+      currentDate: date,
       list: [],
-      userId: JSON.parse(getItem("userInfo")).userId,
-      statusText: ["待审批", "同意", "拒绝"]
+      userId: getItem("userInfo").userId,
+      statusText: [
+        { class: "tag-orange", text: "待审批" },
+        { class: "tag-blue", text: "同意" },
+        { class: "tag-red", text: "拒绝" }
+      ]
     };
   },
+  watch: {
+    currentDate: function() {
+      this.getHistory();
+    }
+  },
   mounted() {
-    this.initData();
+    this.getHistory();
+  },
+  filters: {
+    getDate(value) {
+      console.log(value);
+      return new Date(value).getDate();
+    }
   },
   methods: {
-    async initData() {
+    //获取我的审核单记录
+    async getHistory() {
       let data = {
-        userId: this.userId
+        userId: this.userId,
+        year: this.currentDate.getFullYear(),
+        month: this.currentDate.getMonth() + 1
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await oaAuditHistory(enData);
-      let deData1 = strDec(res, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
-      if (deData.code === "0000") {
-        this.list = deData.data;
+      let res = await oaAuditHistory(data);
+      if (res.code === "0000") {
+        this.list = res.data;
+        console.log(this.list);
+      } else {
+        this.$toast(res.msg);
       }
     },
     goAudit(item) {
@@ -135,6 +159,15 @@ export default {
           serialNo: item.serialNo
         }
       });
+    },
+    preMonth() {
+      let year = this.currentDate.getFullYear();
+      let month = this.currentDate.getMonth();
+      this.currentDate = new Date(`${year}-${month}`);
+    },
+    changeDate(value) {
+      this.currentDate = value;
+      this.isShowDate = false;
     }
   }
 };
@@ -144,6 +177,12 @@ export default {
 .audit {
   font-size: rem(32px);
   color: #333333;
+  .container {
+    padding-bottom: rem(20px);
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+  }
   .title {
     padding-left: rem(32px);
     padding-right: rem(32px);

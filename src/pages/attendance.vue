@@ -1,9 +1,25 @@
 <template>
-	<div class="report">
-		<v-header>
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">出勤人数</p>
+	<div class="rooterEle report">
+		<v-header title="出勤人数">
 		</v-header>
+        <div class="container">
+            <ul>
+                <li v-for="index in 2" :key="index">
+                    <h3 class="wrap title">2012-12-12</h3>
+                    <ul class="wrap sublist">
+                        <li v-for="index in 2" :key="index" class="item">
+                            <div class="flex">
+                                <div class="time">17:00</div>
+                                <div class="rest">
+                                    <p class="strong">销售</p>
+                                    <p>深圳市</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 		<ul>
 			<li class="wrap item" v-for="(item,index) in arr" :key="index">
 				<div class="item-main">
@@ -22,11 +38,11 @@
 <script>
 import { getItem } from "@/util/util.js";
 import { oaAttendance } from "@/util/axios.js";
-import { strEnc, strDec } from '@/util/aes.js'
 export default {
   data() {
     return {
-      arr: []
+      arr: [],
+      userInfo: getItem("userInfo")
     };
   },
   mounted() {
@@ -34,19 +50,13 @@ export default {
   },
   methods: {
     async initData() {
-      getItem("userinfo");
-      let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
-        companyId: userinfo.companyId,
-        userId: userinfo.userId
+        companyId: this.userInfo.companyId,
+        userId: this.userInfo.userId
       };
-       var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM" );
-      let res = await oaAttendance(enData);
-      let deData1 = strDec(res,"ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
-      if (deData.code == "0000") {
-        this.arr = deData.data;
-        console.log(this.arr);
+      let res = await oaAttendance(data);
+      if (res.code == "0000") {
+        this.arr = res.data;
       }
     }
   }
@@ -55,36 +65,31 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/style/common.scss";
 .report {
+  font-size: rem(28px);
+  color: #666666;
+  .title {
+    height: rem(72px);
+    line-height: rem(72px);
+    font-size: rem(24px);
+    color: #999999;
+  }
+  .sublist {
+    background: #fff;
+  }
   .item {
-    display: flex;
-    align-items: center;
-    height: rem(100px);
-    color: $grey;
-    .item-main {
-      flex: 1;
-      span {
-        // font-size: rem(22px);
-        font-size: rem(32px);
-        color: #323232;
-      }
+    padding: rem(12px) 0;
+    &:not(:last-child) {
+      border-bottom: rem(1px) solid $bdcolor;
     }
-    .right {
-      span {
-        font-size: rem(22px);
-      }
+    .time {
+      width: rem(136px);
+      font-size: rem(32px);
+      color: #333333;
     }
-  }
-  .avatar-wrap {
-    display: inline-block;
-    padding-right: rem(10px);
-  }
-  .avatar {
-    // width: rem(60px);
-    // height: rem(60px);
-    width: rem(91px);
-    height: rem(94px);
-    border-radius: 50%;
-    vertical-align: middle;
+    .strong {
+      font-size: rem(32px);
+      color: #020202;
+    }
   }
 }
 </style>

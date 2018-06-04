@@ -3,38 +3,40 @@
 		<v-header title="待我审核">
             <p slot="right"><router-link to="/oaSystem/myAuditHistory" class="icon-pannel"></router-link></p>
 		</v-header>
+        <div class="container">
         <van-tabs v-model="active">
-            <van-tab title="待我审核（2）">
-                <ul class="wrap">
-                    <li class="notepaper item">
-                        <h3 class="title">请假单(xxx)</h3>
+            <van-tab :title="'待我审核('+waitList.length+')'">
+                <ul class="wrap" v-if="waitList.length">
+                    <li class="notepaper item" v-for="item in waitList" :key="item.applyId">
+                        <h3 class="title">{{item.type}}单({{item}})</h3>
                         <div class="content">
                             <div class="flex">
                             <p class="hint">
                                 <i class="icon-clock-red"></i>
                                 <span>开始时间</span>
                             </p>
-                            <p class="rest">2010-11-11 09:00</p>
+                            <p class="rest">{{item.beginTime}}</p>
                         </div>
                         <div class="flex">
                             <p class="hint">
                                 <i class="icon-clock-yellow"></i>
                                 <span>结束时间</span>
                             </p>
-                            <p class="rest">2010-11-11 09:00</p>
+                            <p class="rest">{{item.endTime}}</p>
                         </div>
                         </div>
-                        <div class="time">2012-12-12</div>
+                        <div class="time">{{item.addTime}}</div>
                     </li>
                 </ul>
             </van-tab>
             <van-tab title="已审核">
-                <ul class="wrap">
-                    <li class="notepaper item">
+                <ul class="wrap" v-if="alreadyList.length">
+                    <li class="notepaper item" v-for="item in alreadyList" :key="item.applyId" @click="goAudit(item)">
                         <h3 class="title">
-                            <span>请假单(xxx)</span>
-                            <van-tag class="tag pass">标签</van-tag>
-                            <!-- <van-tag class="tag notpass">标签</van-tag> -->
+                            <span>{{item.type}}单(xxx)</span>
+                            <van-tag v-if="item.status==0" class="tag tag-orange">进行中</van-tag>
+                            <van-tag v-else-if="item.status==1" class="tag tag-blue">同意</van-tag>
+                            <van-tag v-else-if="item.status==2" class="tag tag-red">不同意</van-tag>
                         </h3>
                         <div class="content">
                             <div class="flex">
@@ -42,127 +44,44 @@
                                 <i class="icon-clock-red"></i>
                                 <span>开始时间</span>
                             </p>
-                            <p class="rest">2010-11-11 09:00</p>
+                            <p class="rest">{{item.beginTime}}</p>
                         </div>
                         <div class="flex">
                             <p class="hint">
                                 <i class="icon-clock-yellow"></i>
                                 <span>结束时间</span>
                             </p>
-                            <p class="rest">2010-11-11 09:00</p>
+                            <p class="rest">{{item.endTime}}</p>
                         </div>
                         </div>
-                        <div class="time">2012-12-12</div>
+                        <div class="time">{{item.addTime}}</div>
                     </li>
                 </ul>
             </van-tab>
         </van-tabs>
-		<!-- <el-tabs v-model="activeName">
-			<el-tab-pane label="待我审批的" name="first">
-				<ul v-if="list && list.length">
-					<li class="wrap flex item" @click="goAudit(item)"  v-for="(item,index) in list" :key="index" >
-						<div class="rest">
-							<div class="avatar-wrap">
-								<img class="avatar" :src="item.headPic">
-							</div>
-							<div class="inblock">
-								<p class="title">{{item.title}}</p>
-								<p class="grey">
-									<span>类型：</span>
-									<span>{{item.type}}</span>
-								</p>
-								<p class="grey">
-									<span>开始时间：</span>
-									<span>{{item.beginTime}}</span>
-								</p>
-								<p class="grey">
-									<span>结束时间：</span>
-									<span>{{item.endTime}}</span>
-								</p>
-                                <p class="orange">
-                                    <span>待审核</span>
-                                </p>
-							</div>
-						</div>
-						<div class="greyTime">
-							<span>{{item.addTime}}</span>
-						</div>
-					</li>
-				</ul>
-                <p v-else class="none">暂无数据</p>
-			</el-tab-pane>
-			<el-tab-pane label="我已审批的" name="second">
-				<ul v-if="listData && listData.length">
-					<li class="wrap flex item" @click="goAudit(item)" v-for="(item,i) in listData" :key="i">
-						<div class="rest">
-							<div class="avatar-wrap">
-								<img class="avatar" :src="item.headPic">
-							</div>
-							<div class="inblock">
-								<p class="title">{{item.title}}</p>
-								<p class="grey">
-									<span>类型：</span>
-									<span>{{item.type}}</span>
-								</p>
-								<p class="grey">
-									<span>开始时间：</span>
-									<span>{{item.beginTime}}</span>
-								</p>
-								<p class="grey">
-									<span>结束时间：</span>
-									<span>{{item.endTime}}</span>
-								</p>
-								<p class="red">
-                                    <span>{{statusText[item.status]}}</span>
-                                </p>
-							</div>
-						</div>
-						<div class="greyTime">
-							<span>{{item.addTime}}</span>
-						</div>
-					</li>
-				</ul>
-                <p v-else class="none">暂无数据</p>
-			</el-tab-pane>
-		</el-tabs> -->
+        </div>
 	</div>
 </template>
 <script>
-import Bus from "../../util/Bus.js";
-import { getItem, checkSys } from "@/util/util.js";
+import { getItem, formateTime } from "@/util/util.js";
 import { oaWaitQuery, oaAlready } from "@/util/axios.js";
-import { strEnc, strDec } from "@/util/aes.js";
 export default {
   data() {
     return {
-      activeName: "first",
-      list: "",
-      listData: [],
-      index: "",
-      status: "",
-      value: "",
+      active: 0,
+      userInfo: getItem("userInfo"),
+      waitList: [], //待审核
+      alreadyList: [], //已审核
       statusText: ["进行中", "同意", "拒绝"]
     };
   },
-  // created(){
-  //   Bus.$on("params",value=>{
-  //     console.log(value)
-  //   }
-  //   )
-  // },
-  created() {},
   mounted() {
-    document.getElementsByClassName("van-tabs__line")[0].style.width = "25px";
-    document.getElementsByClassName("van-tabs__line")[0].style.transform =
-      "translateX(-50%)";
-    this.initData();
-    this.query();
+    this.init();
   },
-
   methods: {
     goAudit(item) {
       this.$router.push({
-        path: "/oaSystem/myAuditing",
+        path: "/oaSystem/auditDetail",
         query: {
           applyId: item.applyId,
           mainId: item.mainId,
@@ -171,53 +90,34 @@ export default {
         }
       });
     },
-    async initData() {
+    async init() {
       await this.wait();
       await this.already();
     },
-    async query() {
-      Bus.$on("params", value => {
-        console.log(value);
-      });
-    },
+    //获取待审核
     async wait() {
-      getItem("userinfo");
-      getItem("approver");
-      // getItem('sendto')
-      getItem("approverOutId");
-      getItem("approverOvertimeWorkId");
-      // console.log(localStorage);
-      // console.log(value)
-      let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
-        userId: userinfo.userId
+        userId: this.userInfo.userId
       };
-      var enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await oaWaitQuery(enData);
-      let deData1 = strDec(res, "ZND20171030APIMM");
-      let deData = JSON.parse(deData1);
-      if (deData.code === "0000") {
-        this.list = deData.data;
-        // console.log(res.data);
+      let res = await oaWaitQuery(data);
+      if (res.code === "0000") {
+        this.waitList = res.data;
+      } else {
+        this.$toast(res.msg);
       }
     },
+    //获取已审核
     async already() {
-      getItem("userinfo");
-      let userinfo = JSON.parse(localStorage.userInfo);
       var data = {
-        userId: userinfo.userId
+        userId: this.userInfo.userId
       };
-      let enData = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-      let res = await oaAlready(enData);
-      let deData1 = strDec(res, "ZND20171030APIMM");
-      // console.log(deData1);
-      let deData = JSON.parse(deData1);
-      if (deData.code === "0000") {
-        this.listData = deData.data;
+      let res = await oaAlready(data);
+      if (res.code === "0000") {
+        console.log(res.data);
+        this.alreadyList = res.data;
+      } else {
+        this.$toast(res.msg);
       }
-    },
-    goHistory() {
-      this.$router.push({ path: "/oaSystem/myAuditHistory" });
     }
   }
 };
@@ -241,6 +141,12 @@ export default {
     height: rem(90px);
     line-height: rem(90px);
     border-bottom: rem(1px) solid #eee;
+  }
+  .container {
+    padding-bottom: rem(40px);
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
   }
   .item {
     padding-bottom: rem(14px);

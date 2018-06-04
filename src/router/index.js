@@ -202,7 +202,11 @@ const router = new Router({
     },
     {
       path: "/oasystem/report",
-      component: report
+      component: report,
+      meta: {
+        keepAlive: true,
+        isBack: false
+      }
     },
     {
       path: "/oasystem/weekly",

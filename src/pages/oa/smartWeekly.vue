@@ -1,8 +1,6 @@
 <template>
 	<div class="rooterEle weekly">
-		<v-header>
-			<i slot="left" class="el-icon-arrow-left"></i>
-			<p slot="title">智能报表</p>
+		<v-header title="智能报表">
 		</v-header>
         <split></split>
         <section class="wrap">
@@ -10,29 +8,29 @@
             <div class="chart-wrap">
                 <div id="main" class="chart"></div>
             </div>
-            <div class="wrap chart-hint"><span>周出勤率{{rate}}%</span></div>
+            <div class="wrap chart-hint"><span>周出勤率{{(reportInfo.weelyAttRate*1).toFixed(2)}}%</span></div>
         </section>
         <split></split>
         <section class="wrap">
             <h3 class="title">周统计</h3>
             <van-row>
                 <van-col class="item" span="6">
-                    <p class="strong">{{info[0]}}</p>
+                    <p class="strong">{{(reportInfo.weeklyAverageWorkingHours*1).toFixed(2)}}</p>
 		  	        <p>周平均工时</p>
                     <p>(小时)</p>
                 </van-col>
                 <van-col class="item" span="6">
-                    <p class="strong">{{info[1]}}</p>
+                    <p class="strong">{{reportInfo.absenteeismPNum}}</p>
 		  	        <p>周旷工</p>
                     <p>(人)</p>
                 </van-col>
                <van-col class="item" span="6">
-                   <p class="strong">{{info[2]}}</p>
+                   <p class="strong">{{reportInfo.leaveEarlyPNum}}</p>
 		  	        <p>周早退</p>
                     <p>(人)</p>
                 </van-col>
               <van-col class="item" span="6">
-                  <p class="strong">{{info[3]}}</p>
+                  <p class="strong">{{reportInfo.isLatePNum}}</p>
 		  	        <p>周迟到</p>
                       <p>(人)</p>
                       </van-col>
@@ -55,7 +53,10 @@ export default {
       info: [],
       rate: 0, //出勤率
       detailRate: [], //每周详细出勤记录
-      userInfo: getItem("userInfo")
+      userInfo: getItem("userInfo"),
+      reportInfo: {},
+      dayRates: [],
+      daysLabel: ["星期一", "星期二", "星期三", "星期四", "星期五"]
     };
   },
   mounted() {
@@ -63,31 +64,29 @@ export default {
   },
   methods: {
     async init() {
-      await this.initData();
+      await this.getReport();
       await this.drawChart();
     },
-    async initData() {
-      let arrWeek = ["星期一", "星期二", "星期三", "星期四", "星期五"];
+    async getReport() {
       let data = {
         dateRange: "上周",
         userId: this.userInfo.userId,
         companyId: this.userInfo.companyId
       };
       let res = await oaIReport(data);
-      this.info.push((+res.data.weeklyAverageWorkingHours).toFixed(2));
-      this.info.push(+res.data.absenteeismPNum);
-      this.info.push(+res.data.leaveEarlyPNum);
-      this.info.push(+res.data.isLatePNum);
-      let attendceNum = res.data.shouldAttendancePNum;
-      this.info.forEach(val => {
-        attendceNum -= val;
-      });
-      this.rate = (res.data.weelyAttRate * 1).toFixed(2);
-      let weeklyAttendanceRate = res.data.weeklyAttendanceRate;
-      arrWeek.forEach(item => {
-        this.detailRate.push(weeklyAttendanceRate[item].split("%")[0]);
-      });
+      this.reportInfo = res;
+      console.log(res);
+      this.setWeekRate();
     },
+    //设置每日出勤率
+    setWeekRate() {
+      var rates = this.reportInfo.weeklyAttendanceRate;
+      this.daysLabel.forEach(item => {
+        this.dayRates.push(rates[item].split("%")[0]);
+      });
+      console.log(this.dayRates);
+    },
+    //设置颜色区域
     setColor(val) {
       var colorList = {};
       if (val <= 0.2) {
@@ -108,9 +107,6 @@ export default {
       var myChart = echarts.init(document.getElementById("main"));
       // 绘制图表
       myChart.setOption({
-        // title: {
-        //   text: `周出勤率 ${self.rate}%`
-        // },
         color: ["#83bff6"],
         tooltip: {
           trigger: "axis",
@@ -129,7 +125,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["星期一", "星期二", "星期三", "星期四", "星期五"],
+            data: self.daysLabel,
             axisTick: {
               show: false
             },
@@ -168,7 +164,7 @@ export default {
             name: "出勤率",
             type: "bar",
             barWidth: "20",
-            data: self.detailRate,
+            data: self.dayRates,
             label: {
               normal: {
                 show: true,
@@ -179,9 +175,7 @@ export default {
             itemStyle: {
               normal: {
                 color: function(params) {
-                  console.log("params:", params);
                   let color = self.setColor(params.data);
-                  console.log("color:", color);
                   return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     {
                       offset: 0,
