@@ -16,18 +16,18 @@
         <dropdown :dataArr="textArr" col="24" :title="textArr[0].text" @selectedEvent="changeType" iconImg="icon-chosetime" iconClass="icon-arrow-white"></dropdown>
    </div>
     <div class="list">
-      <split></split>
-      <ul>
-        <li class="wrap" v-for="(item,i) in items" :key="i">
-          <div class="fr">
-            <span >{{item.consume_type}}</span>
-            
-            <p>{{item.consume_userName}}</p>
-          </div>
-          <div class="sr">
-            <span>{{item.consume_time}}</span>
-            <p>{{item.consume_xb}}星币</p>
-          </div>
+      <!-- <split></split> -->
+      <ul v-for="(item,i) in listDate" :key="i">
+        <span class="wrap data-range">{{i.replace("-",'年')}}月</span>
+        <li class=" wrap liwrap" v-for="(item,index) in listDate[i].xbConsumeList" :key="index">
+            <div class="fr">
+                <span >{{item.consume_type}}</span>
+                <p>{{item.consume_userName}}</p>
+            </div>
+            <div class="sr">
+                <span>{{item.consume_time}}</span>
+                <p>{{item.consume_xb}}星币</p>
+            </div>
         </li>
       </ul>
     </div>
@@ -66,6 +66,7 @@ export default {
       ],
       // list: [{ des: "全部" }, { des: "18年1月" }],\
       dataRange: "",
+      listDate: "",
       items: "",
       money: "",
       userInfo: getItem("userInfo")
@@ -92,7 +93,9 @@ export default {
       if (res.code === "0000") {
         // console.log(res.data.xbConsumeList)
         // this.data.desc=res.data.xbConsumeList[0].consume_type
+        this.listDate = res.data;
         this.items = res.data.xbConsumeList;
+        console.log(this.listDate);
       }
     },
     async queryMoney() {
@@ -177,7 +180,12 @@ export default {
     background-color: #f8f8f8;
     padding-bottom: rem(100px);
     ul {
-      .wrap {
+      .data-range {
+        line-height: rem(80px);
+        font-size: rem(26px);
+        color: #999;
+      }
+      .liwrap {
         border-bottom: 1px solid #eee;
         background-color: #fff;
         height: rem(150px);
