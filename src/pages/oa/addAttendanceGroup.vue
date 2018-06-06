@@ -1,10 +1,8 @@
 <template>
     <div class="rooterEle addAttendanceGroup">
-        <v-header class="wrap">
-            <i slot="left" class="el-icon-arrow-left"></i>
-            <p slot="title">{{title}}</p>
+        <v-header :title="title">
         </v-header>
-        <div class="main">
+        <!-- <div class="main">
             <split></split>
             <div class="wrap flex item">
                 <span class="lable">考勤组名称</span>
@@ -24,9 +22,6 @@
                         <i class="el-icon-arrow-right"></i>
                     </p>
                 </div>
-                <!-- <p ref="department" class="selected-area">
-                        <span class="selected" v-for="(val,key) in seletedDepartment" :key="key">{{val}}</span>
-                    </p> -->
                 <div class="add-wrap" @click="handleCommand">
                     <i class="el-dropdown-link add"></i>
                 </div>
@@ -36,138 +31,135 @@
                 <p class="rest lable"><span>其他参与人员</span></p>
                <p> <i class="el-icon-arrow-right"></i></p>
             </div>
-            <!-- <split></split> -->
-            <!-- <div class="wrap flex item" @click="goSelect('leader')">
-                <p class="rest lable"><span>考勤组负责人</span></p>
-               <p> <i class="el-icon-arrow-right"></i></p>
-            </div>
-            <div class="wrap info" @click="goSelect('caption')">
-                <span>协助管理员分管本考勤组的排班及统计</span>
-                <i class="el-icon-question"></i>
-            </div> -->
-            <!-- <div class="wrap flex item" @click="goSelect('address')" v-if="status==='add'">
-                <p class="rest lable">
-                    <i class="map"></i>
-                    <span>考勤位置</span>
-                </p>
-               <p><i class="el-icon-arrow-right"></i></p>
-            </div> -->
+        </div> -->
+        <ul class="list">
+            <li>
+                <split></split>
+                <div class="wrap flex item">
+                    <div class="title">
+                        <span>考勤组名称</span>
+                    </div>
+                    <div class="rest">
+                        <span v-if="groupName">{{groupName}}</span>
+                        <input v-model="groupName" v-else placeholder="请输入考勤组名称">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <split></split>
+                <div class="wrap item">
+                    <div class="title">
+                        <span>参与部门</span>
+                    </div>
+                    <div class="circle-wrap">
+                        <van-row>
+                            <van-col span="4" v-for="item in inDepts" :key="item.deptId">
+                                <div class="flex circle">
+                                    <span>{{item.deptName.split("部")[0]}}</span>
+                                </div>
+                            </van-col>
+                            <van-col span="4">
+                                <div class="add-wrap">
+                                    <router-link :to="{path:'/oaSystem/attendanceApartment',query:{selectDept:inDepts}}" class="icon-add-circle"></router-link>
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <split></split>
+                <div class="wrap flex item">
+                    <div class="title">
+                        <span>其他参与人员</span>
+                    </div>
+                    <div class="rest right">
+                        <span class="value">{{inUsers|getUsersName}}</span>
+                            <router-link to="/oaSystem/attendanceMember" class="icon-arrow-right-black"></router-link>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="wrap" @click="submit">
+            <p class="btn-blue-lg">提交</p>
         </div>
-        <div class="footer-btn" @click="submit">
-            <span>提交</span>
-        </div>
-        <!-- <router-view ></router-view> -->
     </div>
 </template>
 <script>
 import { oaAttendanceGroupInfo, oaAttendSetting } from "@/util/axios";
 import { setItem, getItem } from "@/util/util";
-import { strEnc, strDec } from "@/util/aes.js";
-var fromFlag = 0;
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      userInfo: JSON.parse(getItem("userInfo")),
-      status: this.$route.query.status,
+      userInfo: getItem("userInfo"),
       groupId: this.$route.query.groupId,
-      title: "",
-      info: {},
-      seletedDepartment: sessionStorage.getItem("inDepts")
-        ? JSON.parse(sessionStorage.getItem("inDepts"))
-        : {},
-      groupName:
-        sessionStorage.getItem("groupName") || this.$route.query.groupName || ""
+      title: this.$route.query.groupId ? "修改成员" : "添加考勤组",
+      groupName: this.$route.query.groupName || "",
+      leader: ""
     };
   },
+  beforeRouteEnter(to, from, next) {
+    let path = ["/oaSystem/attendanceApartment", "/oaSystem/attendanceMember"];
+    let res = path.some(item => {
+      return item == from.path;
+    });
+    if (res) {
+      to.meta.isBack = true;
+    }
+    next();
+  },
+  activated() {
+    if (!this.$route.meta.isBack) {
+      // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+      this.init();
+    }
+    // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
+    this.$route.meta.isBack = false;
+  },
   mounted() {
-    this.initTemplate();
-    this.initData();
+    this.init();
   },
   computed: {
-    departmentLength() {
-      let length =
-        Object.getOwnPropertyNames(this.seletedDepartment).length - 1;
-      console.log(Object.getOwnPropertyNames(this.seletedDepartment));
-      return length;
-      //   if (length && this.info.inDepts && length !== this.info.inDepts.length) {
-      //     return length;
-      //   } else if (!this.info.inDepts) {
-      //     return 0;
-      //   } else {
-      //     return this.info.inDepts.length;
-      //   }
+    ...mapState([
+      // map this.count to store.state.count
+      "inDepts",
+      "inUsers"
+    ])
+  },
+  filters: {
+    getUsersName(list) {
+      return list
+        .map(item => {
+          return item.userName;
+        })
+        .join(",");
     }
   },
   methods: {
-    initTemplate() {
-      switch (this.status) {
-        case "add":
-          this.title = "添加考勤组";
-          break;
-        case "modify":
-          this.title = "修改成员";
-          break;
-        default:
-          this.title = "未知";
+    async init() {
+      if (this.groupId) {
+        this.getGroupInfo();
       }
     },
-    async initData() {
-      let inDepts = {},
-        inUsers = {},
-        leader = {};
-      if (this.groupId) {
-        let data = {
-          groupId: this.groupId
-        };
-        data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
-        let res = await oaAttendanceGroupInfo(data);
-        res.data = strDec(res.data, "ZND20171030APIMM");
-        if (res.code === "0000") {
-          this.info = res.data;
-          if (!sessionStorage.getItem("flag")) {
-            this.info.inDepts.forEach(item => {
-              this.$set(this.seletedDepartment, item.deptId, item.deptName);
-            });
-            return;
-          }
-          this.info.inDepts.forEach(item => {
-            inDepts[item.deptId] = 1;
-          });
-          this.info.inUsers.forEach(item => {
-            inUsers[item.userId] = 1;
-          });
-          this.info.leader.forEach(item => {
-            leader[item.userId] = 1;
-          });
-          if (
-            !sessionStorage.getItem("inDepts") &&
-            Object.getOwnPropertyNames(inDepts)
-          ) {
-            sessionStorage.setItem("inDepts", JSON.stringify(inDepts));
-          }
-          if (
-            !sessionStorage.getItem("inUsers") &&
-            Object.getOwnPropertyNames(inUsers)
-          ) {
-            sessionStorage.setItem("inUsers", JSON.stringify(inUsers));
-          }
-          if (
-            !sessionStorage.getItem("leader") &&
-            Object.getOwnPropertyNames(leader)
-          ) {
-            sessionStorage.setItem("leader", JSON.stringify(leader));
-          }
-        }
+    ...mapMutations(["SET_INDEPTS", "SET_INUSERS"]),
+    //获取该考勤组信息
+    async getGroupInfo() {
+      let data = {
+        groupId: this.groupId
+      };
+      let res = await oaAttendanceGroupInfo(data);
+      if (res.code === "0000") {
+        this.SET_INDEPTS(res.data.inDepts);
+        this.SET_INUSERS(res.data.inUsers);
+        this.leader = res.data.leader;
+      } else {
+        this.$toast(res.msg);
       }
     },
     handleCommand() {
       sessionStorage.setItem("inDepts", JSON.stringify(this.seletedDepartment));
       this.$router.push({ path: "/oaSystem/attendanceApartment" });
-      //   if (command === "selected") {
-      //     this.$router.push({ path: "/oaSystem/attendanceApartment" });
-      //   } else if (command === "unselect") {
-      //     this.$router.push({ path: "/oaSystem/attendanceApartment" });
-      //   }
     },
     goSelect(str) {
       switch (str) {
@@ -194,69 +186,43 @@ export default {
         //   break;
       }
     },
+    //获取选中部门的id
+    getDeptIds() {
+      return this.inDepts
+        .map(item => {
+          return item.deptId;
+        })
+        .join(",");
+    },
+    //获取选中人员的id
+    getUserIds() {
+      return this.inUsers
+        .map(item => {
+          return item.userId;
+        })
+        .join(",");
+    },
     async submit() {
       if (!this.groupName.trim()) {
-        this.$message("考勤组名字不能为空");
+        this.$toast("考勤组名字不能为空");
         return;
       }
       var data = {
         companyId: this.userInfo.companyId,
         groupName: this.groupName,
-        groupId: this.groupId || "",
-        inDepts: "ad",
-        inUsers: "111111,40288048616dde3001616e3092860007",
-        leader: "40288048616dde3001616e3092860007",
-        location: sessionStorage.getItem("location") || this.info.location
+        groupId: this.groupId,
+        inDepts: this.getDeptIds(),
+        inUsers: this.getUserIds(),
+        leader: this.leader,
+        location: sessionStorage.getItem("location")
       };
-      this.ObjectToString(data, ["inDepts", "inUsers", "leader"]);
-      data = strEnc(JSON.stringify(data), "ZND20171030APIMM");
       let res = await oaAttendSetting(data);
       if (res.code === "0000") {
         this.$router.push({ path: "/oaSystem/attendanceGroup" });
       } else {
         this.$message(res.msg);
       }
-    },
-    ObjectToString(target, arr) {
-      arr.forEach(item => {
-        let str = sessionStorage.getItem(item);
-        if (str) {
-          let obj = JSON.parse(str);
-          let arr = Object.getOwnPropertyNames(obj);
-          target[item] = arr.join();
-        } else {
-          target[item] = "";
-        }
-      });
     }
-  },
-  beforeRouteLeave(to, from, next) {
-    if (
-      to.path != "/oaSystem/attendanceMember" &&
-      to.path != "/oaSystem/attendanceApartment" &&
-      to.path != "/oaSystem/caption" &&
-      to.path != "/oaSystem/addAddress"
-    ) {
-      //   sessionStorage.removeItem("inDepts");
-      //   sessionStorage.removeItem("inUsers");
-      //   sessionStorage.removeItem("leader");
-      //   sessionStorage.removeItem("groupName");
-      //   sessionStorage.removeItem("location");
-      sessionStorage.clear();
-    } else {
-      sessionStorage.setItem("groupName", this.info.groupName);
-      sessionStorage.setItem("flag", 1);
-    }
-    next();
-  },
-  beforeRouteEnter(to, from, next) {
-    if (
-      from.path == "/oaSystem/attendanceMember" ||
-      from.path == "/oaSystem/attendanceApartment"
-    ) {
-      fromFlag = 1;
-    }
-    next();
   }
 };
 </script>
@@ -265,67 +231,42 @@ export default {
 @import "../../assets/style/common.scss";
 .addAttendanceGroup {
   .item {
-    height: rem(98px);
-    line-height: rem(98px);
-    font-size: rem(32px);
-    color: #646464;
+    padding-top: rem(32px);
+    padding-bottom: rem(28px);
+    font-size: rem(30px);
+    color: #020202;
     background: #fff;
-    border-top: 1px solid $bdcolor;
-    border-bottom: 1px solid $bdcolor;
-    .right {
-      text-align: right;
-      color: #646464;
-    }
-    .input-wrap {
-      padding: rem(57px);
-      input {
-        padding: 0;
-        border: none;
-      }
-    }
-    small {
-      padding-left: rem(34px);
-      font-size: rem(24px);
-      color: #646464;
-    }
-    .lable {
-      color: #646464;
-    }
   }
-  .add-container {
-    padding-top: rem(22px);
-    padding-bottom: rem(44px);
-    height: auto;
-    line-height: 1.2;
-    .add {
-      @include icon(rem(98px),rem(98px));
-      background-image: url("../../assets/images/add.png");
-    }
-    .add-wrap {
-      padding-top: rem(60px);
-    }
+  .title {
+    width: rem(262px);
   }
-  .map {
-    @include icon(rem(29px),rem(38px));
-    margin-right: rem(19px);
-    background-image: url("../../assets/images/icon-map.png");
+  .list {
+    margin-bottom: rem(94px);
   }
-  .info {
-    height: rem(79px);
-    line-height: rem(79px);
-    font-size: rem(26px);
-    color: #979797;
+  .icon-add-circle {
+    @include icon(rem(88px), rem(88px));
   }
-  .selected-area {
-    margin-top: rem(30px);
-    .selected {
-      padding: 5px 10px;
-
-      margin-right: rem(30px);
-      color: #fff;
-      background: $blue;
-      border-radius: rem(10px);
-    }
+  .circle {
+    justify-content: center;
+    width: rem(88px);
+    height: rem(88px);
+    border-radius: 50%;
+    border: rem(2px) solid #7f7f7f;
+    background: #fdfcfc;
+    box-sizing: border-box;
+  }
+  .circle-wrap {
+    margin-top: rem(26px);
+  }
+  .icon-arrow-right-black {
+    @include icon(rem(19px), rem(28px));
+    vertical-align: middle;
+  }
+  .value {
+    display: inline-block;
+  }
+  .right {
+    text-align: right;
   }
 }
 </style>

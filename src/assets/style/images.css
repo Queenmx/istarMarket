@@ -129,7 +129,7 @@
 }
 .icon-arrow-right {
   background-image: url("../images/icon-arrow-right@3x.png");
-  background-size:contain;
+  background-size: contain;
   background-repeat: no-repeat;
 }
 .icon-arrow-down {
@@ -194,4 +194,28 @@
 }
 .icon-pen {
   background-image: url("../images/icon-pen@3x.png");
+}
+.icon-addGroup {
+  background-image: url("../images/icon-addGroup@3x.png");
+}
+.icon-cancel {
+  background-image: url("../images/icon-cancel@3x.png");
+}
+.icon-bin {
+  background-image: url("../images/icon-bin@3x.png");
+}
+.icon-delete-red {
+  background-image: url("../images/icon-delete-red@3x.png");
+}
+.icon-user-group {
+  background-image: url("../images/icon-user-group@3x.png");
+}
+.icon-add-circle {
+  background-image: url("../images/icon-add-circle@3x.png");
+}
+.icon-checked-circle-active {
+  background-image: url("../images/icon-checked-circle-active@3x.png");
+}
+.icon-checked-circle {
+  background-image: url("../images/icon-checked-circle@3x.png");
 }

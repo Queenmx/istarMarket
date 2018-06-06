@@ -57,7 +57,7 @@ const attendanceCard = resolve =>
 const attendanceGroup = resolve =>
   require(["@/pages/oa/attendanceGroup"], resolve);
 const addAttendanceGroup = resolve =>
-  require(["@/pages/oa/addAttendancePage"], resolve);
+  require(["@/pages/oa/addAttendanceGroup"], resolve);
 const selectedApartment = resolve =>
   require(["@/pages/oa/selectedApartment"], resolve);
 const unselectApartment = resolve =>
@@ -297,7 +297,10 @@ const router = new Router({
     {
       path: "/oaSystem/addAttendanceGroup",
       component: addAttendanceGroup,
-      name: "addAttendanceGroup"
+      meta: {
+        keepAlive: true,
+        isBack: false
+      }
     },
     {
       path: "/oaSystem/selectedApartment",
@@ -309,8 +312,7 @@ const router = new Router({
     },
     {
       path: "/oaSystem/attendanceMember",
-      component: attendanceMember,
-      name: "attendanceMember"
+      component: attendanceMember
     },
     {
       path: "/oaSystem/attendanceLeader",

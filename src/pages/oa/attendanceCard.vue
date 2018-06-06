@@ -15,11 +15,13 @@
                         <p>{{address}}</p>
                     </div>
                 </div>
-                <div class="circle-wrap">
-                    <div class="circle">
-                        <div class="content">
-                            <strong class="strong">{{hour}}:{{minute}}</strong>
-                            <p>上班打卡</p>
+                <div class="circle-container">
+                    <div class="circle-wrap" @click="updateCard">
+                        <div class="circle">
+                            <div class="content">
+                                <strong class="strong">{{hour}}:{{minute}}</strong>
+                                <p>上班打卡</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,24 +43,15 @@ var map, point, myGeo, geolocation;
 export default {
   data() {
     var date = new Date();
+    console.log(date);
     return {
-      info: {},
       date: formateTime(date, "yyyy年M月d日"),
       hour: date.getHours(),
       minute: date.getMinutes(),
-      flag: [],
       timeStamp: date,
-      userId: getItem("userInfo").userId,
-      deptId: getItem("userInfo").deptId,
-      // 定位
-      center: { lng: 0, lat: 0 },
-      zoom: 4,
-      aPm: "", //判断上班还是下班 true//下班 false上班
-      address: "",
-      groupAddress: "",
-      groupName: "",
-      companyName: "",
-      errorMsg: "", //异常信息显示
+      userInfo: getItem("userInfo"),
+      address: "", //位置
+      groupName: "", //考勤组名称
       business: "" //定位商圈
     };
   },
@@ -70,55 +63,41 @@ export default {
     }
   },
   mounted() {
-    var res = checkSys();
-    var self = this;
-    this.initData();
-    if (res === "ios") {
-      setTimeout(function() {
-        self.initMap();
-        self.getPosition();
-      }, 1000);
-    } else {
-      //   this.initData();
-      callAddress();
-      setTimeout(function() {
-        self.address = getItem("location");
-        // initMap(self.address);
-      }, 1000);
-    }
-    // this.initMap();
-    // this.getPosition();
+    this.init();
   },
   methods: {
-    initData() {
+    init() {
       this.getGroupName();
       this.getLocation();
     },
     //获取考勤组名称
     async getGroupName() {
       let data = {
-        userId: this.userId,
-        deptId: this.deptId
+        userId: this.userInfo.userId,
+        deptId: this.userInfo.deptId
       };
       let res = await oaGroupCheck(data);
       if (res.code === "0000") {
         this.groupName = res.data.groupName;
       } else {
-        this.errorMsg = res.msg;
+        this.$toast(res.msg);
       }
     },
     //打卡
     async updateCard() {
       let data = {
-        userId: this.userId,
-        time: this.timeStamp,
+        userId: this.userInfo.userId,
+        time: formateTime(this.timeStamp, "yyyy-MM-dd hh:mm:ss"),
         location: this.address
       };
       let res = await oaUpdateTime(data);
       if (res.code === "0000") {
         this.$router.push({
           path: "/oaSystem/attendanceCardSuccess",
-          query: { address: this.address, time: this.timeStamp }
+          query: {
+            business: this.business,
+            time: formateTime(this.timeStamp, "h:m")
+          }
         });
       } else {
         this.$toast(res.msg);
@@ -127,10 +106,7 @@ export default {
     //获取位置
     getLocation() {
       var self = this;
-      //   var map = new BMap.Map("allmap");
       var point = new BMap.Point(116.331398, 39.897445);
-      //   map.centerAndZoom(point, 12);
-
       var geolocation = new BMap.Geolocation();
       var geoc = new BMap.Geocoder();
       // 开启SDK辅助定位
@@ -138,12 +114,11 @@ export default {
       geolocation.getCurrentPosition(function(r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
           geoc.getLocation(r.point, function(rs) {
-            var addComp = rs.addressComponents;
             self.business = rs.business;
             self.address = rs.address;
           });
         } else {
-          alert("failed" + this.getStatus());
+          self.$toast(this.getStatus());
         }
       });
     },
@@ -236,13 +211,19 @@ export default {
     }
   }
   .address-group {
-    margin-bottom: rem(196px);
+    // padding-bottom: rem(196px);
+  }
+  .circle-container {
+    padding-top: rem(142px);
+    text-align: center;
+    // padding-bottom: rem(226px);
   }
   .circle-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: rem(142px) auto rem(226px) auto;
+    margin: 0 auto;
+    // margin: rem(142px) auto rem(226px) auto;
     width: rem(304px);
     height: rem(304px);
     color: #333333;

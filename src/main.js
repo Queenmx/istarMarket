@@ -3,6 +3,7 @@
 import Vue from "vue";
 import App from "./App";
 import { router } from "./router";
+import store from "./store";
 import commonComponents from "@/components";
 import "@/assets/style/images.css";
 import Vant from "vant";
@@ -80,6 +81,7 @@ Vue.use(MenuItem);
 new Vue({
   el: "#app",
   router,
+  store,
   components: { App },
   template: "<App/>"
 });

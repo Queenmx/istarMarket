@@ -2,7 +2,7 @@
   <div class="index">
       <section class="banner">
         <van-swipe :autoplay="3000">
-            <van-swipe-item v-for="item in bannerList" :key="item.id">
+            <van-swipe-item v-for="item in bannerList" :key="item.bannerId">
                 <router-link :to="item.url"><img :src="item.src"></router-link></van-swipe-item>
         </van-swipe>
       </section>
