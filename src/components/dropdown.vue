@@ -3,8 +3,9 @@
       <div class="mask" v-show="isShowDropdown" @click="isShowDropdown=false" ref="mask"></div>
       <div>
         <div ref="header" @click.stop="isShowDropdown=!isShowDropdown" class="dropdown-header">
+            <i :class="[{'icon-img':iconImg},iconImg]"></i>
             <span class="title">{{curTitle}}</span>
-            <i class="icon-arrow-down" ></i>
+            <i :class="[{'icon-arrow':iconClass},iconClass]"></i>
         </div>
         <div v-show="isShowDropdown" ref="down" class="dropdown-body">
             <van-row>
@@ -13,7 +14,6 @@
                         <span :class="[{'active':activeIndex==index}]">{{item.text}}
                     </span>
                     </div>
-                    
                 </van-col>
             </van-row>
         </div>
@@ -27,6 +27,14 @@ export default {
     title: "",
     dataArr: "",
     textArr: "",
+    iconClass: {
+      type: String,
+      default: "icon-arrow-down"
+    },
+    iconImg: {
+      type: String,
+      default: ""
+    },
     defalutIndex: { type: Number, default: 0 },
     col: {
       default: 8
@@ -91,6 +99,9 @@ export default {
       line-height: rem(80px);
     }
   }
+  .icon-img {
+    @include icon(rem(52px), rem(52px));
+  }
   .title {
     display: inline-block;
     vertical-align: middle;
@@ -117,7 +128,7 @@ export default {
       background-image: url("../assets/images/icon-checked@3x.png");
     }
   }
-  .icon-arrow-down {
+  .icon-arrow {
     @include icon(rem(32px), rem(19px));
   }
   .icon-down {

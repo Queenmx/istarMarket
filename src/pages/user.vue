@@ -18,7 +18,7 @@
                     <van-col span="16">
                         <ul class="user-phone">
                             <li><img src="../assets/images/mobile.png">{{phone}}</li>
-                            <li><img src="../assets/images/location.png">上海市浦东新区巨峰路991号</li>
+                            <li><img src="../assets/images/location.png">{{address}}</li>
                         </ul>
                     </van-col>
                     <van-col span="8" class="small-logo"><img src="../assets/images/group.png"></van-col>
@@ -53,6 +53,7 @@ export default {
       phone: "",
       companyName: "",
       userName: "",
+      address: "",
       accountType: getItem("userInfo").accountType,
       data: []
     };
@@ -104,6 +105,7 @@ export default {
         this.companyName = res.data.companyName;
         this.headPic = res.data.headPic;
         this.userName = res.data.userName;
+        this.address = res.data.located;
         this.accountType = res.data.accountType;
       }
     },
